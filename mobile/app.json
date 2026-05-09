@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Datamak Mobile Shop",
+    "slug": "datamak-mobile-shop",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {},
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
