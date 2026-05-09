@@ -25,8 +25,8 @@ function withSummary(cartData) {
   };
 }
 
-router.get("/", (req, res) => {
-  const db = readDb();
+router.get("/", async (req, res) => {
+  const db = await readDb();
   const cart = getOrCreateCart(db, req.user.id);
   const details = calculateCartTotals(cart.items, db.products);
   return res.json({
@@ -37,7 +37,7 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/items", (req, res) => {
+router.post("/items", async (req, res) => {
   const { productId, quantity = 1 } = req.body;
 
   if (!productId) {
@@ -49,7 +49,7 @@ router.post("/items", (req, res) => {
     return res.status(400).json({ message: "Quantity should be at least 1." });
   }
 
-  const db = readDb();
+  const db = await readDb();
   const product = db.products.find((entry) => entry.id === productId);
   if (!product) {
     return res.status(404).json({ message: "Product not found." });
@@ -73,7 +73,7 @@ router.post("/items", (req, res) => {
     cart.items.push({ productId, quantity: parsedQuantity });
   }
 
-  writeDb(db);
+  await writeDb(db);
   const details = calculateCartTotals(cart.items, db.products);
   return res.status(201).json({
     message: "Item added to cart.",
@@ -81,7 +81,7 @@ router.post("/items", (req, res) => {
   });
 });
 
-router.put("/items/:productId", (req, res) => {
+router.put("/items/:productId", async (req, res) => {
   const { quantity } = req.body;
   const parsedQuantity = Number(quantity);
 
@@ -89,7 +89,7 @@ router.put("/items/:productId", (req, res) => {
     return res.status(400).json({ message: "Quantity should be at least 1." });
   }
 
-  const db = readDb();
+  const db = await readDb();
   const product = db.products.find((entry) => entry.id === req.params.productId);
   if (!product) {
     return res.status(404).json({ message: "Product not found." });
@@ -108,7 +108,7 @@ router.put("/items/:productId", (req, res) => {
   }
 
   item.quantity = parsedQuantity;
-  writeDb(db);
+  await writeDb(db);
   const details = calculateCartTotals(cart.items, db.products);
   return res.json({
     message: "Cart updated.",
@@ -116,8 +116,8 @@ router.put("/items/:productId", (req, res) => {
   });
 });
 
-router.delete("/items/:productId", (req, res) => {
-  const db = readDb();
+router.delete("/items/:productId", async (req, res) => {
+  const db = await readDb();
   const cart = getOrCreateCart(db, req.user.id);
   const currentLength = cart.items.length;
   cart.items = cart.items.filter((entry) => entry.productId !== req.params.productId);
@@ -126,7 +126,7 @@ router.delete("/items/:productId", (req, res) => {
     return res.status(404).json({ message: "Cart item not found." });
   }
 
-  writeDb(db);
+  await writeDb(db);
   const details = calculateCartTotals(cart.items, db.products);
   return res.json({
     message: "Item removed from cart.",
@@ -134,11 +134,11 @@ router.delete("/items/:productId", (req, res) => {
   });
 });
 
-router.delete("/", (req, res) => {
-  const db = readDb();
+router.delete("/", async (req, res) => {
+  const db = await readDb();
   const cart = getOrCreateCart(db, req.user.id);
   cart.items = [];
-  writeDb(db);
+  await writeDb(db);
   return res.json({
     message: "Cart cleared.",
     cart: withSummary({ userId: cart.userId, items: [], total: 0 })

@@ -107,14 +107,14 @@ function calculateTotals(items, couponCode) {
   };
 }
 
-router.post("/checkout", (req, res) => {
+router.post("/checkout", async (req, res) => {
   const { paymentMethod, shippingAddress, billingAddress, couponCode } = req.body;
 
   if (!paymentMethod) {
     return res.status(400).json({ message: "paymentMethod is required." });
   }
 
-  const db = readDb();
+  const db = await readDb();
   const cart = getOrCreateCart(db, req.user.id);
   const detailedCart = calculateCartTotals(cart.items, db.products);
 
@@ -176,7 +176,7 @@ router.post("/checkout", (req, res) => {
 
   db.orders.push(order);
   cart.items = [];
-  writeDb(db);
+  await writeDb(db);
 
   return res.status(201).json({
     message: "Checkout complete. Payment was simulated successfully.",
@@ -184,8 +184,8 @@ router.post("/checkout", (req, res) => {
   });
 });
 
-router.get("/orders", (req, res) => {
-  const db = readDb();
+router.get("/orders", async (req, res) => {
+  const db = await readDb();
   const orders =
     req.user.role === "admin"
       ? db.orders
@@ -203,8 +203,8 @@ router.get("/orders", (req, res) => {
   });
 });
 
-router.get("/orders/:id", (req, res) => {
-  const db = readDb();
+router.get("/orders/:id", async (req, res) => {
+  const db = await readDb();
   const order = db.orders.find((entry) => entry.id === req.params.id);
   if (!order) {
     return res.status(404).json({ message: "Order not found." });
@@ -217,7 +217,7 @@ router.get("/orders/:id", (req, res) => {
   });
 });
 
-router.patch("/orders/:id/status", adminOnly, (req, res) => {
+router.patch("/orders/:id/status", adminOnly, async (req, res) => {
   const { status, note } = req.body;
   if (!ORDER_STATUSES.includes(status)) {
     return res.status(400).json({
@@ -225,7 +225,7 @@ router.patch("/orders/:id/status", adminOnly, (req, res) => {
     });
   }
 
-  const db = readDb();
+  const db = await readDb();
   const order = db.orders.find((entry) => entry.id === req.params.id);
   if (!order) {
     return res.status(404).json({ message: "Order not found." });
@@ -239,7 +239,7 @@ router.patch("/orders/:id/status", adminOnly, (req, res) => {
     timestamp: order.updatedAt
   });
 
-  writeDb(db);
+  await writeDb(db);
   return res.json({
     message: "Order status updated.",
     order: hydrateOrder(order, db)

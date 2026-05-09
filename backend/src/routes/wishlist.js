@@ -14,15 +14,15 @@ function mapProductsByIds(ids, products) {
     .filter(Boolean);
 }
 
-router.get("/wishlist", (req, res) => {
-  const db = readDb();
+router.get("/wishlist", async (req, res) => {
+  const db = await readDb();
   const wishlist = getOrCreateWishlist(db, req.user.id);
   const products = mapProductsByIds(wishlist.productIds, db.products);
   return res.json({ wishlist: products, productIds: wishlist.productIds });
 });
 
-router.post("/wishlist/:productId", (req, res) => {
-  const db = readDb();
+router.post("/wishlist/:productId", async (req, res) => {
+  const db = await readDb();
   const product = db.products.find((entry) => entry.id === req.params.productId);
   if (!product) {
     return res.status(404).json({ message: "Product not found." });
@@ -35,7 +35,7 @@ router.post("/wishlist/:productId", (req, res) => {
     wishlist.productIds = wishlist.productIds.filter((entry) => entry !== product.id);
   }
 
-  writeDb(db);
+  await writeDb(db);
   const products = mapProductsByIds(wishlist.productIds, db.products);
   return res.json({
     message: "Wishlist updated.",
@@ -44,11 +44,11 @@ router.post("/wishlist/:productId", (req, res) => {
   });
 });
 
-router.delete("/wishlist/:productId", (req, res) => {
-  const db = readDb();
+router.delete("/wishlist/:productId", async (req, res) => {
+  const db = await readDb();
   const wishlist = getOrCreateWishlist(db, req.user.id);
   wishlist.productIds = wishlist.productIds.filter((entry) => entry !== req.params.productId);
-  writeDb(db);
+  await writeDb(db);
   const products = mapProductsByIds(wishlist.productIds, db.products);
   return res.json({
     message: "Removed from wishlist.",
@@ -57,8 +57,8 @@ router.delete("/wishlist/:productId", (req, res) => {
   });
 });
 
-router.get("/recently-viewed", (req, res) => {
-  const db = readDb();
+router.get("/recently-viewed", async (req, res) => {
+  const db = await readDb();
   const recent = getOrCreateRecentView(db, req.user.id);
   const products = mapProductsByIds(recent.productIds, db.products);
   return res.json({ recentlyViewed: products, productIds: recent.productIds });

@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 const { readDb } = require("../data/store");
 
-function authRequired(req, res, next) {
+async function authRequired(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Authorization token is required." });
@@ -12,7 +12,7 @@ function authRequired(req, res, next) {
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    const db = readDb();
+    const db = await readDb();
     const user = db.users.find((entry) => entry.id === payload.sub);
 
     if (!user) {

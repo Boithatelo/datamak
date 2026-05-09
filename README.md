@@ -31,10 +31,23 @@ The **testing section is intentionally not implemented yet**, as requested.
 ```bash
 cd backend
 npm install
+npm run db:init
 npm run dev
 ```
 
 Backend runs on `http://localhost:4000`.
+
+The backend now uses PostgreSQL. Create `backend/.env` from `backend/.env.example`
+and set `DATABASE_URL` before running `npm run db:init`.
+
+Example:
+
+```bash
+DATABASE_URL=postgres://postgres:YOUR_PASSWORD@localhost:5432/datamak_ecommerce
+```
+
+On first initialization, the backend creates the PostgreSQL tables and imports
+existing seed data from `backend/data/db.json` if that file is present.
 
 ## 2. Run Web App
 
@@ -99,6 +112,6 @@ For iOS simulator, `http://localhost:4000/api` usually works.
 
 ## Notes
 
-- Data is persisted in `backend/data/db.json` after first run.
+- Data is persisted in PostgreSQL after first initialization.
 - The payment flow is simulated by design for the assignment.
 - Admin dashboard is implemented in the web app, while mobile focuses on customer shopping flows.

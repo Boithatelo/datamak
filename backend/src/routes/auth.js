@@ -69,7 +69,7 @@ router.post("/register", async (req, res) => {
   }
 
   const normalizedEmail = String(email).toLowerCase().trim();
-  const db = readDb();
+  const db = await readDb();
 
   if (db.users.some((user) => user.email === normalizedEmail)) {
     return res.status(409).json({ message: "Email is already registered." });
@@ -91,7 +91,7 @@ router.post("/register", async (req, res) => {
   getOrCreateCart(db, user.id);
   getOrCreateWishlist(db, user.id);
   getOrCreateRecentView(db, user.id);
-  writeDb(db);
+  await writeDb(db);
 
   const token = issueToken(user);
   return res.status(201).json({ token, user: sanitizeUser(user) });
@@ -105,7 +105,7 @@ router.post("/login", async (req, res) => {
   }
 
   const normalizedEmail = String(email).toLowerCase().trim();
-  const db = readDb();
+  const db = await readDb();
   const user = db.users.find((entry) => entry.email === normalizedEmail);
 
   if (!user) {
@@ -121,19 +121,19 @@ router.post("/login", async (req, res) => {
   return res.json({ token, user: sanitizeUser(user) });
 });
 
-router.post("/forgot-password", (req, res) => {
+router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
   if (!email) {
     return res.status(400).json({ message: "Email is required." });
   }
 
   const normalizedEmail = String(email).toLowerCase().trim();
-  const db = readDb();
+  const db = await readDb();
   cleanExpiredResets(db);
 
   const user = db.users.find((entry) => entry.email === normalizedEmail);
   if (!user) {
-    writeDb(db);
+    await writeDb(db);
     return res.json({
       message: "If the email exists, a reset link has been generated.",
       resetToken: null
@@ -151,7 +151,7 @@ router.post("/forgot-password", (req, res) => {
     createdAt: nowIso()
   });
 
-  writeDb(db);
+  await writeDb(db);
 
   return res.json({
     message: "Password reset token generated. Use it to create a new password.",
@@ -174,12 +174,12 @@ router.post("/reset-password", async (req, res) => {
     });
   }
 
-  const db = readDb();
+  const db = await readDb();
   cleanExpiredResets(db);
   const tokenEntry = db.passwordResets.find((entry) => entry.token === String(token).trim());
 
   if (!tokenEntry) {
-    writeDb(db);
+    await writeDb(db);
     return res.status(400).json({ message: "Reset token is invalid or expired." });
   }
 
@@ -191,13 +191,13 @@ router.post("/reset-password", async (req, res) => {
   user.passwordHash = await bcrypt.hash(password, 10);
   user.updatedAt = nowIso();
   tokenEntry.usedAt = nowIso();
-  writeDb(db);
+  await writeDb(db);
 
   return res.json({ message: "Password updated successfully. You can now login." });
 });
 
-router.get("/me", authRequired, (req, res) => {
-  const db = readDb();
+router.get("/me", authRequired, async (req, res) => {
+  const db = await readDb();
   const user = db.users.find((entry) => entry.id === req.user.id);
   if (!user) {
     return res.status(404).json({ message: "User not found." });
@@ -207,7 +207,7 @@ router.get("/me", authRequired, (req, res) => {
 
 router.patch("/me", authRequired, async (req, res) => {
   const { name, currentPassword, newPassword } = req.body;
-  const db = readDb();
+  const db = await readDb();
   const user = db.users.find((entry) => entry.id === req.user.id);
 
   if (!user) {
@@ -236,7 +236,7 @@ router.patch("/me", authRequired, async (req, res) => {
   }
 
   user.updatedAt = nowIso();
-  writeDb(db);
+  await writeDb(db);
   return res.json({ message: "Profile updated successfully.", user: sanitizeUser(user) });
 });
 

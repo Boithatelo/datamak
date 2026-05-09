@@ -1,2 +1,3 @@
 Backend server running on http://localhost:4000
-[0mGET /api/products [32m200[0m 6.414 ms - 19132[0m
+[0mGET /api/health [32m200[0m 3.525 ms - 54[0m
+[0mGET /api/products?pageSize=1 [32m200[0m 88.969 ms - 855[0m

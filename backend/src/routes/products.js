@@ -42,8 +42,8 @@ function normalizeGallery(imageUrl, gallery) {
   return list;
 }
 
-router.get("/meta/categories", (req, res) => {
-  const db = readDb();
+router.get("/meta/categories", async (req, res) => {
+  const db = await readDb();
   const categories = getCategoryNames();
   const subcategories = CATEGORY_TREE.reduce((acc, category) => {
     acc[category.name] = category.subcategories;
@@ -54,8 +54,8 @@ router.get("/meta/categories", (req, res) => {
   return res.json({ categories, subcategories, categoryTree: CATEGORY_TREE, types });
 });
 
-router.get("/hosting-plans", (req, res) => {
-  const db = readDb();
+router.get("/hosting-plans", async (req, res) => {
+  const db = await readDb();
   const plans = db.products
     .filter((product) => product.category === "Web Hosting Services")
     .sort((a, b) => a.price - b.price);
@@ -63,7 +63,7 @@ router.get("/hosting-plans", (req, res) => {
   return res.json({ plans });
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   const {
     search,
     category,
@@ -77,7 +77,7 @@ router.get("/", (req, res) => {
     pageSize = 24
   } = req.query;
 
-  const db = readDb();
+  const db = await readDb();
   let products = [...db.products];
 
   if (search) {
@@ -159,8 +159,8 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/:id", (req, res) => {
-  const db = readDb();
+router.get("/:id", async (req, res) => {
+  const db = await readDb();
   const product = db.products.find((entry) => entry.id === req.params.id);
   if (!product) {
     return res.status(404).json({ message: "Product not found." });
@@ -177,8 +177,8 @@ router.get("/:id", (req, res) => {
   return res.json({ product, related });
 });
 
-router.post("/:id/view", authRequired, (req, res) => {
-  const db = readDb();
+router.post("/:id/view", authRequired, async (req, res) => {
+  const db = await readDb();
   const product = db.products.find((entry) => entry.id === req.params.id);
 
   if (!product) {
@@ -191,11 +191,11 @@ router.post("/:id/view", authRequired, (req, res) => {
     ...recent.productIds.filter((entry) => entry !== product.id)
   ].slice(0, 12);
 
-  writeDb(db);
+  await writeDb(db);
   return res.json({ message: "View tracked." });
 });
 
-router.post("/", authRequired, adminOnly, (req, res) => {
+router.post("/", authRequired, adminOnly, async (req, res) => {
   const {
     name,
     description,
@@ -285,14 +285,14 @@ router.post("/", authRequired, adminOnly, (req, res) => {
     updatedAt: timestamp
   };
 
-  const db = readDb();
+  const db = await readDb();
   db.products.push(product);
-  writeDb(db);
+  await writeDb(db);
   return res.status(201).json({ message: "Product created successfully.", product });
 });
 
-router.put("/:id", authRequired, adminOnly, (req, res) => {
-  const db = readDb();
+router.put("/:id", authRequired, adminOnly, async (req, res) => {
+  const db = await readDb();
   const product = db.products.find((entry) => entry.id === req.params.id);
   if (!product) {
     return res.status(404).json({ message: "Product not found." });
@@ -407,12 +407,12 @@ router.put("/:id", authRequired, adminOnly, (req, res) => {
   }
 
   product.updatedAt = nowIso();
-  writeDb(db);
+  await writeDb(db);
   return res.json({ message: "Product updated successfully.", product });
 });
 
-router.delete("/:id", authRequired, adminOnly, (req, res) => {
-  const db = readDb();
+router.delete("/:id", authRequired, adminOnly, async (req, res) => {
+  const db = await readDb();
   const productIndex = db.products.findIndex((entry) => entry.id === req.params.id);
   if (productIndex === -1) {
     return res.status(404).json({ message: "Product not found." });
@@ -428,7 +428,7 @@ router.delete("/:id", authRequired, adminOnly, (req, res) => {
   db.recentViews.forEach((recent) => {
     recent.productIds = recent.productIds.filter((id) => id !== deletedProduct.id);
   });
-  writeDb(db);
+  await writeDb(db);
   return res.json({ message: "Product deleted successfully." });
 });
 

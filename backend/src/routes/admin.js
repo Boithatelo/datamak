@@ -52,8 +52,8 @@ function getTopSellingProducts(orders, products) {
     .slice(0, 8);
 }
 
-router.get("/summary", (req, res) => {
-  const db = readDb();
+router.get("/summary", async (req, res) => {
+  const db = await readDb();
   const totalRevenue = db.orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
   const ordersByStatus = db.orders.reduce((acc, order) => {
     acc[order.status] = (acc[order.status] || 0) + 1;
@@ -94,28 +94,28 @@ router.get("/summary", (req, res) => {
   });
 });
 
-router.get("/users", (req, res) => {
-  const db = readDb();
+router.get("/users", async (req, res) => {
+  const db = await readDb();
   const users = db.users
     .map((user) => sanitizeUser(user))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   return res.json({ users });
 });
 
-router.patch("/users/:id/role", (req, res) => {
+router.patch("/users/:id/role", async (req, res) => {
   const { role } = req.body;
   if (!["admin", "customer"].includes(role)) {
     return res.status(400).json({ message: "role must be admin or customer." });
   }
 
-  const db = readDb();
+  const db = await readDb();
   const user = db.users.find((entry) => entry.id === req.params.id);
   if (!user) {
     return res.status(404).json({ message: "User not found." });
   }
   user.role = role;
   user.updatedAt = new Date().toISOString();
-  writeDb(db);
+  await writeDb(db);
   return res.json({ message: "User role updated.", user: sanitizeUser(user) });
 });
 

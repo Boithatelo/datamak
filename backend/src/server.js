@@ -15,8 +15,6 @@ const { readDb } = require("./data/store");
 
 const app = express();
 
-readDb();
-
 app.use(
   cors({
     origin: "*"
@@ -47,6 +45,14 @@ app.use((error, req, res, next) => {
   return res.status(500).json({ message: "Internal server error." });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
+async function start() {
+  await readDb();
+  app.listen(PORT, () => {
+    console.log(`Backend server running on http://localhost:${PORT}`);
+  });
+}
+
+start().catch((error) => {
+  console.error("Failed to start backend server:", error.message);
+  process.exit(1);
 });
