@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import PageHeader from "../components/PageHeader";
 import api, { getApiError } from "../api/client";
+import { useAuth } from "../context/AuthContext";
 import {
   PRODUCT_CATEGORIES,
   getDefaultProductType,
@@ -34,6 +35,7 @@ const INITIAL_PRODUCT = {
 };
 
 export default function AdminScreen() {
+  const { logout } = useAuth();
   const [summary, setSummary] = useState(null);
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
@@ -147,8 +149,12 @@ export default function AdminScreen() {
       <PageHeader
         title="Admin Control Center"
         subtitle="Manage products, users, orders, inventory, and commerce insights."
-        fallback="Profile"
+        fallback="AdminHome"
+        showBack={false}
       />
+      <Pressable style={styles.logoutButton} onPress={logout}>
+        <Text style={styles.logoutButtonText}>Logout</Text>
+      </Pressable>
       {message ? <Text style={styles.status}>{message}</Text> : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
@@ -207,7 +213,7 @@ export default function AdminScreen() {
         {orders.slice(0, 12).map((order) => (
           <View style={styles.listItem} key={order.id}>
             <Text style={styles.itemTitle}>{order.orderNumber || order.id.slice(0, 8)}</Text>
-            <Text style={styles.meta}>{formatMoney(order.total)} · {order.status}</Text>
+            <Text style={styles.meta}>{formatMoney(order.total)} - {order.status}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
               {ORDER_STATUSES.map((status) => (
                 <Pressable
@@ -229,7 +235,7 @@ export default function AdminScreen() {
         <Text style={styles.sectionTitle}>Products</Text>
         {products.slice(0, 14).map((product) => (
           <Text style={styles.meta} key={product.id}>
-            {product.name} · {formatMoney(product.price)} · {product.type === "service" ? "Service" : `Stock ${product.stock}`}
+            {product.name} - {formatMoney(product.price)} - {product.type === "service" ? "Service" : `Stock ${product.stock}`}
           </Text>
         ))}
       </View>
@@ -239,7 +245,7 @@ export default function AdminScreen() {
         {users.map((user) => (
           <View style={styles.listItem} key={user.id}>
             <Text style={styles.itemTitle}>{user.name}</Text>
-            <Text style={styles.meta}>{user.email} · {user.role}</Text>
+            <Text style={styles.meta}>{user.email} - {user.role}</Text>
             <View style={styles.row}>
               <Pressable style={styles.lightButton} onPress={() => updateUserRole(user.id, "customer")}>
                 <Text style={styles.lightButtonText}>Customer</Text>
@@ -371,6 +377,18 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: {
     color: "#fff",
+    fontWeight: "900"
+  },
+  logoutButton: {
+    borderWidth: 1,
+    borderColor: "#f1c8ca",
+    backgroundColor: "#fff5f5",
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: "center"
+  },
+  logoutButtonText: {
+    color: "#b2353b",
     fontWeight: "900"
   },
   lightButton: {

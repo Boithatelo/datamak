@@ -1,7 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-export default function PageHeader({ title, subtitle, eyebrow, fallback = "Products", children }) {
+export default function PageHeader({
+  title,
+  subtitle,
+  eyebrow,
+  fallback = "Products",
+  showBack = true,
+  children
+}) {
   const navigation = useNavigation();
 
   const goBack = () => {
@@ -15,9 +22,11 @@ export default function PageHeader({ title, subtitle, eyebrow, fallback = "Produ
   return (
     <>
       <View style={styles.navLine}>
-        <Pressable style={styles.backButton} onPress={goBack} accessibilityLabel="Go back">
-          <Text style={styles.backText}>{"<"}</Text>
-        </Pressable>
+        {showBack ? (
+          <Pressable style={styles.backButton} onPress={goBack} accessibilityLabel="Go back">
+            <Text style={styles.backText}>{"<"}</Text>
+          </Pressable>
+        ) : null}
         <Text style={styles.crumb}>{fallback === "Products" ? "Home / " : ""}{title}</Text>
       </View>
       <View style={styles.hero}>
