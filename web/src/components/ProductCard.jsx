@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { formatMoney } from "../utils/currency";
+import { handleProductImageError } from "../utils/productImages";
 
 function CartIcon() {
   return (
@@ -15,9 +16,7 @@ export default function ProductCard({
   product,
   onAddToCart,
   onQuickView,
-  onWishlist,
-  busy,
-  wishlisted
+  busy
 }) {
   const discountedPrice = Number(
     (product.price * (1 - Number(product.discountPercent || 0) / 100)).toFixed(2)
@@ -27,16 +26,12 @@ export default function ProductCard({
 
   return (
     <article className="product-card">
-      <button
-        type="button"
-        className={`wishlist-btn ${wishlisted ? "active" : ""}`}
-        onClick={() => onWishlist(product.id)}
-        aria-label="Toggle wishlist"
-      >
-        &hearts;
-      </button>
       <div className="product-image-frame">
-        <img src={product.imageUrl} alt={product.name} />
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          onError={(event) => handleProductImageError(event, product.name)}
+        />
       </div>
       <div className="product-content">
         <h3>{product.name}</h3>

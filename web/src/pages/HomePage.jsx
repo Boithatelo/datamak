@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import BrandLogo from "../components/BrandLogo";
 import { useAuth } from "../context/AuthContext";
 
 const TRUST_ITEMS = [
@@ -17,13 +18,7 @@ export default function HomePage() {
         <main className="home-showcase">
           <section className="home-combined-card">
             <header className="home-card-header">
-              <Link to="/" className="logo market-logo home-card-logo">
-                <span className="logo-mark">D</span>
-                <span className="logo-copy">
-                  <strong>Datamak Technologies</strong>
-                  <small>Shop Smart. Build Fast. Host Secure.</small>
-                </span>
-              </Link>
+              <BrandLogo className="home-card-logo" />
 
               <div className="home-card-actions">
                 {!user && <Link to="/auth">Login / Register</Link>}

@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import MessageDialog from "../components/MessageDialog";
 import PageHeader from "../components/PageHeader";
+import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { formatMoney } from "../utils/currency";
 
+const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
+
 export default function HostingPlansPage() {
+  const { user } = useAuth();
   const { addToCart, getErrorMessage } = useCart();
   const [plans, setPlans] = useState([]);
   const [status, setStatus] = useState("");
@@ -61,6 +65,11 @@ export default function HostingPlansPage() {
               type="button"
               className="btn btn-primary"
               onClick={async () => {
+                if (!user) {
+                  setStatus("");
+                  setDialogMessage(LOGIN_TO_CART_MESSAGE);
+                  return;
+                }
                 try {
                   await addToCart(plan.id, 1);
                   setDialogMessage("Product added to cart.");
@@ -74,7 +83,11 @@ export default function HostingPlansPage() {
           </article>
         ))}
       </section>
-      <MessageDialog message={dialogMessage} onClose={() => setDialogMessage("")} />
+      <MessageDialog
+        title={dialogMessage === LOGIN_TO_CART_MESSAGE ? "Login Required" : "Cart Updated"}
+        message={dialogMessage}
+        onClose={() => setDialogMessage("")}
+      />
     </>
   );
 }

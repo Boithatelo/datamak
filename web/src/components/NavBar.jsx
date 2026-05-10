@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import BrandLogo from "./BrandLogo";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useShop } from "../context/ShopContext";
@@ -17,13 +18,7 @@ export default function NavBar() {
   return (
     <header className="topbar market-topbar">
       <div className="container market-header">
-        <Link to={isAdmin ? "/admin" : "/"} className="logo market-logo" onClick={() => setOpen(false)}>
-          <span className="logo-mark">D</span>
-          <span className="logo-copy">
-            <strong>Datamak Technologies</strong>
-            <small>Shop Smart. Build Fast. Host Secure.</small>
-          </span>
-        </Link>
+        <BrandLogo to={isAdmin ? "/admin" : "/"} onClick={() => setOpen(false)} />
 
         <div className="market-actions">
           {user && !isAdmin && (

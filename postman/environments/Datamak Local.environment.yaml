@@ -1,0 +1,22 @@
+name: Datamak Local
+values:
+  - key: baseUrl
+    value: 'http://localhost:4000/api'
+  - key: customerEmail
+    value: customer@datamak.local
+  - key: customerPassword
+    value: Customer@123
+  - key: adminEmail
+    value: admin@datamak.local
+  - key: adminPassword
+    value: Admin@123
+  - key: customerToken
+    value: ''
+  - key: adminToken
+    value: ''
+  - key: productId
+    value: ''
+  - key: checkoutProductId
+    value: ''
+  - key: orderId
+    value: ''

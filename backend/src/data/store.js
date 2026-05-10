@@ -11,6 +11,7 @@ const {
 } = require("./catalog");
 
 const DB_PATH = path.join(__dirname, "../../data/db.json");
+const DEFAULT_PRODUCT_IMAGE = "/images/products/product-placeholder.svg";
 
 const REQUIRED_KEYS = [
   "users",
@@ -37,6 +38,26 @@ function getPool() {
 
 function nowIso() {
   return new Date().toISOString();
+}
+
+function isRemoteImage(value) {
+  return /^https?:\/\//i.test(String(value || "").trim());
+}
+
+function normalizeImageValue(value) {
+  const image = String(value || "").trim();
+  return image && !isRemoteImage(image) ? image : "";
+}
+
+function normalizeProductImages(product) {
+  const gallery = Array.isArray(product.gallery)
+    ? product.gallery.map(normalizeImageValue).filter(Boolean)
+    : [];
+  const imageUrl = normalizeImageValue(product.imageUrl) || gallery[0] || DEFAULT_PRODUCT_IMAGE;
+  return {
+    imageUrl,
+    gallery: Array.from(new Set([imageUrl, ...gallery]))
+  };
 }
 
 function toIso(value) {
@@ -127,11 +148,9 @@ function normalizeProduct(product) {
   normalized.specifications = Array.isArray(normalized.specifications)
     ? normalized.specifications
     : [];
-  normalized.gallery = Array.isArray(normalized.gallery)
-    ? normalized.gallery
-    : normalized.imageUrl
-    ? [normalized.imageUrl]
-    : [];
+  const localImages = normalizeProductImages(normalized);
+  normalized.imageUrl = localImages.imageUrl;
+  normalized.gallery = localImages.gallery;
   normalized.updatedAt = normalized.updatedAt || normalized.updated_at || normalized.createdAt || nowIso();
   normalized.createdAt = normalized.createdAt || normalized.created_at || normalized.updatedAt;
   return normalized;
@@ -140,16 +159,48 @@ function normalizeProduct(product) {
 function migrateCatalogProducts(db) {
   db.products = db.products.map(normalizeProduct);
 
-  const existingSubcategories = new Set(
-    db.products.map((product) => `${product.category}::${product.subcategory}`)
-  );
   const timestamp = nowIso();
-  buildDemoProducts(timestamp, uuid).forEach((product) => {
-    const key = `${product.category}::${product.subcategory}`;
-    if (!existingSubcategories.has(key)) {
-      db.products.push(product);
-      existingSubcategories.add(key);
+  const seededProducts = buildDemoProducts(timestamp, uuid).map(normalizeProduct);
+  const seededProductKeys = new Map(
+    db.products.map((product, index) => [
+      `${String(product.category).toLowerCase()}::${String(product.name).toLowerCase().trim()}`,
+      index
+    ])
+  );
+
+  seededProducts.forEach((seededProduct) => {
+    const key = `${String(seededProduct.category).toLowerCase()}::${String(
+      seededProduct.name
+    )
+      .toLowerCase()
+      .trim()}`;
+    const existingIndex = seededProductKeys.get(key);
+
+    if (existingIndex === undefined) {
+      db.products.push(seededProduct);
+      seededProductKeys.set(key, db.products.length - 1);
+      return;
     }
+
+    const existingProduct = db.products[existingIndex];
+    db.products[existingIndex] = normalizeProduct({
+      ...existingProduct,
+      description: seededProduct.description,
+      category: seededProduct.category,
+      subcategory: seededProduct.subcategory,
+      type: seededProduct.type,
+      price: seededProduct.price,
+      imageUrl: seededProduct.imageUrl,
+      gallery: seededProduct.gallery,
+      rating: existingProduct.rating || seededProduct.rating,
+      reviewsCount: existingProduct.reviewsCount || seededProduct.reviewsCount,
+      popularity: existingProduct.popularity || seededProduct.popularity,
+      discountPercent: seededProduct.discountPercent,
+      isFeatured: seededProduct.isFeatured,
+      badges: seededProduct.badges,
+      specifications: seededProduct.specifications,
+      updatedAt: timestamp
+    });
   });
 
   db.catalogVersion = CATALOG_VERSION;

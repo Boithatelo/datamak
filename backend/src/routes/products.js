@@ -12,10 +12,16 @@ const {
 } = require("../data/catalog");
 
 const router = express.Router();
+const DEFAULT_PRODUCT_IMAGE = "/images/products/product-placeholder.svg";
 
 function toNumber(value, fallback = 0) {
   const parsed = Number(value);
   return Number.isNaN(parsed) ? fallback : parsed;
+}
+
+function normalizeImageUrl(value) {
+  const image = String(value || "").trim();
+  return image && !/^https?:\/\//i.test(image) ? image : "";
 }
 
 function normalizeSpecs(value) {
@@ -32,14 +38,15 @@ function normalizeSpecs(value) {
 
 function normalizeGallery(imageUrl, gallery) {
   const list = Array.isArray(gallery)
-    ? gallery.map((entry) => String(entry || "").trim()).filter(Boolean)
+    ? gallery.map(normalizeImageUrl).filter(Boolean)
     : [];
 
-  if (!list.length && imageUrl) {
-    return [String(imageUrl).trim()];
+  if (list.length) {
+    return Array.from(new Set(list));
   }
 
-  return list;
+  const image = normalizeImageUrl(imageUrl);
+  return [image || DEFAULT_PRODUCT_IMAGE];
 }
 
 router.get("/meta/categories", async (req, res) => {
@@ -137,10 +144,16 @@ router.get("/", async (req, res) => {
     products.sort((a, b) => b.price - a.price);
   } else if (sort === "name_asc") {
     products.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sort === "name_desc") {
+    products.sort((a, b) => b.name.localeCompare(a.name));
   } else if (sort === "rating_desc") {
     products.sort((a, b) => b.rating - a.rating);
   } else if (sort === "popularity_desc") {
     products.sort((a, b) => b.popularity - a.popularity);
+  } else if (sort === "discount_desc") {
+    products.sort((a, b) => b.discountPercent - a.discountPercent);
+  } else if (sort === "oldest") {
+    products.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   } else {
     products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
@@ -257,9 +270,7 @@ router.post("/", authRequired, adminOnly, async (req, res) => {
   }
 
   const timestamp = nowIso();
-  const finalImage =
-    String(imageUrl || "").trim() ||
-    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80";
+  const finalImage = normalizeImageUrl(imageUrl) || DEFAULT_PRODUCT_IMAGE;
 
   const product = {
     id: uuid(),
@@ -374,10 +385,11 @@ router.put("/:id", authRequired, adminOnly, async (req, res) => {
     product.stock = 0;
   }
   if (updates.imageUrl !== undefined) {
-    product.imageUrl = String(updates.imageUrl).trim();
+    product.imageUrl = normalizeImageUrl(updates.imageUrl) || DEFAULT_PRODUCT_IMAGE;
   }
   if (updates.gallery !== undefined) {
     product.gallery = normalizeGallery(product.imageUrl, updates.gallery);
+    product.imageUrl = product.gallery[0] || DEFAULT_PRODUCT_IMAGE;
   }
   if (updates.rating !== undefined) {
     product.rating = Number(toNumber(updates.rating, product.rating).toFixed(1));

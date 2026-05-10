@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/admin/summary"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{adminToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      pm.test('Summary contains dashboard counts', () => {
+        pm.expect(data.users).to.be.a('number');
+        pm.expect(data.products).to.be.a('number');
+        pm.expect(data.orders).to.be.a('number');
+      });
+    language: text/javascript
+order: 1000

@@ -19,14 +19,18 @@ const DEFAULT_FILTERS = {
   maxPrice: "",
   sort: "newest"
 };
+const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
-  { value: "popularity", label: "Popularity" },
+  { value: "oldest", label: "Oldest" },
+  { value: "popularity", label: "Most Popular" },
   { value: "rating", label: "Top Rated" },
+  { value: "discount", label: "Best Discount" },
   { value: "price_asc", label: "Price: Low to High" },
   { value: "price_desc", label: "Price: High to Low" },
-  { value: "name", label: "Name: A-Z" }
+  { value: "name", label: "Name: A-Z" },
+  { value: "name_desc", label: "Name: Z-A" }
 ];
 
 export default function ProductsPage() {
@@ -73,11 +77,14 @@ export default function ProductsPage() {
     try {
       const sortMap = {
         newest: "newest",
+        oldest: "oldest",
         price_asc: "price_asc",
         price_desc: "price_desc",
         popularity: "popularity_desc",
         rating: "rating_desc",
-        name: "name_asc"
+        discount: "discount_desc",
+        name: "name_asc",
+        name_desc: "name_desc"
       };
 
       const { data } = await api.get("/products", {
@@ -133,7 +140,8 @@ export default function ProductsPage() {
 
   const onAddToCart = async (productId) => {
     if (!user) {
-      setStatus("Please login or register to add products to cart.");
+      setStatus("");
+      setDialogMessage(LOGIN_TO_CART_MESSAGE);
       return;
     }
     setStatus("");
@@ -165,6 +173,7 @@ export default function ProductsPage() {
         title="Product Catalog"
         subtitle="Find computers, ICT gear, networking devices, software licenses, and cloud hosting packages from one curated catalog."
         fallback="/"
+        className="catalog-hero-panel"
         actions={
           <div
             className="catalog-sort"
@@ -283,7 +292,11 @@ export default function ProductsPage() {
         onAddToCart={onAddToCart}
         busy={busyId === quickView?.id}
       />
-      <MessageDialog message={dialogMessage} onClose={() => setDialogMessage("")} />
+      <MessageDialog
+        title={dialogMessage === LOGIN_TO_CART_MESSAGE ? "Login Required" : "Cart Updated"}
+        message={dialogMessage}
+        onClose={() => setDialogMessage("")}
+      />
     </>
   );
 }

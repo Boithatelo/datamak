@@ -118,26 +118,36 @@ p {
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.66rem;
+  gap: 0.72rem;
+  min-width: 0;
   color: #fff;
   text-decoration: none;
 }
 
 .logo-mark {
+  flex: 0 0 auto;
   width: 34px;
   height: 34px;
-  border-radius: 9px;
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(140deg, #11a8a0, #0e7a78);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
-  font-family: "Sora", "Trebuchet MS", sans-serif;
-  font-weight: 700;
+  overflow: hidden;
+  background: #063fbf;
+  box-shadow:
+    0 10px 20px rgba(6, 68, 202, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.logo-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .logo-copy {
   display: grid;
+  min-width: 0;
   line-height: 1.05;
 }
 
@@ -383,6 +393,16 @@ p {
   background: rgba(196, 55, 58, 0.3);
 }
 
+.catalog-hero-panel {
+  overflow: visible;
+  z-index: 20;
+}
+
+.catalog-hero-panel::after {
+  right: 26px;
+  top: 14px;
+}
+
 .hero-panel {
   display: grid;
   gap: 1rem;
@@ -525,22 +545,27 @@ p {
   top: calc(100% + 0.45rem);
   right: 0;
   width: 250px;
-  border: 1px solid #82919e;
+  z-index: 30;
+  border: 1px solid #d5e1ee;
+  border-radius: 12px;
   background: #fff;
   box-shadow: 0 18px 32px rgba(15, 23, 42, 0.16);
-  overflow: hidden;
+  padding: 0.32rem;
+  max-height: min(360px, 70vh);
+  overflow-y: auto;
 }
 
 .catalog-sort-option {
   width: 100%;
   border: 0;
-  border-radius: 0;
-  padding: 0.58rem 1.1rem;
+  border-radius: 8px;
+  padding: 0.66rem 0.82rem;
   background: #fff;
   color: #06203f;
   cursor: pointer;
   display: block;
   font-size: 1rem;
+  font-weight: 800;
   line-height: 1.2;
   text-align: left;
 }
@@ -761,27 +786,6 @@ textarea:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.wishlist-btn {
-  position: absolute;
-  z-index: 2;
-  top: 0.62rem;
-  right: 0.62rem;
-  width: 28px;
-  height: 28px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: #51637d;
-  cursor: pointer;
-  font-size: 1.15rem;
-  line-height: 1;
-  font-weight: 800;
-}
-
-.wishlist-btn.active {
-  color: #c4373a;
 }
 
 .product-content {
@@ -2710,19 +2714,18 @@ tr:last-child td {
 }
 
 .market-logo {
+  min-width: 0;
   color: #07142a;
 }
 
 .market-logo .logo-mark {
-  width: 54px;
-  height: 54px;
-  border-radius: 8px;
-  background:
-    linear-gradient(90deg, #063fbf 0 50%, #16b9ac 50%),
-    #063fbf;
-  color: #fff;
-  font-size: 1.62rem;
-  box-shadow: none;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow:
+    0 14px 26px rgba(6, 68, 202, 0.2),
+    0 5px 12px rgba(13, 148, 141, 0.14);
 }
 
 .market-logo .logo-copy strong {
@@ -3129,9 +3132,9 @@ tr:last-child td {
 
 @media (max-width: 560px) {
   .market-logo .logo-mark {
-    width: 42px;
-    height: 42px;
-    font-size: 1.2rem;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
   }
 
   .market-logo .logo-copy strong {

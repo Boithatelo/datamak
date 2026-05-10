@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{baseUrl}}/checkout"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "paymentMethod": "Simulated Card",
+      "shippingAddress": "Test Address, Maseru",
+      "billingAddress": "Test Address, Maseru",
+      "couponCode": "HOST20"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{customerToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 201', () => pm.response.to.have.status(201));
+      const data = pm.response.json();
+      pm.test('Simulated payment approved', () => pm.expect(data.order.payment.simulated).to.eql(true));
+      pm.test('Order status is Paid', () => pm.expect(data.order.status).to.eql('Paid'));
+      pm.environment.set('orderId', data.order.id);
+    language: text/javascript
+order: 2000

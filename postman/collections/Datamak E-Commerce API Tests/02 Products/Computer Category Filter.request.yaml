@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/products?pageSize=60&category=Computers"
+method: GET
+queryParams:
+  pageSize: "60"
+  category: Computers
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const products = pm.response.json().products || [];
+      pm.test('Only computers returned', () => pm.expect(products.every((product) => product.category === 'Computers')).to.eql(true));
+    language: text/javascript
+order: 3000
