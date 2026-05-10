@@ -1,5 +1,6 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { formatMoney } from "../utils/currency";
+import ProductImage from "./ProductImage";
 
 export default function ProductCard({
   product,
@@ -19,7 +20,7 @@ export default function ProductCard({
   return (
     <View style={styles.card}>
       <View style={styles.imageFrame}>
-        <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
+        <ProductImage uri={product.imageUrl} style={styles.image} />
         <Pressable style={styles.wishlist} onPress={() => onWishlist?.(product.id)}>
           <Text style={[styles.wishlistText, wishlisted && styles.wishlistActive]}>♥</Text>
         </Pressable>

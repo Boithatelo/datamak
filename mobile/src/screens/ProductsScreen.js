@@ -12,7 +12,9 @@ import {
 } from "react-native";
 import PageHeader from "../components/PageHeader";
 import ProductCard from "../components/ProductCard";
+import ProductImage from "../components/ProductImage";
 import api, { getApiError } from "../api/client";
+import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useShop } from "../context/ShopContext";
 import { SHOP_CATEGORIES, getSubcategoriesForCategory } from "../data/shopCategories";
@@ -26,18 +28,23 @@ const DEFAULT_FILTERS = {
   maxPrice: "",
   sort: "newest"
 };
+const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest", api: "newest" },
-  { value: "popularity", label: "Popular", api: "popularity_desc" },
+  { value: "oldest", label: "Oldest", api: "oldest" },
+  { value: "popularity", label: "Most Popular", api: "popularity_desc" },
   { value: "rating", label: "Top Rated", api: "rating_desc" },
-  { value: "price_asc", label: "Low Price", api: "price_asc" },
-  { value: "price_desc", label: "High Price", api: "price_desc" },
-  { value: "name", label: "A-Z", api: "name_asc" }
+  { value: "discount", label: "Best Discount", api: "discount_desc" },
+  { value: "price_asc", label: "Price: Low to High", api: "price_asc" },
+  { value: "price_desc", label: "Price: High to Low", api: "price_desc" },
+  { value: "name", label: "Name: A-Z", api: "name_asc" },
+  { value: "name_desc", label: "Name: Z-A", api: "name_desc" }
 ];
 
 export default function ProductsScreen() {
   const navigation = useNavigation();
+  const { user } = useAuth();
   const { addToCart } = useCart();
   const { wishlistIds, toggleWishlist, refreshWishlist } = useShop();
   const [products, setProducts] = useState([]);
@@ -102,6 +109,10 @@ export default function ProductsScreen() {
   };
 
   const onAddToCart = async (productId) => {
+    if (!user) {
+      setStatus(LOGIN_TO_CART_MESSAGE);
+      return;
+    }
     setStatus("");
     setBusyId(productId);
     try {
@@ -154,6 +165,7 @@ export default function ProductsScreen() {
                     ]}
                     onPress={() => updateFilters({ category: item.category }, true)}
                   >
+                    <ProductImage uri={item.imageUrl} style={styles.categoryImage} />
                     <Text style={styles.categoryTitle}>{item.title}</Text>
                     <Text style={styles.categoryDescription} numberOfLines={2}>
                       {item.description}
@@ -249,7 +261,11 @@ export default function ProductsScreen() {
             </View>
 
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            {status ? <Text style={styles.status}>{status}</Text> : null}
+            {status ? (
+              <Text style={status === LOGIN_TO_CART_MESSAGE ? styles.error : styles.status}>
+                {status}
+              </Text>
+            ) : null}
             {loading ? (
               <View style={styles.loadingInline}>
                 <ActivityIndicator color="#0e7a78" />
@@ -316,13 +332,19 @@ const styles = StyleSheet.create({
   },
   categoryCard: {
     width: 210,
-    minHeight: 100,
+    minHeight: 160,
     borderWidth: 1,
     borderColor: "#e2e8f2",
     borderRadius: 14,
     backgroundColor: "#fff",
     padding: 12,
     gap: 6
+  },
+  categoryImage: {
+    width: "100%",
+    height: 76,
+    borderRadius: 10,
+    backgroundColor: "#eef3f7"
   },
   categoryCardActive: {
     borderColor: "#0644ca",

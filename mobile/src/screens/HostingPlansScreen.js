@@ -10,11 +10,15 @@ import {
 } from "react-native";
 import PageHeader from "../components/PageHeader";
 import api, { getApiError } from "../api/client";
+import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { formatMoney } from "../utils/currency";
 
+const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
+
 export default function HostingPlansScreen() {
   const navigation = useNavigation();
+  const { user } = useAuth();
   const { addToCart } = useCart();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,6 +46,10 @@ export default function HostingPlansScreen() {
   );
 
   const onAddToCart = async (productId) => {
+    if (!user) {
+      setStatus(LOGIN_TO_CART_MESSAGE);
+      return;
+    }
     setBusyId(productId);
     setStatus("");
     try {
@@ -68,7 +76,11 @@ export default function HostingPlansScreen() {
               subtitle="Compare resources, reliability, and pricing. Add hosting plans directly to your cart."
             />
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            {status ? <Text style={styles.status}>{status}</Text> : null}
+            {status ? (
+              <Text style={status === LOGIN_TO_CART_MESSAGE ? styles.error : styles.status}>
+                {status}
+              </Text>
+            ) : null}
             {loading ? (
               <View style={styles.loadingInline}>
                 <ActivityIndicator color="#0e7a78" />
