@@ -1,0 +1,13 @@
+{
+  "name": "datamak-selenium-tests",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node datamak-web-ui.test.js"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.43.0"
+  }
+}
+
