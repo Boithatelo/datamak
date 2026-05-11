@@ -8,8 +8,10 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useShop } from "../context/ShopContext";
 import { formatMoney } from "../utils/currency";
+import { handleProductImageError } from "../utils/productImages";
 
 const SAMPLE_REVIEWERS = ["A. Molefe", "P. Ndlovu", "K. Dlamini", "R. Sithole"];
+const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
@@ -61,7 +63,8 @@ export default function ProductDetailsPage() {
       return;
     }
     if (!user) {
-      setStatus("Please login to add products to cart.");
+      setStatus("");
+      setDialogMessage(LOGIN_TO_CART_MESSAGE);
       return;
     }
     setBusy(true);
@@ -139,7 +142,12 @@ export default function ProductDetailsPage() {
       />
       <section className="panel details-layout">
         <div className="gallery-col">
-          <img className="main-image" src={selectedImage || product.imageUrl} alt={product.name} />
+          <img
+            className="main-image"
+            src={selectedImage || product.imageUrl}
+            alt={product.name}
+            onError={(event) => handleProductImageError(event, product.name)}
+          />
           <div className="thumb-row">
             {(product.gallery?.length ? product.gallery : [product.imageUrl]).map((image) => (
               <button
@@ -148,7 +156,11 @@ export default function ProductDetailsPage() {
                 className={`thumb-btn ${selectedImage === image ? "active" : ""}`}
                 onClick={() => setSelectedImage(image)}
               >
-                <img src={image} alt={product.name} />
+                <img
+                  src={image}
+                  alt={product.name}
+                  onError={(event) => handleProductImageError(event, product.name)}
+                />
               </button>
             ))}
           </div>
@@ -249,7 +261,8 @@ export default function ProductDetailsPage() {
                 product={entry}
                 onAddToCart={async (productId) => {
                   if (!user) {
-                    setStatus("Please login to add products to cart.");
+                    setStatus("");
+                    setDialogMessage(LOGIN_TO_CART_MESSAGE);
                     return;
                   }
                   await addToCart(productId, 1);
@@ -264,7 +277,11 @@ export default function ProductDetailsPage() {
           </div>
         </section>
       )}
-      <MessageDialog message={dialogMessage} onClose={() => setDialogMessage("")} />
+      <MessageDialog
+        title={dialogMessage === LOGIN_TO_CART_MESSAGE ? "Login Required" : "Cart Updated"}
+        message={dialogMessage}
+        onClose={() => setDialogMessage("")}
+      />
     </>
   );
 }

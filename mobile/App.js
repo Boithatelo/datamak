@@ -109,17 +109,25 @@ function AppTabs() {
 }
 
 function AppStack() {
+  const { user } = useAuth();
+
   return (
     <CartProvider>
       <ShopProvider>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Tabs" component={AppTabs} />
-          <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
-          <Stack.Screen name="CheckoutSuccess" component={CheckoutSuccessScreen} />
-          <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
-          <Stack.Screen name="About" component={InfoScreen} initialParams={{ type: "about" }} />
-          <Stack.Screen name="Contact" component={InfoScreen} initialParams={{ type: "contact" }} />
-          <Stack.Screen name="FAQ" component={InfoScreen} initialParams={{ type: "faq" }} />
+          {user?.role === "admin" ? (
+            <Stack.Screen name="AdminHome" component={AdminScreen} />
+          ) : (
+            <>
+              <Stack.Screen name="Tabs" component={AppTabs} />
+              <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+              <Stack.Screen name="CheckoutSuccess" component={CheckoutSuccessScreen} />
+              <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
+              <Stack.Screen name="About" component={InfoScreen} initialParams={{ type: "about" }} />
+              <Stack.Screen name="Contact" component={InfoScreen} initialParams={{ type: "contact" }} />
+              <Stack.Screen name="FAQ" component={InfoScreen} initialParams={{ type: "faq" }} />
+            </>
+          )}
         </Stack.Navigator>
       </ShopProvider>
     </CartProvider>

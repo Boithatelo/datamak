@@ -1,4 +1,5 @@
 import { formatMoney } from "../utils/currency";
+import { handleProductImageError } from "../utils/productImages";
 
 export default function QuickViewModal({ product, onClose, onAddToCart, busy }) {
   if (!product) {
@@ -18,7 +19,11 @@ export default function QuickViewModal({ product, onClose, onAddToCart, busy }) 
           x
         </button>
         <div className="modal-layout">
-          <img src={product.imageUrl} alt={product.name} />
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            onError={(event) => handleProductImageError(event, product.name)}
+          />
           <div>
             <div className="tag-row">
               <span className="tag">{product.category}</span>

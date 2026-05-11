@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/cart/items/{{productId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "quantity": 2
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{customerToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const item = (pm.response.json().cart.items || []).find((entry) => entry.productId === pm.environment.get('productId'));
+      pm.test('Quantity updated to 2', () => pm.expect(item.quantity).to.eql(2));
+    language: text/javascript
+order: 3000

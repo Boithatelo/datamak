@@ -2,7 +2,6 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -10,6 +9,7 @@ import {
   View
 } from "react-native";
 import PageHeader from "../components/PageHeader";
+import ProductImage from "../components/ProductImage";
 import api, { getApiError } from "../api/client";
 import { useCart } from "../context/CartContext";
 import { formatMoney } from "../utils/currency";
@@ -110,7 +110,7 @@ export default function CartScreen() {
             <Text style={styles.sectionTitle}>Cart Items</Text>
             {cart.items.map((item) => (
               <View key={item.productId} style={styles.itemCard}>
-                {item.imageUrl ? <Image source={{ uri: item.imageUrl }} style={styles.itemImage} /> : null}
+                {item.imageUrl ? <ProductImage uri={item.imageUrl} style={styles.itemImage} /> : null}
                 <View style={styles.itemInfo}>
                   <Text style={styles.itemTitle}>{item.name}</Text>
                   <Text style={styles.itemMeta}>{item.category}</Text>

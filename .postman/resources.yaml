@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: 6361dc8b-b477-4218-86aa-e1e4e124adce
+
+localResources:
+  collections:
+    - ..\docs\postman\datamak-ecommerce.postman_collection.json
+  environments:
+    - ..\docs\postman\datamak-local.postman_environment.json
+
+cloudResources:
+  collections:
+    ..\postman\collections\Datamak E-Commerce API Tests: 87cb83de-7cd1-433b-a039-7badd12c8e89

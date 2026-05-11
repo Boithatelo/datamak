@@ -22,6 +22,7 @@ app.use(
 );
 app.use(express.json({ limit: "50mb" }));
 app.use(morgan("dev"));
+app.use("/images", express.static(path.join(__dirname, "../../web/public/images")));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.get("/api/health", (req, res) => {

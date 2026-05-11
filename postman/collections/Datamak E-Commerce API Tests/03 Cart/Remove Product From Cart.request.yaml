@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/cart/items/{{productId}}"
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{customerToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const items = pm.response.json().cart.items || [];
+      pm.test('Item removed from cart', () => pm.expect(items.some((item) => item.productId === pm.environment.get('productId'))).to.eql(false));
+    language: text/javascript
+order: 4000
