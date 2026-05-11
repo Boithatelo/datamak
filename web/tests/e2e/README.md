@@ -6,9 +6,9 @@ This folder contains automated end-to-end tests for the Datamak Technologies E-C
 
 Playwright is used for cross-browser web automation testing. The tests run against:
 
-- Chromium
-- Firefox
-- WebKit
+- Google Chrome
+- Microsoft Edge
+- Mozilla Firefox
 
 ## Covered Flows
 
