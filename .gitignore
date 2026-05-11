@@ -10,3 +10,5 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 backend/data/db.json
+web/playwright-report/
+web/test-results/
