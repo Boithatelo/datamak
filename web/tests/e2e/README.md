@@ -36,6 +36,33 @@ npm run test:e2e:install
 npm run test:e2e
 ```
 
+## Run Browsers One By One
+
+Use these commands when collecting screenshot evidence:
+
+```powershell
+npm run test:e2e:chrome
+npm run test:e2e:edge
+npm run test:e2e:firefox
+```
+
+Each command runs all tests for one browser in order, using one worker, so the browser actions are easier to follow.
+
+For a slower visible demonstration where Playwright opens the browser, types the login details, clicks buttons, and shows the flow more clearly, use:
+
+```powershell
+npm run test:e2e:demo:chrome
+npm run test:e2e:demo:edge
+npm run test:e2e:demo:firefox
+```
+
+The login test automatically enters the default customer account:
+
+```text
+Email: customer@datamak.local
+Password: Customer@123
+```
+
 ## View Report
 
 ```powershell

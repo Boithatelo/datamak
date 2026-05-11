@@ -5,12 +5,22 @@ const customer = {
   password: process.env.E2E_CUSTOMER_PASSWORD || "Customer@123"
 };
 
+async function demoPause(page) {
+  if (process.env.PLAYWRIGHT_DEMO) {
+    await page.waitForTimeout(1200);
+  }
+}
+
 async function loginAsCustomer(page) {
   await page.goto("/auth");
+  await demoPause(page);
   await page.locator('input[name="email"]').fill(customer.email);
+  await demoPause(page);
   await page.locator('input[name="password"]').fill(customer.password);
+  await demoPause(page);
   await page.locator("form").getByRole("button", { name: /^login$/i }).click();
   await expect(page).toHaveURL(/\/$/);
+  await demoPause(page);
   await expect(page.getByText(/hi,\s*sample customer/i)).toBeVisible();
 }
 
@@ -20,21 +30,25 @@ test.describe("Datamak ecommerce cross-browser flows", () => {
 
     await expect(page.getByRole("link", { name: /datamak technologies/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /power your world/i })).toBeVisible();
+    await demoPause(page);
 
     await page.getByRole("link", { name: /shop now/i }).click();
 
     await expect(page).toHaveURL(/\/catalog$/);
     await expect(page.getByRole("heading", { name: /product catalog/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /shop by category/i })).toBeVisible();
+    await demoPause(page);
   });
 
   test("visitor can view catalog but cannot add to cart before login", async ({ page }) => {
     await page.goto("/catalog");
 
     await expect(page.getByRole("heading", { name: /product catalog/i })).toBeVisible();
+    await demoPause(page);
     await page.getByRole("button", { name: /add to cart/i }).first().click();
 
     await expect(page.getByText(/please login or register to add products to cart/i)).toBeVisible();
+    await demoPause(page);
   });
 
   test("protected cart redirects logged-out visitors to login", async ({ page }) => {
@@ -42,6 +56,7 @@ test.describe("Datamak ecommerce cross-browser flows", () => {
 
     await expect(page).toHaveURL(/\/auth$/);
     await expect(page.getByText(/member login/i)).toBeVisible();
+    await demoPause(page);
   });
 
   test("customer can log in and see account navigation", async ({ page }) => {
@@ -50,5 +65,6 @@ test.describe("Datamak ecommerce cross-browser flows", () => {
     await expect(page.getByRole("link", { name: /hi,\s*sample customer/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /logout/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /login \/ register/i })).toHaveCount(0);
+    await demoPause(page);
   });
 });
