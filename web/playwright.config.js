@@ -18,7 +18,7 @@ export default defineConfig({
     baseURL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
-    video: "retain-on-failure"
+    video: "off"
   },
   webServer: {
     command: "npm run dev -- --host 127.0.0.1 --port 5173",
@@ -29,7 +29,7 @@ export default defineConfig({
   projects: [
     {
       name: "chrome",
-      use: { ...devices["Desktop Chrome"] }
+      use: { ...devices["Desktop Chrome"], channel: "chrome" }
     },
     {
       name: "edge",
