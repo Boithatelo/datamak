@@ -1,0 +1,17 @@
+{
+  "monthlySales": [
+    { "month": "Jan", "total": 12450 },
+    { "month": "Feb", "total": 18990 },
+    { "month": "Mar", "total": 22420 },
+    { "month": "Apr", "total": 27810 },
+    { "month": "May", "total": 31200 }
+  ],
+  "ordersByStatus": {
+    "Pending": 1,
+    "Paid": 3,
+    "Processing": 2,
+    "Shipped": 1,
+    "Delivered": 4,
+    "Cancelled": 0
+  }
+}

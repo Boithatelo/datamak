@@ -140,16 +140,52 @@ function normalizeProduct(product) {
 function migrateCatalogProducts(db) {
   db.products = db.products.map(normalizeProduct);
 
-  const existingSubcategories = new Set(
-    db.products.map((product) => `${product.category}::${product.subcategory}`)
+  const legacyNameMap = {
+    "shared hosting starter": "starter shared hosting",
+    "domain registration .co.ls": "domain & dns essentials",
+    "business website build": "website builder hosting",
+    "pro vps hosting": "managed vps server",
+    "ssl and malware protection": "ssl shield & malware protection",
+    "business cloud hosting": "cloud plus hosting",
+    "git deployment support": "developer deployment hosting",
+    "online store hosting": "online store hosting pro"
+  };
+
+  const indexByName = new Map(
+    db.products.map((product, index) => [String(product.name || "").trim().toLowerCase(), index])
   );
   const timestamp = nowIso();
   buildDemoProducts(timestamp, uuid).forEach((product) => {
-    const key = `${product.category}::${product.subcategory}`;
-    if (!existingSubcategories.has(key)) {
+    const nameKey = String(product.name || "").trim().toLowerCase();
+    if (!indexByName.has(nameKey)) {
       db.products.push(product);
-      existingSubcategories.add(key);
+      indexByName.set(nameKey, db.products.length - 1);
+      return;
     }
+
+    const existingIndex = indexByName.get(nameKey);
+    const existingProduct = db.products[existingIndex];
+
+    db.products[existingIndex] = normalizeProduct({
+      ...existingProduct,
+      ...product,
+      id: existingProduct.id,
+      createdAt: existingProduct.createdAt || product.createdAt || timestamp,
+      updatedAt: timestamp
+    });
+  });
+
+  const activeNames = new Set(
+    db.products.map((product) => String(product.name || "").trim().toLowerCase())
+  );
+
+  db.products = db.products.filter((product) => {
+    const nameKey = String(product.name || "").trim().toLowerCase();
+    const replacementName = legacyNameMap[nameKey];
+    if (!replacementName) {
+      return true;
+    }
+    return !activeNames.has(replacementName);
   });
 
   db.catalogVersion = CATALOG_VERSION;

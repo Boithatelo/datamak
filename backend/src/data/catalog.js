@@ -1,4 +1,4 @@
-const CATALOG_VERSION = 2;
+﻿const CATALOG_VERSION = 11;
 
 const CATEGORY_TREE = [
   {
@@ -78,8 +78,7 @@ const DEMO_PRODUCTS = [
     price: 2099,
     stock: 14,
     badges: ["Best Seller", "Business"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "HP ProDesk Business Desktop",
@@ -89,8 +88,7 @@ const DEMO_PRODUCTS = [
     price: 899,
     stock: 18,
     badges: ["Office Ready"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Kingston 32GB DDR5 Memory Kit",
@@ -100,8 +98,7 @@ const DEMO_PRODUCTS = [
     price: 149,
     stock: 32,
     badges: ["Upgrade"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Dell UltraSharp 27-inch 4K",
@@ -111,8 +108,7 @@ const DEMO_PRODUCTS = [
     price: 549,
     stock: 20,
     badges: ["Studio"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1527443224154-c4f061cb3f0f?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "/images/dell-ultrasharp-27-4k.webp"
   },
   {
     name: "Datamak Office Computer Bundle",
@@ -122,8 +118,137 @@ const DEMO_PRODUCTS = [
     price: 1199,
     stock: 10,
     badges: ["Bundle"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Dell Latitude 7440 Business Laptop",
+    description: "14-inch enterprise laptop powered by Intel Core i5 with SSD storage and TPM security.",
+    category: "Computers",
+    subcategory: "Laptops",
+    price: 1399,
+    stock: 16,
+    badges: ["Business"],
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Dell Precision Tower 3680 Workstation",
+    description: "Professional workstation with Intel Core i7 performance for CAD and content workflows.",
+    category: "Computers",
+    subcategory: "Desktops",
+    price: 1899,
+    stock: 9,
+    badges: ["Workstation"],
+    imageUrl: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "HP EliteBook 840 G10",
+    description: "Corporate ultrabook with Intel Core i5 processor, webcam privacy, and long battery life.",
+    category: "Computers",
+    subcategory: "Laptops",
+    price: 1499,
+    stock: 14,
+    badges: ["Office Ready"],
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "HP Z2 Mini G9 Workstation",
+    description: "Compact desktop workstation running Intel Core i7 for design, finance, and engineering teams.",
+    category: "Computers",
+    subcategory: "Desktops",
+    price: 1699,
+    stock: 11,
+    badges: ["Workstation"],
+    imageUrl: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Lenovo ThinkCentre M90s Gen 4",
+    description: "Secure small-form desktop with Intel Core i5 and modern enterprise manageability.",
+    category: "Computers",
+    subcategory: "Desktops",
+    price: 1099,
+    stock: 17,
+    badges: ["Business"],
+    imageUrl: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Lenovo Legion Pro 5 Gaming Laptop",
+    description: "High-performance gaming notebook with AMD Ryzen 7 and high refresh display.",
+    category: "Computers",
+    subcategory: "Laptops",
+    price: 1799,
+    stock: 8,
+    badges: ["Gaming"],
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Datamak Creator Pro Desktop Bundle",
+    description: "Creator setup bundle with Intel Core i3 desktop, monitor, and productivity peripherals.",
+    category: "Computers",
+    subcategory: "Computer Bundles",
+    price: 999,
+    stock: 13,
+    badges: ["Bundle"],
+    imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Datamak Studio Max Workstation",
+    description: "Advanced rendering tower powered by Intel Core i9 for visual production pipelines.",
+    category: "Computers",
+    subcategory: "Desktops",
+    price: 2399,
+    stock: 7,
+    badges: ["Studio"],
+    imageUrl: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Kingston Fury Gaming Tower Kit",
+    description: "Gaming-oriented desktop kit featuring AMD Ryzen 5 and rapid NVMe storage.",
+    category: "Computers",
+    subcategory: "Computer Bundles",
+    price: 1299,
+    stock: 12,
+    badges: ["Gaming"],
+    imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Kingston Office Essential Desktop Pack",
+    description: "Reliable office desktop package with AMD Ryzen 7 and productivity accessories.",
+    category: "Computers",
+    subcategory: "Computer Bundles",
+    price: 1199,
+    stock: 15,
+    badges: ["Office Ready"],
+    imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Dell G15 Performance Gaming Laptop",
+    description: "Powerful gaming machine running AMD Ryzen 5 with dedicated graphics.",
+    category: "Computers",
+    subcategory: "Laptops",
+    price: 1599,
+    stock: 10,
+    badges: ["Gaming"],
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "HP Victus 16 Gaming Laptop",
+    description: "Modern gaming laptop with AMD Ryzen 7 platform and optimized thermal design.",
+    category: "Computers",
+    subcategory: "Laptops",
+    price: 1499,
+    stock: 10,
+    badges: ["Gaming"],
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    name: "Lenovo ThinkPad P1 Gen 7",
+    description: "Mobile workstation powered by Intel Core i7 for architects and analysts on the move.",
+    category: "Computers",
+    subcategory: "Laptops",
+    price: 2199,
+    stock: 9,
+    badges: ["Workstation"],
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Logitech Wireless Keyboard and Mouse Combo",
@@ -143,8 +268,7 @@ const DEMO_PRODUCTS = [
     price: 189,
     stock: 24,
     badges: ["Fast Storage"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1601737487795-dab272f52420?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1601737487795-dab272f52420?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Canon PIXMA G6040 Printer Scanner",
@@ -154,8 +278,7 @@ const DEMO_PRODUCTS = [
     price: 329,
     stock: 16,
     badges: ["Office"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Cisco Catalyst 1300 Switch",
@@ -165,8 +288,7 @@ const DEMO_PRODUCTS = [
     price: 799,
     stock: 11,
     badges: ["Enterprise"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "APC Back-UPS 1200VA",
@@ -176,8 +298,7 @@ const DEMO_PRODUCTS = [
     price: 229,
     stock: 21,
     badges: ["Protection"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Jabra Speak 510 Conference Speaker",
@@ -187,8 +308,7 @@ const DEMO_PRODUCTS = [
     price: 149,
     stock: 30,
     badges: ["Meetings"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1589003077984-894e133dabab?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1589003077984-894e133dabab?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Samsung Galaxy Tab S9 FE",
@@ -198,8 +318,7 @@ const DEMO_PRODUCTS = [
     price: 499,
     stock: 17,
     badges: ["Mobile"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Microsoft 365 Business Standard",
@@ -210,8 +329,7 @@ const DEMO_PRODUCTS = [
     price: 16,
     stock: 0,
     badges: ["Subscription"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Hikvision 4-Camera Security Kit",
@@ -221,116 +339,187 @@ const DEMO_PRODUCTS = [
     price: 699,
     stock: 9,
     badges: ["Security"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80"
   },
   {
-    name: "Shared Hosting Starter",
-    description: "Affordable hosting plan with SSL, cPanel, and WordPress installer.",
+    name: "Starter Shared Hosting",
+    description:
+      "Linux shared hosting for personal sites and small business pages with cPanel and one-click apps.",
     category: "Web Hosting Services",
     subcategory: "Hosting Packages",
     type: "service",
-    price: 12,
+    price: 299,
     stock: 0,
     badges: ["Starter"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "Shared Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "10 GB SSD" },
+      { label: "Bandwidth", value: "Unmetered" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "SSL Included", value: "Free SSL Certificate" }
+    ]
   },
   {
-    name: "Domain Registration .co.ls",
-    description: "Local domain registration and DNS setup for Lesotho businesses.",
+    name: "Domain & DNS Essentials",
+    description:
+      "Managed domain registration, DNS hosting, and domain forwarding for professional brand presence.",
     category: "Web Hosting Services",
     subcategory: "Domain Services",
     type: "service",
-    price: 18,
+    price: 199,
     stock: 0,
     badges: ["Domain"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "Reseller Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "10 GB" },
+      { label: "Bandwidth", value: "100 GB" },
+      { label: "Billing Cycle", value: "Yearly" },
+      { label: "Free Domain", value: "Included for annual plan" }
+    ]
   },
   {
-    name: "Business Website Build",
-    description: "Professional brochure website setup with responsive pages and contact forms.",
+    name: "Website Builder Hosting",
+    description:
+      "Managed web hosting with visual site builder, templates, and staging tools for business websites.",
     category: "Web Hosting Services",
     subcategory: "Website Services",
     type: "service",
-    price: 399,
+    price: 499,
     stock: 0,
     badges: ["Website"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "Shared Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "50 GB SSD" },
+      { label: "Bandwidth", value: "Unmetered" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "Email Accounts", value: "20 Mailboxes" }
+    ]
   },
   {
     name: "Business Email Hosting",
-    description: "Secure branded email hosting with spam filtering and webmail access.",
+    description:
+      "Secure email hosting with anti-spam filtering, shared calendars, and branded domain mailboxes.",
     category: "Web Hosting Services",
     subcategory: "Email Hosting",
     type: "service",
-    price: 8,
+    price: 249,
     stock: 0,
     badges: ["Email"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1484807352052-23338990c6c6?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1484807352052-23338990c6c6?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "Shared Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "50 GB" },
+      { label: "Bandwidth", value: "100 GB" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "Email Accounts", value: "50 Mailboxes" }
+    ]
   },
   {
     name: "Managed VPS Server",
-    description: "Managed virtual server with monitoring, backups, and root access.",
+    description:
+      "High-performance Linux VPS for demanding applications with root access and managed backups.",
     category: "Web Hosting Services",
     subcategory: "Server Services",
     type: "service",
-    price: 49,
+    price: 1299,
     stock: 0,
     badges: ["VPS"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1534723452862-4c874018d66d?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "/images/managed-vps-server.webp",
+    specifications: [
+      { label: "Hosting Type", value: "VPS Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "80 GB SSD" },
+      { label: "Bandwidth", value: "Unmetered" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "SSL Included", value: "Free SSL Certificate" }
+    ]
   },
   {
-    name: "SSL and Malware Protection",
-    description: "SSL certificate installation, malware scanning, and security hardening.",
+    name: "SSL Shield & Malware Protection",
+    description:
+      "Website protection suite with SSL deployment, malware scanning, and firewall hardening services.",
     category: "Web Hosting Services",
     subcategory: "Security Services",
     type: "service",
-    price: 29,
+    price: 349,
     stock: 0,
     badges: ["Secure"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "Cloud Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "100 GB" },
+      { label: "Bandwidth", value: "500 GB" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "SSL Included", value: "Managed SSL Included" }
+    ]
   },
   {
-    name: "Business Cloud Hosting",
-    description: "High-availability cloud hosting with CDN acceleration and premium support.",
+    name: "Cloud Plus Hosting",
+    description:
+      "Scalable cloud hosting for business-critical systems with autoscaling, backups, and 24/7 support.",
     category: "Web Hosting Services",
     subcategory: "Cloud Services",
     type: "service",
-    price: 89,
+    price: 2499,
     stock: 0,
     badges: ["Cloud"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "Cloud Hosting" },
+      { label: "Operating System", value: "Windows" },
+      { label: "Storage Space", value: "160 GB SSD" },
+      { label: "Bandwidth", value: "Unmetered" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "Server Location", value: "South Africa & EU" }
+    ]
   },
   {
-    name: "Git Deployment Support",
-    description: "Developer hosting workflow with Git deployment and staging environments.",
+    name: "Developer Deployment Hosting",
+    description:
+      "Deployment-ready hosting with Git pipelines, staging environments, and container support.",
     category: "Web Hosting Services",
     subcategory: "Developer Services",
     type: "service",
-    price: 35,
+    price: 899,
     stock: 0,
     badges: ["Developer"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "VPS Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "100 GB SSD" },
+      { label: "Bandwidth", value: "Unmetered" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "Email Accounts", value: "10 Mailboxes" }
+    ]
   },
   {
-    name: "Online Store Hosting",
-    description: "Optimized ecommerce hosting with SSL, backups, and payment-ready setup.",
+    name: "Online Store Hosting Pro",
+    description:
+      "Optimized ecommerce hosting for WooCommerce and Magento with security, speed, and backups.",
     category: "Web Hosting Services",
     subcategory: "Ecommerce Services",
     type: "service",
-    price: 59,
+    price: 1599,
     stock: 0,
     badges: ["Ecommerce"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
+    specifications: [
+      { label: "Hosting Type", value: "Cloud Hosting" },
+      { label: "Operating System", value: "Linux" },
+      { label: "Storage Space", value: "100 GB SSD" },
+      { label: "Bandwidth", value: "Unmetered" },
+      { label: "Billing Cycle", value: "Monthly" },
+      { label: "SSL Included", value: "Free SSL Certificate" }
+    ]
   }
 ];
 
@@ -417,3 +606,4 @@ module.exports = {
   isValidSubcategory,
   normalizeProductTaxonomy
 };
+
