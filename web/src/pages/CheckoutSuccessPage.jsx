@@ -6,12 +6,6 @@ export default function CheckoutSuccessPage() {
   const { orderId } = useParams();
   const location = useLocation();
   const order = location.state?.order;
-  const orderMeta = [
-    { label: "Order ID", value: order?.id || orderId, isCode: true },
-    { label: "Order Number", value: order?.orderNumber || "Generated", isCode: true },
-    { label: "Amount Paid", value: formatMoney(order?.total || 0), isCode: false },
-    { label: "Transaction Ref", value: order?.payment?.transactionRef || "N/A", isCode: true }
-  ];
 
   return (
     <>
@@ -25,27 +19,26 @@ export default function CheckoutSuccessPage() {
         subtitle="Your order has been placed successfully. Tracking updates are now available in your orders dashboard."
         fallback="/orders"
       />
-      <section className="panel success-panel" data-testid="checkout-success-panel">
-        <div className="success-summary-card" data-testid="checkout-success-summary">
-          <h2 className="success-summary-title">Payment Confirmation</h2>
-          <dl className="success-meta-list">
-            {orderMeta.map((item) => (
-              <div key={item.label} className="success-meta-row" data-testid="checkout-success-meta-row">
-                <dt className="success-meta-label">{item.label}</dt>
-                <dd className={`success-meta-value ${item.isCode ? "is-code" : ""}`}>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
+      <section className="panel success-panel">
+        <div className="invoice-card">
+          <p>
+            <strong>Order ID:</strong> {order?.id || orderId}
+          </p>
+          <p>
+            <strong>Order Number:</strong> {order?.orderNumber || "Generated"}
+          </p>
+          <p>
+            <strong>Amount Paid:</strong> {formatMoney(order?.total || 0)}
+          </p>
+          <p>
+            <strong>Transaction Ref:</strong> {order?.payment?.transactionRef || "N/A"}
+          </p>
         </div>
         <div className="hero-cta-row">
-          <Link
-            className="btn btn-primary"
-            to={`/orders/${order?.id || orderId}`}
-            data-testid="checkout-success-view-order"
-          >
+          <Link className="btn btn-primary" to={`/orders/${order?.id || orderId}`}>
             View Order Details
           </Link>
-          <Link className="btn btn-light" to="/catalog" data-testid="checkout-success-continue-shopping">
+          <Link className="btn btn-light" to="/catalog">
             Continue Shopping
           </Link>
         </div>

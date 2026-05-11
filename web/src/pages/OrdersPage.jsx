@@ -30,7 +30,7 @@ export default function OrdersPage() {
   }, []);
 
   if (loading) {
-    return <section className="panel" data-testid="orders-loading-state">Loading your orders...</section>;
+    return <section className="panel">Loading your orders...</section>;
   }
 
   return (
@@ -45,20 +45,15 @@ export default function OrdersPage() {
       </PageHeader>
 
       {orders.length === 0 && (
-        <section className="panel empty-state" data-testid="orders-empty-state">
+        <section className="panel empty-state">
           <h2>No orders yet</h2>
           <p className="muted">Complete checkout to create and track your first order.</p>
         </section>
       )}
 
-      <div className="order-list" data-testid="orders-list">
+      <div className="order-list">
         {orders.map((order) => (
-          <article
-            key={order.id}
-            className="order-card"
-            data-testid="order-card"
-            data-order-id={order.id}
-          >
+          <article key={order.id} className="order-card">
             <div className="order-head">
               <h3>{order.orderNumber || `Order #${order.id.slice(0, 8)}`}</h3>
               <span className="status-chip">{order.status}</span>
@@ -77,7 +72,7 @@ export default function OrdersPage() {
                 <strong>Address:</strong> {order.shippingAddress}
               </p>
             </div>
-            <Link className="btn btn-light" to={`/orders/${order.id}`} data-testid="order-view-details-link">
+            <Link className="btn btn-light" to={`/orders/${order.id}`}>
               View Full Details
             </Link>
           </article>

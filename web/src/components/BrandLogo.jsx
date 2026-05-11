@@ -42,13 +42,7 @@ export default function BrandLogo({ className = "", onClick, to = "/" }) {
   const classes = ["logo", "market-logo", className].filter(Boolean).join(" ");
 
   return (
-    <Link
-      to={to}
-      className={classes}
-      onClick={onClick}
-      aria-label="Datamak Technologies home"
-      data-testid="nav-logo-link"
-    >
+    <Link to={to} className={classes} onClick={onClick} aria-label="Datamak Technologies home">
       <LogoMark />
       <span className="logo-copy">
         <strong>Datamak Technologies</strong>

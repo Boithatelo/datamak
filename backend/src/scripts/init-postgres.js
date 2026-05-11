@@ -1,5 +1,5 @@
 const { Client } = require("pg");
-const { DATABASE_URL, PG_SSL, getDatabaseSetupHint } = require("../config");
+const { DATABASE_URL, PG_SSL } = require("../config");
 const { readDb } = require("../data/store");
 
 function quoteIdentifier(value) {
@@ -45,8 +45,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  const hint = getDatabaseSetupHint();
-  const details = hint ? `${error.message} ${hint}` : error.message;
-  console.error("Failed to initialize PostgreSQL:", details);
+  console.error("Failed to initialize PostgreSQL:", error.message);
   process.exit(1);
 });

@@ -1,4 +1,4 @@
-const CATALOG_VERSION = 11;
+const CATALOG_VERSION = 4;
 
 const CATEGORY_TREE = [
   {
@@ -941,4 +941,3 @@ module.exports = {
   isValidSubcategory,
   normalizeProductTaxonomy
 };
-

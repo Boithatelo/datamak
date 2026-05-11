@@ -130,14 +130,13 @@ export default function AuthPage() {
   };
 
   return (
-    <section className="auth-layout auth-screen" data-testid="auth-page">
+    <section className="auth-layout auth-screen">
       <button
         type="button"
         className="auth-back-button"
         onClick={goBack}
         aria-label="Go back"
         title="Go back"
-        data-testid="auth-back-button"
       >
         <span aria-hidden="true">&larr;</span>
       </button>
@@ -153,7 +152,6 @@ export default function AuthPage() {
             type="button"
             className={mode === "login" ? "active" : ""}
             onClick={() => setMode("login")}
-            data-testid="auth-mode-login"
           >
             Login
           </button>
@@ -161,13 +159,12 @@ export default function AuthPage() {
             type="button"
             className={mode === "register" ? "active" : ""}
             onClick={() => setMode("register")}
-            data-testid="auth-mode-register"
           >
             Register
           </button>
         </div>
 
-        <form className="auth-form" onSubmit={onSubmit} data-testid="auth-form">
+        <form className="auth-form" onSubmit={onSubmit}>
           {mode === "register" && (
             <label className="auth-field">
               <span className="sr-only">Full Name</span>
@@ -181,7 +178,6 @@ export default function AuthPage() {
                 onChange={onChange}
                 required
                 placeholder="Full Name"
-                data-testid="auth-name-input"
               />
             </label>
           )}
@@ -197,7 +193,6 @@ export default function AuthPage() {
               onChange={onChange}
               required
               placeholder="Email ID"
-              data-testid="auth-email-input"
             />
           </label>
           <label className="auth-field">
@@ -213,7 +208,6 @@ export default function AuthPage() {
               required
               minLength={8}
               placeholder="Password"
-              data-testid="auth-password-input"
             />
             <button
               type="button"
@@ -221,7 +215,6 @@ export default function AuthPage() {
               aria-label={showPassword ? "Hide password" : "Show password"}
               title={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword((state) => !state)}
-              data-testid="auth-password-visibility-toggle"
             >
               {showPassword ? <EyeOffIcon /> : <EyeIcon />}
             </button>
@@ -241,7 +234,6 @@ export default function AuthPage() {
                 required
                 minLength={8}
                 placeholder="Confirm Password"
-                data-testid="auth-confirm-password-input"
               />
             </label>
           )}
@@ -249,21 +241,15 @@ export default function AuthPage() {
           {mode === "login" && (
             <div className="auth-options">
               <label className="auth-remember">
-                <input type="checkbox" defaultChecked data-testid="auth-remember-checkbox" />
+                <input type="checkbox" defaultChecked />
                 <span>Remember me</span>
               </label>
-              <Link to="/forgot-password" data-testid="auth-forgot-password-link">
-                Forget password?
-              </Link>
+              <Link to="/forgot-password">Forget password?</Link>
             </div>
           )}
 
-          {error && (
-            <p className="error notice" data-testid="auth-error-message">
-              {error}
-            </p>
-          )}
-          <button type="submit" className="auth-submit" disabled={busy} data-testid="auth-submit-button">
+          {error && <p className="error notice">{error}</p>}
+          <button type="submit" className="auth-submit" disabled={busy}>
             {busy ? "Please wait..." : mode === "login" ? "Login" : "Create Account"}
           </button>
         </form>

@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
-const { PORT, getDatabaseSetupHint } = require("./config");
+const { PORT } = require("./config");
 const authRoutes = require("./routes/auth");
 const productsRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
@@ -54,8 +54,6 @@ async function start() {
 }
 
 start().catch((error) => {
-  const hint = getDatabaseSetupHint();
-  const details = hint ? `${error.message} ${hint}` : error.message;
-  console.error("Failed to start backend server:", details);
+  console.error("Failed to start backend server:", error.message);
   process.exit(1);
 });

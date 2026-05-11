@@ -159,17 +159,6 @@ function normalizeProduct(product) {
 function migrateCatalogProducts(db) {
   db.products = db.products.map(normalizeProduct);
 
-  const legacyNameMap = {
-    "shared hosting starter": "starter shared hosting",
-    "domain registration .co.ls": "domain & dns essentials",
-    "business website build": "website builder hosting",
-    "pro vps hosting": "managed vps server",
-    "ssl and malware protection": "ssl shield & malware protection",
-    "business cloud hosting": "cloud plus hosting",
-    "git deployment support": "developer deployment hosting",
-    "online store hosting": "online store hosting pro"
-  };
-
   const timestamp = nowIso();
   const seededProducts = buildDemoProducts(timestamp, uuid).map(normalizeProduct);
   const seededProductKeys = new Map(
@@ -212,19 +201,6 @@ function migrateCatalogProducts(db) {
       specifications: seededProduct.specifications,
       updatedAt: timestamp
     });
-  });
-
-  const activeNames = new Set(
-    db.products.map((product) => String(product.name || "").trim().toLowerCase())
-  );
-
-  db.products = db.products.filter((product) => {
-    const nameKey = String(product.name || "").trim().toLowerCase();
-    const replacementName = legacyNameMap[nameKey];
-    if (!replacementName) {
-      return true;
-    }
-    return !activeNames.has(replacementName);
   });
 
   db.catalogVersion = CATALOG_VERSION;

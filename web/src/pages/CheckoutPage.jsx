@@ -29,7 +29,7 @@ export default function CheckoutPage() {
 
   if (!cart.items.length) {
     return (
-      <section className="checkout-neon checkout-empty" data-testid="checkout-empty-state">
+      <section className="checkout-neon checkout-empty">
         <h1>No items for checkout</h1>
         <p>Add products to your cart before starting checkout.</p>
       </section>
@@ -53,7 +53,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <section className="checkout-neon" data-testid="checkout-page">
+    <section className="checkout-neon">
       <div className="checkout-shell">
         <div className="checkout-navline">
           <button
@@ -62,7 +62,6 @@ export default function CheckoutPage() {
             onClick={() => navigate("/cart")}
             aria-label="Back to cart"
             title="Back to cart"
-            data-testid="checkout-back-to-cart"
           >
             <span aria-hidden="true">&larr;</span>
           </button>
@@ -82,14 +81,13 @@ export default function CheckoutPage() {
             <p>Complete your order in two quick steps.</p>
           </header>
 
-          <div className="checkout-stepper" aria-label="Checkout progress" data-testid="checkout-stepper">
+          <div className="checkout-stepper" aria-label="Checkout progress">
             {STEPS.map((label, index) => (
               <button
                 type="button"
                 key={label}
                 className={index <= step ? "checkout-step active" : "checkout-step"}
                 onClick={() => setStep(index)}
-                data-testid={`checkout-step-${index + 1}`}
               >
                 <span>{index + 1}</span>
                 <strong>{label}</strong>
@@ -98,16 +96,12 @@ export default function CheckoutPage() {
             ))}
           </div>
 
-          {error && (
-            <p className="checkout-error" data-testid="checkout-error-message">
-              {error}
-            </p>
-          )}
+          {error && <p className="checkout-error">{error}</p>}
 
           <div className="checkout-grid">
             <section className="checkout-stage">
               {step === 0 && (
-                <div className="checkout-form" data-testid="checkout-payment-stage">
+                <div className="checkout-form">
                   <label>
                     <span>Payment Method</span>
                     <select
@@ -115,7 +109,6 @@ export default function CheckoutPage() {
                       onChange={(event) =>
                         setForm((current) => ({ ...current, paymentMethod: event.target.value }))
                       }
-                      data-testid="checkout-payment-method-select"
                     >
                       <option value="Card">Card</option>
                       <option value="Mobile Money">Mobile Money</option>
@@ -126,11 +119,11 @@ export default function CheckoutPage() {
               )}
 
               {step === 1 && (
-                <div className="checkout-review" data-testid="checkout-review-stage">
+                <div className="checkout-review">
                   <h2>Order Review</h2>
-                  <ul className="checkout-items" data-testid="checkout-review-items">
+                  <ul className="checkout-items">
                     {cart.items.map((item) => (
-                      <li key={item.productId} data-testid="checkout-review-item">
+                      <li key={item.productId}>
                         <span>
                           {item.name} <small>x {item.quantity}</small>
                         </span>
@@ -143,22 +136,12 @@ export default function CheckoutPage() {
 
               <div className="checkout-actions">
                 {step > 0 && (
-                  <button
-                    type="button"
-                    className="checkout-secondary"
-                    onClick={previousStep}
-                    data-testid="checkout-back-step"
-                  >
+                  <button type="button" className="checkout-secondary" onClick={previousStep}>
                     Back
                   </button>
                 )}
                 {step < STEPS.length - 1 && (
-                  <button
-                    type="button"
-                    className="checkout-primary"
-                    onClick={nextStep}
-                    data-testid="checkout-continue-button"
-                  >
+                  <button type="button" className="checkout-primary" onClick={nextStep}>
                     Continue
                   </button>
                 )}
@@ -168,7 +151,6 @@ export default function CheckoutPage() {
                     className="checkout-primary"
                     onClick={placeOrder}
                     disabled={busy}
-                    data-testid="checkout-place-order-button"
                   >
                     {busy ? "Processing..." : "Place Order"}
                   </button>
@@ -179,19 +161,19 @@ export default function CheckoutPage() {
             <aside className="checkout-summary">
               <h2>Order Summary</h2>
               <div className="review-totals">
-                <p className="summary-line" data-testid="checkout-summary-subtotal">
+                <p className="summary-line">
                   <span>Subtotal</span>
                   <strong>{formatMoney(previewTotals.subtotal)}</strong>
                 </p>
-                <p className="summary-line" data-testid="checkout-summary-tax">
+                <p className="summary-line">
                   <span>Tax</span>
                   <strong>{formatMoney(previewTotals.tax)}</strong>
                 </p>
-                <p className="summary-line" data-testid="checkout-summary-delivery">
+                <p className="summary-line">
                   <span>Delivery</span>
                   <strong>{formatMoney(previewTotals.deliveryFee)}</strong>
                 </p>
-                <p className="summary-line total-row" data-testid="checkout-summary-total">
+                <p className="summary-line total-row">
                   <span>Grand Total</span>
                   <strong>{formatMoney(previewTotals.grandTotal)}</strong>
                 </p>
