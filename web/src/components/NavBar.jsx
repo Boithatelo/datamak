@@ -16,33 +16,49 @@ export default function NavBar() {
   const navClassName = ({ isActive }) => (isActive ? "nav-item nav-item-active" : "nav-item");
 
   return (
-    <header className="topbar market-topbar">
+    <header className="topbar market-topbar" data-testid="nav-topbar">
       <div className="container market-header">
         <BrandLogo to={isAdmin ? "/admin" : "/"} onClick={() => setOpen(false)} />
 
         <div className="market-actions">
           {user && !isAdmin && (
             <>
-              <Link to="/cart" className="market-action" onClick={() => setOpen(false)}>
+              <Link
+                to="/cart"
+                className="market-action"
+                onClick={() => setOpen(false)}
+                data-testid="nav-cart-link"
+              >
                 <span>
                   Cart
                   {cartCount > 0 && <em>{cartCount}</em>}
                 </span>
               </Link>
-              <Link to="/orders" className="market-action" onClick={() => setOpen(false)}>
+              <Link
+                to="/orders"
+                className="market-action"
+                onClick={() => setOpen(false)}
+                data-testid="nav-orders-link"
+              >
                 <span>Orders</span>
               </Link>
             </>
           )}
 
           <div className="auth">
-            {!user && <Link to="/auth">Login / Register</Link>}
+            {!user && (
+              <Link to="/auth" data-testid="nav-login-register-link">
+                Login / Register
+              </Link>
+            )}
             {user && (
               <>
                 {isAdmin ? (
-                  <span className="user-chip">Hi, {user.name}</span>
+                  <span className="user-chip" data-testid="nav-user-chip">
+                    Hi, {user.name}
+                  </span>
                 ) : (
-                  <Link to="/profile" className="user-chip">
+                  <Link to="/profile" className="user-chip" data-testid="nav-profile-link">
                     Hi, {user.name}
                   </Link>
                 )}
@@ -53,6 +69,7 @@ export default function NavBar() {
                     logout();
                     setOpen(false);
                   }}
+                  data-testid="nav-logout-button"
                 >
                   Logout
                 </button>
@@ -61,30 +78,66 @@ export default function NavBar() {
           </div>
         </div>
 
-        <button type="button" className="menu-btn" onClick={() => setOpen((state) => !state)}>
+        <button
+          type="button"
+          className="menu-btn"
+          onClick={() => setOpen((state) => !state)}
+          data-testid="nav-menu-button"
+        >
           {open ? "Close" : "Menu"}
         </button>
       </div>
 
       <div className="container market-nav">
-        <nav className={`links ${open ? "open" : ""}`}>
-          <NavLink end to="/" className={navClassName} onClick={() => setOpen(false)}>
+        <nav className={`links ${open ? "open" : ""}`} data-testid="nav-links">
+          <NavLink
+            end
+            to="/"
+            className={navClassName}
+            onClick={() => setOpen(false)}
+            data-testid="nav-link-home"
+          >
             Home
           </NavLink>
-          <NavLink to="/catalog" className={navClassName} onClick={() => setOpen(false)}>
+          <NavLink
+            to="/catalog"
+            className={navClassName}
+            onClick={() => setOpen(false)}
+            data-testid="nav-link-catalog"
+          >
             Catalog
           </NavLink>
-          <NavLink to="/hosting" className={navClassName} onClick={() => setOpen(false)}>
+          <NavLink
+            to="/hosting"
+            className={navClassName}
+            onClick={() => setOpen(false)}
+            data-testid="nav-link-hosting"
+          >
             Hosting
           </NavLink>
-          <NavLink to="/about" className={navClassName} onClick={() => setOpen(false)}>
+          <NavLink
+            to="/about"
+            className={navClassName}
+            onClick={() => setOpen(false)}
+            data-testid="nav-link-about"
+          >
             About
           </NavLink>
-          <NavLink to="/contact" className={navClassName} onClick={() => setOpen(false)}>
+          <NavLink
+            to="/contact"
+            className={navClassName}
+            onClick={() => setOpen(false)}
+            data-testid="nav-link-contact"
+          >
             Contact
           </NavLink>
           {user && !isAdmin && (
-            <NavLink to="/wishlist" className={navClassName} onClick={() => setOpen(false)}>
+            <NavLink
+              to="/wishlist"
+              className={navClassName}
+              onClick={() => setOpen(false)}
+              data-testid="nav-link-wishlist"
+            >
               Wishlist ({wishlistIds.length})
             </NavLink>
           )}

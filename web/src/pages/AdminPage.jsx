@@ -309,7 +309,7 @@ export default function AdminPage() {
   };
 
   if (loading) {
-    return <section className="panel">Loading admin dashboard...</section>;
+    return <section className="panel" data-testid="admin-loading-state">Loading admin dashboard...</section>;
   }
 
   return (
@@ -326,14 +326,19 @@ export default function AdminPage() {
       </PageHeader>
 
       {!activeTab && (
-        <section className="panel admin-dashboard-card-panel" aria-label="Admin dashboard sections">
-          <div className="admin-dashboard-grid">
+        <section
+          className="panel admin-dashboard-card-panel"
+          aria-label="Admin dashboard sections"
+          data-testid="admin-dashboard-sections"
+        >
+          <div className="admin-dashboard-grid" data-testid="admin-dashboard-grid">
             {ADMIN_SECTIONS.map((section) => (
               <button
                 key={section.id}
                 type="button"
                 className="admin-dashboard-tile"
                 onClick={() => setActiveTab(section.id)}
+                data-testid={`admin-tile-${section.id}`}
               >
                 <strong>{section.label}</strong>
                 <span>{section.description}</span>
@@ -344,13 +349,14 @@ export default function AdminPage() {
       )}
 
       {activeTab && (
-        <section className="panel admin-detail-panel">
+        <section className="panel admin-detail-panel" data-testid={`admin-section-${activeTab}`}>
           <div className="admin-section-head">
             <button
               type="button"
               className="admin-back-button"
               aria-label="Back to admin dashboard"
               onClick={() => setActiveTab("")}
+              data-testid="admin-back-to-dashboard"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M15 18l-6-6 6-6" />
@@ -361,27 +367,27 @@ export default function AdminPage() {
               <h2>{activeSection?.label}</h2>
             </div>
           </div>
-        <div className="admin-content">
+        <div className="admin-content" data-testid="admin-content">
           {activeTab === "summary" && summary && (
-            <div className="summary-grid">
-              <article className="summary-card">
+            <div className="summary-grid" data-testid="admin-summary-grid">
+              <article className="summary-card" data-testid="admin-summary-users">
                 <h3>Users</h3>
                 <p>{summary.users}</p>
               </article>
-              <article className="summary-card">
+              <article className="summary-card" data-testid="admin-summary-products">
                 <h3>Products</h3>
                 <p>{summary.products}</p>
               </article>
-              <article className="summary-card">
+              <article className="summary-card" data-testid="admin-summary-orders">
                 <h3>Orders</h3>
                 <p>{summary.orders}</p>
               </article>
-              <article className="summary-card">
+              <article className="summary-card" data-testid="admin-summary-revenue">
                 <h3>Revenue</h3>
                 <p>{formatMoney(summary.totalRevenue)}</p>
               </article>
 
-              <article className="summary-card full">
+              <article className="summary-card full" data-testid="admin-summary-orders-by-status">
                 <h3>Orders By Status</h3>
                 <div className="status-strip">
                   {Object.entries(summary.ordersByStatus || {}).map(([status, count]) => (
@@ -392,7 +398,7 @@ export default function AdminPage() {
                 </div>
               </article>
 
-              <article className="summary-card full">
+              <article className="summary-card full" data-testid="admin-summary-monthly-sales">
                 <h3>Monthly Sales</h3>
                 <div className="chart-bars">
                   {(summary.monthlySales || []).map((entry) => (
@@ -409,7 +415,7 @@ export default function AdminPage() {
                 </div>
               </article>
 
-              <article className="summary-card full">
+              <article className="summary-card full" data-testid="admin-summary-top-products">
                 <h3>Top Selling Products</h3>
                 <ul className="order-items">
                   {(summary.topSellingProducts || []).map((product) => (
@@ -423,8 +429,8 @@ export default function AdminPage() {
           )}
 
           {activeTab === "products" && (
-            <div className="admin-section">
-              <form className="form-grid" onSubmit={onCreateProduct}>
+            <div className="admin-section" data-testid="admin-products-section">
+              <form className="form-grid" onSubmit={onCreateProduct} data-testid="admin-add-product-form">
                 <h2>Add Product</h2>
                 <label>
                   Name
@@ -434,6 +440,7 @@ export default function AdminPage() {
                       setNewProduct((current) => ({ ...current, name: event.target.value }))
                     }
                     required
+                    data-testid="admin-product-name-input"
                   />
                 </label>
                 <label>
@@ -444,6 +451,7 @@ export default function AdminPage() {
                       setNewProduct((current) => ({ ...current, description: event.target.value }))
                     }
                     required
+                    data-testid="admin-product-description-input"
                   />
                 </label>
                 <label>
@@ -462,6 +470,7 @@ export default function AdminPage() {
                       }));
                     }}
                     required
+                    data-testid="admin-product-category-select"
                   >
                     {PRODUCT_CATEGORIES.map((category) => (
                       <option key={category.category} value={category.category}>
@@ -478,6 +487,7 @@ export default function AdminPage() {
                       setNewProduct((current) => ({ ...current, subcategory: event.target.value }))
                     }
                     required
+                    data-testid="admin-product-subcategory-select"
                   >
                     {newProductSubcategories.map((subcategory) => (
                       <option key={subcategory} value={subcategory}>
@@ -497,6 +507,7 @@ export default function AdminPage() {
                       setNewProduct((current) => ({ ...current, price: event.target.value }))
                     }
                     required
+                    data-testid="admin-product-price-input"
                   />
                 </label>
                 <label>
@@ -513,6 +524,7 @@ export default function AdminPage() {
                     placeholder={
                       newProduct.type === "service" ? "Not required for services" : "Stock quantity"
                     }
+                    data-testid="admin-product-stock-input"
                   />
                 </label>
                 <label>
@@ -525,6 +537,7 @@ export default function AdminPage() {
                     onChange={(event) =>
                       setNewProduct((current) => ({ ...current, discountPercent: event.target.value }))
                     }
+                    data-testid="admin-product-discount-input"
                   />
                 </label>
                 <label>
@@ -535,6 +548,7 @@ export default function AdminPage() {
                     onChange={(event) =>
                       setNewProduct((current) => ({ ...current, specifications: event.target.value }))
                     }
+                    data-testid="admin-product-specifications-input"
                   />
                 </label>
                 <label>
@@ -544,6 +558,7 @@ export default function AdminPage() {
                     accept="image/*"
                     multiple
                     onChange={onImageFilesChange}
+                    data-testid="admin-product-images-input"
                   />
                   <span className="muted">
                     Upload up to 8 images from this device. The first image becomes the main catalog
@@ -551,9 +566,9 @@ export default function AdminPage() {
                   </span>
                 </label>
                 {imagePreviews.length > 0 && (
-                  <div className="admin-image-preview-grid">
+                  <div className="admin-image-preview-grid" data-testid="admin-image-preview-grid">
                     {imagePreviews.map((preview, index) => (
-                      <article key={preview.url} className="admin-image-preview">
+                      <article key={preview.url} className="admin-image-preview" data-testid="admin-image-preview">
                         <img src={preview.url} alt={preview.name} />
                         <div>
                           <strong>{index === 0 ? "Main image" : `Gallery image ${index + 1}`}</strong>
@@ -563,6 +578,7 @@ export default function AdminPage() {
                           type="button"
                           className="btn btn-light"
                           onClick={() => removeSelectedImage(index)}
+                          data-testid="admin-image-remove-button"
                         >
                           Remove
                         </button>
@@ -570,16 +586,17 @@ export default function AdminPage() {
                     ))}
                   </div>
                 )}
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" data-testid="admin-add-product-button">
                   Add Product
                 </button>
               </form>
 
-              <div className="table-controls">
+              <div className="table-controls" data-testid="admin-product-table-controls">
                 <input
                   placeholder="Search products..."
                   value={productSearch}
                   onChange={(event) => setProductSearch(event.target.value)}
+                  data-testid="admin-product-search-input"
                 />
                 <select
                   value={productCategoryFilter}
@@ -587,6 +604,7 @@ export default function AdminPage() {
                     setProductCategoryFilter(event.target.value);
                     setProductSubcategoryFilter("");
                   }}
+                  data-testid="admin-product-category-filter"
                 >
                   <option value="">All categories</option>
                   {PRODUCT_CATEGORIES.map((category) => (
@@ -598,6 +616,7 @@ export default function AdminPage() {
                 <select
                   value={productSubcategoryFilter}
                   onChange={(event) => setProductSubcategoryFilter(event.target.value)}
+                  data-testid="admin-product-subcategory-filter"
                 >
                   <option value="">All subcategories</option>
                   {filterSubcategories.map((subcategory) => (
@@ -607,7 +626,7 @@ export default function AdminPage() {
                   ))}
                 </select>
               </div>
-              <div className="table-wrap">
+              <div className="table-wrap" data-testid="admin-products-table-wrap">
                 <table>
                   <thead>
                     <tr>
@@ -623,7 +642,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {filteredProducts.map((product) => (
-                      <tr key={product.id}>
+                      <tr key={product.id} data-testid="admin-product-row" data-product-id={product.id}>
                         <td>{product.name}</td>
                         <td>
                           <select
@@ -637,6 +656,7 @@ export default function AdminPage() {
                                 type
                               });
                             }}
+                            data-testid="admin-product-row-category-select"
                           >
                             {PRODUCT_CATEGORIES.map((category) => (
                               <option key={category.category} value={category.category}>
@@ -651,6 +671,7 @@ export default function AdminPage() {
                             onChange={(event) =>
                               onProductUpdate(product, { subcategory: event.target.value })
                             }
+                            data-testid="admin-product-row-subcategory-select"
                           >
                             {getSubcategoriesForCategory(product.category).map((subcategory) => (
                               <option key={subcategory} value={subcategory}>
@@ -666,6 +687,7 @@ export default function AdminPage() {
                             onChange={(event) =>
                               onProductUpdate(product, { type: event.target.value })
                             }
+                            data-testid="admin-product-row-type-select"
                           >
                             <option value="physical">Physical</option>
                             <option value="service">Service</option>
@@ -680,6 +702,7 @@ export default function AdminPage() {
                             className="btn btn-light"
                             onClick={() => onRestock(product)}
                             disabled={product.type === "service"}
+                            data-testid="admin-product-restock-button"
                           >
                             Restock +5
                           </button>
@@ -687,6 +710,7 @@ export default function AdminPage() {
                             type="button"
                             className="btn btn-danger"
                             onClick={() => onDeleteProduct(product.id)}
+                            data-testid="admin-product-delete-button"
                           >
                             Delete
                           </button>
@@ -701,14 +725,15 @@ export default function AdminPage() {
 
           {activeTab === "users" && (
             <>
-              <div className="table-controls">
+              <div className="table-controls" data-testid="admin-users-table-controls">
                 <input
                   placeholder="Search users..."
                   value={userSearch}
                   onChange={(event) => setUserSearch(event.target.value)}
+                  data-testid="admin-user-search-input"
                 />
               </div>
-              <div className="table-wrap">
+              <div className="table-wrap" data-testid="admin-users-table-wrap">
                 <table>
                   <thead>
                     <tr>
@@ -721,7 +746,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {filteredUsers.map((user) => (
-                      <tr key={user.id}>
+                      <tr key={user.id} data-testid="admin-user-row" data-user-id={user.id}>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.role}</td>
@@ -733,6 +758,7 @@ export default function AdminPage() {
                             onClick={() =>
                               onRoleChange(user.id, user.role === "admin" ? "customer" : "admin")
                             }
+                            data-testid="admin-user-role-toggle-button"
                           >
                             Set {user.role === "admin" ? "Customer" : "Admin"}
                           </button>
@@ -747,15 +773,17 @@ export default function AdminPage() {
 
           {activeTab === "orders" && (
             <>
-              <div className="table-controls">
+              <div className="table-controls" data-testid="admin-orders-table-controls">
                 <input
                   placeholder="Search orders..."
                   value={orderSearch}
                   onChange={(event) => setOrderSearch(event.target.value)}
+                  data-testid="admin-order-search-input"
                 />
                 <select
                   value={orderStatusFilter}
                   onChange={(event) => setOrderStatusFilter(event.target.value)}
+                  data-testid="admin-order-status-filter"
                 >
                   <option value="">All statuses</option>
                   {["Pending", "Paid", "Processing", "Shipped", "Delivered", "Cancelled"].map(
@@ -767,7 +795,7 @@ export default function AdminPage() {
                   )}
                 </select>
               </div>
-              <div className="table-wrap">
+              <div className="table-wrap" data-testid="admin-orders-table-wrap">
                 <table>
                   <thead>
                     <tr>
@@ -781,7 +809,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {filteredOrders.map((order) => (
-                      <tr key={order.id}>
+                      <tr key={order.id} data-testid="admin-order-row" data-order-id={order.id}>
                         <td>{order.orderNumber || order.id.slice(0, 8)}</td>
                         <td>{order.customer ? order.customer.email : order.userId}</td>
                         <td>{formatMoney(order.total)}</td>
@@ -791,6 +819,7 @@ export default function AdminPage() {
                           <select
                             defaultValue={order.status}
                             onChange={(event) => onOrderStatusChange(order.id, event.target.value)}
+                            data-testid="admin-order-status-select"
                           >
                             {[
                               "Pending",

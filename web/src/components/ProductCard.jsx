@@ -25,7 +25,7 @@ export default function ProductCard({
   const isOutOfStock = !isService && product.stock <= 0;
 
   return (
-    <article className="product-card">
+    <article className="product-card" data-testid="product-card" data-product-id={product.id}>
       <div className="product-image-frame">
         <img
           src={product.imageUrl}
@@ -45,16 +45,19 @@ export default function ProductCard({
           )}
         </div>
         <div className="card-actions">
-          <button type="button" onClick={() => onQuickView(product)}>
+          <button type="button" onClick={() => onQuickView(product)} data-testid="product-quick-view">
             Quick View
           </button>
-          <Link to={`/products/${product.id}`}>Details</Link>
+          <Link to={`/products/${product.id}`} data-testid="product-details-link">
+            Details
+          </Link>
         </div>
         <button
           type="button"
           className="product-cart-btn"
           disabled={busy || isOutOfStock}
           onClick={() => onAddToCart(product.id)}
+          data-testid="product-add-to-cart"
         >
           {!busy && !isOutOfStock && <CartIcon />}
           {busy ? "Adding..." : isOutOfStock ? "Out of Stock" : "Add to Cart"}

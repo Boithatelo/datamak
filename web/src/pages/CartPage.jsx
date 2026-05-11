@@ -52,19 +52,24 @@ export default function CartPage() {
       </PageHeader>
 
       {cart.items.length === 0 ? (
-        <section className="panel empty-state">
+        <section className="panel empty-state" data-testid="cart-empty-state">
           <h2>Your cart is empty</h2>
           <p className="muted">Browse the product catalog and add products to continue.</p>
-          <Link className="btn btn-primary" to="/catalog">
+          <Link className="btn btn-primary" to="/catalog" data-testid="cart-explore-catalog-link">
             Explore Catalog
           </Link>
         </section>
       ) : (
         <div className="cart-layout">
           <section className="panel cart-panel">
-            <div className="cart-list">
+            <div className="cart-list" data-testid="cart-item-list">
               {cart.items.map((item) => (
-                <article key={item.productId} className="cart-item">
+                <article
+                  key={item.productId}
+                  className="cart-item"
+                  data-testid="cart-item"
+                  data-product-id={item.productId}
+                >
                   <img src={item.imageUrl} alt={item.name} />
                   <div className="cart-info">
                     <h3>{item.name}</h3>
@@ -87,12 +92,14 @@ export default function CartPage() {
                         onUpdateQty(item.productId, Number(event.target.value))
                       }
                       disabled={busyId === item.productId}
+                      data-testid="cart-quantity-input"
                     />
                     <button
                       type="button"
                       className="btn btn-danger"
                       onClick={() => onRemove(item.productId)}
                       disabled={busyId === item.productId}
+                      data-testid="cart-remove-button"
                     >
                       Remove
                     </button>
@@ -104,23 +111,23 @@ export default function CartPage() {
 
           <aside className="panel checkout-panel">
             <h2>Order Summary</h2>
-            <p className="summary-line">
+            <p className="summary-line" data-testid="cart-summary-subtotal">
               <span>Subtotal</span>
               <strong>{formatMoney(cart.summary?.subtotal || cart.total)}</strong>
             </p>
-            <p className="summary-line">
+            <p className="summary-line" data-testid="cart-summary-tax">
               <span>Tax (15%)</span>
               <strong>{formatMoney(cart.summary?.tax || 0)}</strong>
             </p>
-            <p className="summary-line">
+            <p className="summary-line" data-testid="cart-summary-delivery">
               <span>Delivery</span>
               <strong>{formatMoney(cart.summary?.deliveryFee || 0)}</strong>
             </p>
-            <p className="summary-line total-row">
+            <p className="summary-line total-row" data-testid="cart-summary-total">
               <span>Grand Total</span>
               <strong>{formatMoney(cart.summary?.grandTotal || cart.total)}</strong>
             </p>
-            <Link className="btn btn-primary" to="/checkout">
+            <Link className="btn btn-primary" to="/checkout" data-testid="cart-proceed-checkout">
               Proceed to Checkout
             </Link>
           </aside>
