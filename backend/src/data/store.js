@@ -12,6 +12,153 @@ const {
 
 const DB_PATH = path.join(__dirname, "../../data/db.json");
 const DEFAULT_PRODUCT_IMAGE = "/images/products/product-placeholder.svg";
+const LEGACY_IMAGE_FALLBACKS = [
+  {
+    pattern: /starter shared hosting/i,
+    images: [
+      "/images/products/shared-hosting-starter-01.jpg",
+      "/images/products/shared-hosting-starter-02.jpg"
+    ]
+  },
+  {
+    pattern: /online store hosting/i,
+    images: [
+      "/images/products/online-store-hosting-01.jpg",
+      "/images/products/online-store-hosting-02.jpg"
+    ]
+  },
+  {
+    pattern: /developer deployment hosting/i,
+    images: [
+      "/images/products/git-deployment-support-01.jpg",
+      "/images/products/git-deployment-support-02.jpg"
+    ]
+  },
+  {
+    pattern: /cloud plus hosting/i,
+    images: [
+      "/images/products/business-cloud-hosting-01.jpg",
+      "/images/products/business-cloud-hosting-02.jpg"
+    ]
+  },
+  {
+    pattern: /ssl shield|malware protection/i,
+    images: [
+      "/images/products/ssl-and-malware-protection-01.jpg",
+      "/images/products/ssl-and-malware-protection-02.jpg"
+    ]
+  },
+  {
+    pattern: /website builder hosting/i,
+    images: [
+      "/images/products/business-website-build-01.jpg",
+      "/images/products/business-website-build-02.jpg"
+    ]
+  },
+  {
+    pattern: /domain|dns/i,
+    images: [
+      "/images/products/domain-registration-co-ls-01.jpg",
+      "/images/products/domain-registration-co-ls-02.jpg"
+    ]
+  },
+  {
+    pattern: /canon pixma/i,
+    images: [
+      "/images/products/canon-pixma-g6040-megatank-printer-scanner-01.jpg",
+      "/images/products/canon-pixma-g6040-megatank-printer-scanner-02.jpg"
+    ]
+  },
+  {
+    pattern: /hp elitebook/i,
+    images: [
+      "/images/products/hp-probook-450-g8-01.jpg",
+      "/images/products/hp-probook-450-g8-02.jpg"
+    ]
+  },
+  {
+    pattern: /dell latitude/i,
+    images: [
+      "/images/products/dell-latitude-3410-01.svg",
+      "/images/products/dell-latitude-3410-02.jpg"
+    ]
+  },
+  {
+    pattern: /thinkpad p1/i,
+    images: [
+      "/images/products/lenovo-thinkpad-x1-carbon-gen-12-01.jpg",
+      "/images/products/lenovo-thinkpad-x1-carbon-gen-12-02.jpg"
+    ]
+  },
+  {
+    pattern: /victus|g15|legion|gaming laptop/i,
+    images: [
+      "/images/products/razer-blade-15-01.jpg",
+      "/images/products/razer-blade-15-02.jpg"
+    ]
+  },
+  {
+    pattern: /mac mini/i,
+    images: [
+      "/images/products/apple-macbook-air-m2-01.png",
+      "/images/products/apple-macbook-air-m2-02.png"
+    ]
+  },
+  {
+    pattern: /desktop|workstation|tower|computer bundle/i,
+    images: [
+      "/images/products/datamak-office-computer-bundle-01.jpg",
+      "/images/products/datamak-office-computer-bundle-02.jpg"
+    ]
+  }
+];
+
+const SUBCATEGORY_IMAGE_FALLBACKS = {
+  Laptops: [
+    "/images/products/hp-probook-450-g8-01.jpg",
+    "/images/products/hp-probook-450-g8-02.jpg"
+  ],
+  Desktops: [
+    "/images/products/datamak-office-computer-bundle-01.jpg",
+    "/images/products/datamak-office-computer-bundle-02.jpg"
+  ],
+  "Computer Bundles": [
+    "/images/products/datamak-office-computer-bundle-01.jpg",
+    "/images/products/datamak-office-computer-bundle-02.jpg"
+  ],
+  "Hosting Packages": [
+    "/images/products/shared-hosting-starter-01.jpg",
+    "/images/products/shared-hosting-starter-02.jpg"
+  ],
+  "Ecommerce Services": [
+    "/images/products/online-store-hosting-01.jpg",
+    "/images/products/online-store-hosting-02.jpg"
+  ],
+  "Developer Services": [
+    "/images/products/git-deployment-support-01.jpg",
+    "/images/products/git-deployment-support-02.jpg"
+  ],
+  "Cloud Services": [
+    "/images/products/business-cloud-hosting-01.jpg",
+    "/images/products/business-cloud-hosting-02.jpg"
+  ],
+  "Security Services": [
+    "/images/products/ssl-and-malware-protection-01.jpg",
+    "/images/products/ssl-and-malware-protection-02.jpg"
+  ],
+  "Website Services": [
+    "/images/products/business-website-build-01.jpg",
+    "/images/products/business-website-build-02.jpg"
+  ],
+  "Domain Services": [
+    "/images/products/domain-registration-co-ls-01.jpg",
+    "/images/products/domain-registration-co-ls-02.jpg"
+  ],
+  "Printers & Scanners": [
+    "/images/products/canon-pixma-g6040-megatank-printer-scanner-01.jpg",
+    "/images/products/canon-pixma-g6040-megatank-printer-scanner-02.jpg"
+  ]
+};
 
 const REQUIRED_KEYS = [
   "users",
@@ -40,24 +187,52 @@ function nowIso() {
   return new Date().toISOString();
 }
 
-function isRemoteImage(value) {
-  return /^https?:\/\//i.test(String(value || "").trim());
-}
-
 function normalizeImageValue(value) {
   const image = String(value || "").trim();
-  return image && !isRemoteImage(image) ? image : "";
+  if (!image) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(image) || image.startsWith("/")) {
+    return image;
+  }
+
+  return "";
 }
 
 function normalizeProductImages(product) {
   const gallery = Array.isArray(product.gallery)
-    ? product.gallery.map(normalizeImageValue).filter(Boolean)
+    ? product.gallery
+        .map(normalizeImageValue)
+        .filter((image) => image && image !== DEFAULT_PRODUCT_IMAGE)
     : [];
-  const imageUrl = normalizeImageValue(product.imageUrl) || gallery[0] || DEFAULT_PRODUCT_IMAGE;
+  const productImage = normalizeImageValue(product.imageUrl);
+  let imageUrl = productImage !== DEFAULT_PRODUCT_IMAGE ? productImage : "";
+  let productGallery = gallery;
+
+  if (!imageUrl) {
+    productGallery = getLocalProductImages(product);
+    imageUrl = productGallery[0] || "";
+  }
+
+  imageUrl = imageUrl || productGallery[0] || DEFAULT_PRODUCT_IMAGE;
   return {
     imageUrl,
-    gallery: Array.from(new Set([imageUrl, ...gallery]))
+    gallery: Array.from(new Set([imageUrl, ...productGallery]))
   };
+}
+
+function getLocalProductImages(product) {
+  const name = String(product.name || "");
+  const matchedFallback = LEGACY_IMAGE_FALLBACKS.find((fallback) =>
+    fallback.pattern.test(name)
+  );
+
+  if (matchedFallback) {
+    return matchedFallback.images;
+  }
+
+  return SUBCATEGORY_IMAGE_FALLBACKS[product.subcategory] || [];
 }
 
 function toIso(value) {

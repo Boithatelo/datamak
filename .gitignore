@@ -10,3 +10,7 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 backend/data/db.json
+*.codex.*.log
+web/cypress/artifacts/
+web/playwright-report/
+web/test-results/
