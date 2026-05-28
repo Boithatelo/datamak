@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import { useCart } from "../context/CartContext";
 import { formatMoney } from "../utils/currency";
+import { getImageSource } from "../utils/imageFallbacks";
 
 export default function CartPage() {
   const { cart, refreshCart, updateQuantity, removeItem, getErrorMessage } = useCart();
@@ -70,7 +71,7 @@ export default function CartPage() {
                   data-testid="cart-item"
                   data-product-id={item.productId}
                 >
-                  <img src={item.imageUrl} alt={item.name} />
+                  <img src={getImageSource(item.imageUrl, item.category)} alt={item.name} />
                   <div className="cart-info">
                     <h3>{item.name}</h3>
                     <p>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import BrandLogo from "../components/BrandLogo";
 import { useAuth } from "../context/AuthContext";
+import { getImageSource } from "../utils/imageFallbacks";
 
 const TRUST_ITEMS = [
   { title: "Secure Payments", text: "100% secure checkout" },
@@ -45,7 +46,7 @@ export default function HomePage() {
               </div>
               <img
                 className="home-hero-image"
-                src="/images/tech-e-comm.jpg"
+                src={getImageSource("/images/tech-e-comm.jpg")}
                 alt="Technology e-commerce services"
               />
             </section>
