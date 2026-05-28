@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "commonjs",
+  "description": "Selenium UI tests for the Datamak e-commerce web app.",
   "scripts": {
-    "test": "node datamak-web-ui.test.js"
+    "test": "node ui.test.js",
+    "test:datamak-web-ui": "node datamak-web-ui.test.js",
+    "test:sel-001": "node customer-cart.test.js"
   },
   "dependencies": {
     "selenium-webdriver": "^4.43.0"
   }
 }
-

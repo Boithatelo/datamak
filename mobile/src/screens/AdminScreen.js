@@ -149,7 +149,7 @@ export default function AdminScreen() {
       <PageHeader
         title="Admin Control Center"
         subtitle="Manage products, users, orders, inventory, and commerce insights."
-        fallback="AdminHome"
+        fallback="Admin"
         showBack={false}
       />
       <Pressable style={styles.logoutButton} onPress={logout}>

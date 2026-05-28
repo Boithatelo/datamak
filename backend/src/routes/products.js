@@ -21,7 +21,15 @@ function toNumber(value, fallback = 0) {
 
 function normalizeImageUrl(value) {
   const image = String(value || "").trim();
-  return image && !/^https?:\/\//i.test(image) ? image : "";
+  if (!image) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(image) || image.startsWith("/")) {
+    return image;
+  }
+
+  return "";
 }
 
 function normalizeSpecs(value) {
