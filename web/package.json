@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "cy:open": "set ELECTRON_RUN_AS_NODE=&&set CYPRESS_CACHE_FOLDER=.cypress-cache&&set CYPRESS_SKIP_VERIFY=true&&cypress open",
+    "cy:run": "set ELECTRON_RUN_AS_NODE=&&set CYPRESS_CACHE_FOLDER=.cypress-cache&&set CYPRESS_SKIP_VERIFY=true&&cypress run --browser electron",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:run:headed": "cypress run --headed --browser chrome",
