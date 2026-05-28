@@ -10,7 +10,9 @@ import {
   TextInput,
   View
 } from "react-native";
+import BrandLogo from "../components/BrandLogo";
 import { useAuth } from "../context/AuthContext";
+import { shadows } from "../theme";
 
 export default function AuthScreen() {
   const { login, register, forgotPassword, resetPassword, getApiError } = useAuth();
@@ -99,6 +101,7 @@ export default function AuthScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        <BrandLogo light style={styles.logo} />
         <View style={styles.card}>
           <Text style={styles.kicker}>Datamak Access</Text>
           <Text style={styles.title}>{title}</Text>
@@ -211,23 +214,30 @@ function ModeButton({ label, active, onPress }) {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: "#eef5f3"
+    backgroundColor: "#2078be"
   },
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 16
+    padding: 16,
+    gap: 16
+  },
+  logo: {
+    width: "100%",
+    maxWidth: 430,
+    paddingHorizontal: 4
   },
   card: {
     width: "100%",
-    maxWidth: 430,
+    maxWidth: 360,
     borderRadius: 24,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.28)",
-    padding: 20,
+    borderColor: "rgba(255,255,255,0.22)",
+    padding: 22,
     gap: 10,
-    backgroundColor: "#2288c8"
+    backgroundColor: "rgba(35,132,204,0.92)",
+    ...shadows.strong
   },
   kicker: {
     alignSelf: "flex-start",
@@ -241,13 +251,17 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   },
   title: {
-    fontSize: 24,
-    fontWeight: "900",
-    color: "#fff"
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "500",
+    color: "rgba(255,255,255,0.94)",
+    letterSpacing: 4,
+    textTransform: "uppercase"
   },
   subtitle: {
     color: "rgba(255,255,255,0.86)",
-    lineHeight: 20
+    lineHeight: 20,
+    textAlign: "center"
   },
   toggleRow: {
     flexDirection: "row",
@@ -275,7 +289,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 2,
-    borderColor: "rgba(255,255,255,0.84)",
+    borderColor: "rgba(255,255,255,0.94)",
     borderRadius: 999,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -287,14 +301,20 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingVertical: 13,
     alignItems: "center",
-    marginTop: 2
+    marginTop: 2,
+    alignSelf: "center",
+    width: "100%",
+    maxWidth: 230
   },
   buttonDisabled: {
     opacity: 0.7
   },
   buttonText: {
     color: "#fff",
-    fontWeight: "900"
+    fontSize: 12,
+    fontWeight: "900",
+    letterSpacing: 1.4,
+    textTransform: "uppercase"
   },
   linkRow: {
     flexDirection: "row",

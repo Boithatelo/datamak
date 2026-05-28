@@ -92,7 +92,7 @@ export default function ProductDetailsScreen() {
   const onBuyNow = async () => {
     const added = await onAddToCart(product?.id);
     if (added && !isOutOfStock) {
-      navigation.navigate("Cart");
+      navigation.navigate("Tabs", { screen: "Cart" });
     }
   };
 

@@ -18,6 +18,7 @@ import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useShop } from "../context/ShopContext";
 import { SHOP_CATEGORIES, getSubcategoriesForCategory } from "../data/shopCategories";
+import { colors, radii, shadows } from "../theme";
 
 const DEFAULT_FILTERS = {
   search: "",
@@ -300,7 +301,7 @@ export default function ProductsScreen() {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: "#f4f8f7"
+    backgroundColor: colors.bg
   },
   listContent: {
     padding: 12,
@@ -309,12 +310,13 @@ const styles = StyleSheet.create({
   },
   panel: {
     borderWidth: 1,
-    borderColor: "#d8e5e1",
-    borderRadius: 16,
-    backgroundColor: "#fff",
+    borderColor: colors.lineSoft,
+    borderRadius: radii.panel,
+    backgroundColor: colors.surface,
     padding: 12,
     gap: 10,
-    marginBottom: 2
+    marginBottom: 2,
+    ...shadows.soft
   },
   panelHead: {
     flexDirection: "row",
@@ -322,27 +324,28 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   panelTitle: {
-    color: "#081327",
+    color: colors.navy,
     fontSize: 18,
     fontWeight: "900"
   },
   linkText: {
-    color: "#0644ca",
+    color: colors.webBlue,
     fontWeight: "900"
   },
   categoryCard: {
-    width: 210,
-    minHeight: 160,
+    width: 250,
+    minHeight: 280,
     borderWidth: 1,
     borderColor: "#e2e8f2",
     borderRadius: 14,
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     padding: 12,
-    gap: 6
+    gap: 10,
+    alignItems: "center"
   },
   categoryImage: {
     width: "100%",
-    height: 76,
+    height: 150,
     borderRadius: 10,
     backgroundColor: "#eef3f7"
   },
@@ -351,13 +354,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#eef4ff"
   },
   categoryTitle: {
-    color: "#081327",
+    color: colors.navy,
     fontWeight: "900",
-    fontSize: 16
+    fontSize: 18,
+    textAlign: "center"
   },
   categoryDescription: {
-    color: "#5d7380",
-    lineHeight: 18
+    color: colors.muted,
+    lineHeight: 18,
+    textAlign: "center"
   },
   input: {
     flex: 1,
@@ -366,7 +371,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    backgroundColor: "#fff"
+    backgroundColor: colors.surface
   },
   twoCol: {
     flexDirection: "row",
@@ -385,7 +390,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   chipActive: {
-    borderColor: "#0644ca",
+    borderColor: colors.webBlue,
     backgroundColor: "#eef4ff"
   },
   chipText: {
@@ -394,7 +399,7 @@ const styles = StyleSheet.create({
     textTransform: "capitalize"
   },
   chipTextActive: {
-    color: "#0644ca"
+    color: colors.webBlue
   },
   buttonRow: {
     flexDirection: "row",
@@ -403,7 +408,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     flex: 1,
     borderRadius: 12,
-    backgroundColor: "#0e7a78",
+    backgroundColor: colors.primary,
     alignItems: "center",
     paddingVertical: 12
   },
@@ -444,7 +449,7 @@ const styles = StyleSheet.create({
   },
   loadingInline: {
     borderRadius: 12,
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     padding: 14,
     flexDirection: "row",
     alignItems: "center",
@@ -462,7 +467,7 @@ const styles = StyleSheet.create({
     padding: 16
   },
   emptyTitle: {
-    color: "#15384b",
+    color: colors.navy,
     fontSize: 18,
     fontWeight: "900"
   },

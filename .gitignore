@@ -14,3 +14,7 @@ backend/data/db.json
 web/cypress/artifacts/
 web/playwright-report/
 web/test-results/
+manual-testing-evidence/
+tests/selenium/evidence/
+docs/my-testing-tasks-report*
+docs/~$*.docx
