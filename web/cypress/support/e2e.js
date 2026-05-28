@@ -15,24 +15,24 @@ beforeEach(() => {
   cy.clearLocalStorage();
 });
 
-// Ignore known browser noise that is not application logic.
-Cypress.on("uncaught:exception", (error) => {
-  if (/ResizeObserver loop limit exceeded/i.test(error.message)) {
-    return false;
-  }
-  return true;
-});
-
 afterEach(function () {
   if (this.currentTest?.state !== "passed") {
     return;
   }
 
-  const specName = Cypress.spec.name.replace(/\.cy\.js$/i, "");
+  const specName = Cypress.spec.name.replace(/\.cy\.[jt]sx?$/i, "");
   const testName = screenshotNameFor(this.currentTest);
 
   cy.screenshot(`passed/${specName}/${testName}`, {
     capture: "fullPage",
     overwrite: true
   });
+});
+
+// Ignore known browser noise that is not application logic.
+Cypress.on("uncaught:exception", (error) => {
+  if (/ResizeObserver loop limit exceeded/i.test(error.message)) {
+    return false;
+  }
+  return true;
 });
