@@ -1,5 +1,5 @@
 import { formatMoney } from "../utils/currency";
-import { handleProductImageError } from "../utils/productImages";
+import { applyImageFallback, getImageSource } from "../utils/imageFallbacks";
 
 export default function QuickViewModal({ product, onClose, onAddToCart, busy }) {
   if (!product) {
@@ -20,9 +20,9 @@ export default function QuickViewModal({ product, onClose, onAddToCart, busy }) 
         </button>
         <div className="modal-layout">
           <img
-            src={product.imageUrl}
+            src={getImageSource(product.imageUrl, product.category)}
             alt={product.name}
-            onError={(event) => handleProductImageError(event, product.name)}
+            onError={(event) => applyImageFallback(event, product.category)}
           />
           <div>
             <div className="tag-row">

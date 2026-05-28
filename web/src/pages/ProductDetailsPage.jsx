@@ -8,7 +8,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useShop } from "../context/ShopContext";
 import { formatMoney } from "../utils/currency";
-import { handleProductImageError } from "../utils/productImages";
+import { applyImageFallback, getImageSource } from "../utils/imageFallbacks";
 
 const SAMPLE_REVIEWERS = ["A. Molefe", "P. Ndlovu", "K. Dlamini", "R. Sithole"];
 const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
@@ -144,9 +144,9 @@ export default function ProductDetailsPage() {
         <div className="gallery-col">
           <img
             className="main-image"
-            src={selectedImage || product.imageUrl}
+            src={getImageSource(selectedImage || product.imageUrl, product.category)}
             alt={product.name}
-            onError={(event) => handleProductImageError(event, product.name)}
+            onError={(event) => applyImageFallback(event, product.category)}
           />
           <div className="thumb-row">
             {(product.gallery?.length ? product.gallery : [product.imageUrl]).map((image) => (
@@ -157,9 +157,9 @@ export default function ProductDetailsPage() {
                 onClick={() => setSelectedImage(image)}
               >
                 <img
-                  src={image}
+                  src={getImageSource(image, product.category)}
                   alt={product.name}
-                  onError={(event) => handleProductImageError(event, product.name)}
+                  onError={(event) => applyImageFallback(event, product.category)}
                 />
               </button>
             ))}
