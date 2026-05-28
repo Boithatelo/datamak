@@ -12,10 +12,13 @@ import {
 } from "react-native";
 import PageHeader from "../components/PageHeader";
 import ProductCard from "../components/ProductCard";
+import ProductImage from "../components/ProductImage";
 import api, { getApiError } from "../api/client";
+import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useShop } from "../context/ShopContext";
 import { SHOP_CATEGORIES, getSubcategoriesForCategory } from "../data/shopCategories";
+import { colors, radii, shadows } from "../theme";
 
 const DEFAULT_FILTERS = {
   search: "",
@@ -26,18 +29,23 @@ const DEFAULT_FILTERS = {
   maxPrice: "",
   sort: "newest"
 };
+const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest", api: "newest" },
-  { value: "popularity", label: "Popular", api: "popularity_desc" },
+  { value: "oldest", label: "Oldest", api: "oldest" },
+  { value: "popularity", label: "Most Popular", api: "popularity_desc" },
   { value: "rating", label: "Top Rated", api: "rating_desc" },
-  { value: "price_asc", label: "Low Price", api: "price_asc" },
-  { value: "price_desc", label: "High Price", api: "price_desc" },
-  { value: "name", label: "A-Z", api: "name_asc" }
+  { value: "discount", label: "Best Discount", api: "discount_desc" },
+  { value: "price_asc", label: "Price: Low to High", api: "price_asc" },
+  { value: "price_desc", label: "Price: High to Low", api: "price_desc" },
+  { value: "name", label: "Name: A-Z", api: "name_asc" },
+  { value: "name_desc", label: "Name: Z-A", api: "name_desc" }
 ];
 
 export default function ProductsScreen() {
   const navigation = useNavigation();
+  const { user } = useAuth();
   const { addToCart } = useCart();
   const { wishlistIds, toggleWishlist, refreshWishlist } = useShop();
   const [products, setProducts] = useState([]);
@@ -102,6 +110,10 @@ export default function ProductsScreen() {
   };
 
   const onAddToCart = async (productId) => {
+    if (!user) {
+      setStatus(LOGIN_TO_CART_MESSAGE);
+      return;
+    }
     setStatus("");
     setBusyId(productId);
     try {
@@ -154,6 +166,7 @@ export default function ProductsScreen() {
                     ]}
                     onPress={() => updateFilters({ category: item.category }, true)}
                   >
+                    <ProductImage uri={item.imageUrl} style={styles.categoryImage} />
                     <Text style={styles.categoryTitle}>{item.title}</Text>
                     <Text style={styles.categoryDescription} numberOfLines={2}>
                       {item.description}
@@ -249,7 +262,11 @@ export default function ProductsScreen() {
             </View>
 
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            {status ? <Text style={styles.status}>{status}</Text> : null}
+            {status ? (
+              <Text style={status === LOGIN_TO_CART_MESSAGE ? styles.error : styles.status}>
+                {status}
+              </Text>
+            ) : null}
             {loading ? (
               <View style={styles.loadingInline}>
                 <ActivityIndicator color="#0e7a78" />
@@ -284,7 +301,7 @@ export default function ProductsScreen() {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: "#f4f8f7"
+    backgroundColor: colors.bg
   },
   listContent: {
     padding: 12,
@@ -293,12 +310,13 @@ const styles = StyleSheet.create({
   },
   panel: {
     borderWidth: 1,
-    borderColor: "#d8e5e1",
-    borderRadius: 16,
-    backgroundColor: "#fff",
+    borderColor: colors.lineSoft,
+    borderRadius: radii.panel,
+    backgroundColor: colors.surface,
     padding: 12,
     gap: 10,
-    marginBottom: 2
+    marginBottom: 2,
+    ...shadows.soft
   },
   panelHead: {
     flexDirection: "row",
@@ -306,36 +324,45 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   panelTitle: {
-    color: "#081327",
+    color: colors.navy,
     fontSize: 18,
     fontWeight: "900"
   },
   linkText: {
-    color: "#0644ca",
+    color: colors.webBlue,
     fontWeight: "900"
   },
   categoryCard: {
-    width: 210,
-    minHeight: 100,
+    width: 250,
+    minHeight: 280,
     borderWidth: 1,
     borderColor: "#e2e8f2",
     borderRadius: 14,
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     padding: 12,
-    gap: 6
+    gap: 10,
+    alignItems: "center"
+  },
+  categoryImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 10,
+    backgroundColor: "#eef3f7"
   },
   categoryCardActive: {
     borderColor: "#0644ca",
     backgroundColor: "#eef4ff"
   },
   categoryTitle: {
-    color: "#081327",
+    color: colors.navy,
     fontWeight: "900",
-    fontSize: 16
+    fontSize: 18,
+    textAlign: "center"
   },
   categoryDescription: {
-    color: "#5d7380",
-    lineHeight: 18
+    color: colors.muted,
+    lineHeight: 18,
+    textAlign: "center"
   },
   input: {
     flex: 1,
@@ -344,7 +371,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    backgroundColor: "#fff"
+    backgroundColor: colors.surface
   },
   twoCol: {
     flexDirection: "row",
@@ -363,7 +390,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   chipActive: {
-    borderColor: "#0644ca",
+    borderColor: colors.webBlue,
     backgroundColor: "#eef4ff"
   },
   chipText: {
@@ -372,7 +399,7 @@ const styles = StyleSheet.create({
     textTransform: "capitalize"
   },
   chipTextActive: {
-    color: "#0644ca"
+    color: colors.webBlue
   },
   buttonRow: {
     flexDirection: "row",
@@ -381,7 +408,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     flex: 1,
     borderRadius: 12,
-    backgroundColor: "#0e7a78",
+    backgroundColor: colors.primary,
     alignItems: "center",
     paddingVertical: 12
   },
@@ -422,7 +449,7 @@ const styles = StyleSheet.create({
   },
   loadingInline: {
     borderRadius: 12,
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     padding: 14,
     flexDirection: "row",
     alignItems: "center",
@@ -440,7 +467,7 @@ const styles = StyleSheet.create({
     padding: 16
   },
   emptyTitle: {
-    color: "#15384b",
+    color: colors.navy,
     fontSize: 18,
     fontWeight: "900"
   },

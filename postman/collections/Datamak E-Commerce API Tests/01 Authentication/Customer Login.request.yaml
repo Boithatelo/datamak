@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "{{customerEmail}}",
+      "password": "{{customerPassword}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      pm.test('Customer token returned', () => pm.expect(data.token).to.be.a('string').and.not.empty);
+      pm.test('Customer role returned', () => pm.expect(data.user.role).to.eql('customer'));
+      pm.environment.set('customerToken', data.token);
+    language: text/javascript
+order: 1000

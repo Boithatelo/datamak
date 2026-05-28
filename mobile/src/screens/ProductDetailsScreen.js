@@ -2,7 +2,6 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import { useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,11 +10,14 @@ import {
 } from "react-native";
 import PageHeader from "../components/PageHeader";
 import ProductCard from "../components/ProductCard";
+import ProductImage from "../components/ProductImage";
 import api, { getApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useShop } from "../context/ShopContext";
 import { formatMoney } from "../utils/currency";
+
+const LOGIN_TO_CART_MESSAGE = "Please login or register to add products to cart.";
 
 export default function ProductDetailsScreen() {
   const navigation = useNavigation();
@@ -67,24 +69,30 @@ export default function ProductDetailsScreen() {
 
   const onAddToCart = async (id = product?.id) => {
     if (!id) {
-      return;
+      return false;
+    }
+    if (!user) {
+      setStatus(LOGIN_TO_CART_MESSAGE);
+      return false;
     }
     setStatus("");
     setBusyId(id);
     try {
       await addToCart(id, 1);
       setStatus("Product added to cart.");
+      return true;
     } catch (addError) {
       setStatus(getApiError(addError, "Could not add item."));
+      return false;
     } finally {
       setBusyId("");
     }
   };
 
   const onBuyNow = async () => {
-    await onAddToCart(product?.id);
-    if (!isOutOfStock) {
-      navigation.navigate("Cart");
+    const added = await onAddToCart(product?.id);
+    if (added && !isOutOfStock) {
+      navigation.navigate("Tabs", { screen: "Cart" });
     }
   };
 
@@ -122,10 +130,14 @@ export default function ProductDetailsScreen() {
         fallback="Products"
       />
 
-      {status ? <Text style={styles.status}>{status}</Text> : null}
+      {status ? (
+        <Text style={status === LOGIN_TO_CART_MESSAGE ? styles.error : styles.status}>
+          {status}
+        </Text>
+      ) : null}
 
       <View style={styles.card}>
-        <Image source={{ uri: selectedImage || product.imageUrl }} style={styles.mainImage} resizeMode="cover" />
+        <ProductImage uri={selectedImage || product.imageUrl} style={styles.mainImage} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.thumbRow}>
           {(product.gallery?.length ? product.gallery : [product.imageUrl]).map((image) => (
             <Pressable
@@ -133,7 +145,7 @@ export default function ProductDetailsScreen() {
               style={[styles.thumbFrame, selectedImage === image && styles.thumbFrameActive]}
               onPress={() => setSelectedImage(image)}
             >
-              <Image source={{ uri: image }} style={styles.thumbImage} />
+              <ProductImage uri={image} style={styles.thumbImage} />
             </Pressable>
           ))}
         </ScrollView>
@@ -145,7 +157,7 @@ export default function ProductDetailsScreen() {
           ) : null}
         </View>
         <Text style={styles.meta}>
-          {product.type === "service" ? "Service item" : `Stock: ${product.stock}`} · Rating {product.rating || "4.5"}
+          {product.type === "service" ? "Service item" : `Stock: ${product.stock}`} - Rating {product.rating || "4.5"}
         </Text>
         <View style={styles.actionRow}>
           <Pressable

@@ -11,6 +11,154 @@ const {
 } = require("./catalog");
 
 const DB_PATH = path.join(__dirname, "../../data/db.json");
+const DEFAULT_PRODUCT_IMAGE = "/images/products/product-placeholder.svg";
+const LEGACY_IMAGE_FALLBACKS = [
+  {
+    pattern: /starter shared hosting/i,
+    images: [
+      "/images/products/shared-hosting-starter-01.jpg",
+      "/images/products/shared-hosting-starter-02.jpg"
+    ]
+  },
+  {
+    pattern: /online store hosting/i,
+    images: [
+      "/images/products/online-store-hosting-01.jpg",
+      "/images/products/online-store-hosting-02.jpg"
+    ]
+  },
+  {
+    pattern: /developer deployment hosting/i,
+    images: [
+      "/images/products/git-deployment-support-01.jpg",
+      "/images/products/git-deployment-support-02.jpg"
+    ]
+  },
+  {
+    pattern: /cloud plus hosting/i,
+    images: [
+      "/images/products/business-cloud-hosting-01.jpg",
+      "/images/products/business-cloud-hosting-02.jpg"
+    ]
+  },
+  {
+    pattern: /ssl shield|malware protection/i,
+    images: [
+      "/images/products/ssl-and-malware-protection-01.jpg",
+      "/images/products/ssl-and-malware-protection-02.jpg"
+    ]
+  },
+  {
+    pattern: /website builder hosting/i,
+    images: [
+      "/images/products/business-website-build-01.jpg",
+      "/images/products/business-website-build-02.jpg"
+    ]
+  },
+  {
+    pattern: /domain|dns/i,
+    images: [
+      "/images/products/domain-registration-co-ls-01.jpg",
+      "/images/products/domain-registration-co-ls-02.jpg"
+    ]
+  },
+  {
+    pattern: /canon pixma/i,
+    images: [
+      "/images/products/canon-pixma-g6040-megatank-printer-scanner-01.jpg",
+      "/images/products/canon-pixma-g6040-megatank-printer-scanner-02.jpg"
+    ]
+  },
+  {
+    pattern: /hp elitebook/i,
+    images: [
+      "/images/products/hp-probook-450-g8-01.jpg",
+      "/images/products/hp-probook-450-g8-02.jpg"
+    ]
+  },
+  {
+    pattern: /dell latitude/i,
+    images: [
+      "/images/products/dell-latitude-3410-01.svg",
+      "/images/products/dell-latitude-3410-02.jpg"
+    ]
+  },
+  {
+    pattern: /thinkpad p1/i,
+    images: [
+      "/images/products/lenovo-thinkpad-x1-carbon-gen-12-01.jpg",
+      "/images/products/lenovo-thinkpad-x1-carbon-gen-12-02.jpg"
+    ]
+  },
+  {
+    pattern: /victus|g15|legion|gaming laptop/i,
+    images: [
+      "/images/products/razer-blade-15-01.jpg",
+      "/images/products/razer-blade-15-02.jpg"
+    ]
+  },
+  {
+    pattern: /mac mini/i,
+    images: [
+      "/images/products/apple-macbook-air-m2-01.png",
+      "/images/products/apple-macbook-air-m2-02.png"
+    ]
+  },
+  {
+    pattern: /desktop|workstation|tower|computer bundle/i,
+    images: [
+      "/images/products/datamak-office-computer-bundle-01.jpg",
+      "/images/products/datamak-office-computer-bundle-02.jpg"
+    ]
+  }
+];
+
+const SUBCATEGORY_IMAGE_FALLBACKS = {
+  Laptops: [
+    "/images/products/hp-probook-450-g8-01.jpg",
+    "/images/products/hp-probook-450-g8-02.jpg"
+  ],
+  Desktops: [
+    "/images/products/datamak-office-computer-bundle-01.jpg",
+    "/images/products/datamak-office-computer-bundle-02.jpg"
+  ],
+  "Computer Bundles": [
+    "/images/products/datamak-office-computer-bundle-01.jpg",
+    "/images/products/datamak-office-computer-bundle-02.jpg"
+  ],
+  "Hosting Packages": [
+    "/images/products/shared-hosting-starter-01.jpg",
+    "/images/products/shared-hosting-starter-02.jpg"
+  ],
+  "Ecommerce Services": [
+    "/images/products/online-store-hosting-01.jpg",
+    "/images/products/online-store-hosting-02.jpg"
+  ],
+  "Developer Services": [
+    "/images/products/git-deployment-support-01.jpg",
+    "/images/products/git-deployment-support-02.jpg"
+  ],
+  "Cloud Services": [
+    "/images/products/business-cloud-hosting-01.jpg",
+    "/images/products/business-cloud-hosting-02.jpg"
+  ],
+  "Security Services": [
+    "/images/products/ssl-and-malware-protection-01.jpg",
+    "/images/products/ssl-and-malware-protection-02.jpg"
+  ],
+  "Website Services": [
+    "/images/products/business-website-build-01.jpg",
+    "/images/products/business-website-build-02.jpg"
+  ],
+  "Domain Services": [
+    "/images/products/domain-registration-co-ls-01.jpg",
+    "/images/products/domain-registration-co-ls-02.jpg"
+  ],
+  "Printers & Scanners": [
+    "/images/products/canon-pixma-g6040-megatank-printer-scanner-01.jpg",
+    "/images/products/canon-pixma-g6040-megatank-printer-scanner-02.jpg"
+  ]
+};
 
 const REQUIRED_KEYS = [
   "users",
@@ -37,6 +185,54 @@ function getPool() {
 
 function nowIso() {
   return new Date().toISOString();
+}
+
+function normalizeImageValue(value) {
+  const image = String(value || "").trim();
+  if (!image) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(image) || image.startsWith("/")) {
+    return image;
+  }
+
+  return "";
+}
+
+function normalizeProductImages(product) {
+  const gallery = Array.isArray(product.gallery)
+    ? product.gallery
+        .map(normalizeImageValue)
+        .filter((image) => image && image !== DEFAULT_PRODUCT_IMAGE)
+    : [];
+  const productImage = normalizeImageValue(product.imageUrl);
+  let imageUrl = productImage !== DEFAULT_PRODUCT_IMAGE ? productImage : "";
+  let productGallery = gallery;
+
+  if (!imageUrl) {
+    productGallery = getLocalProductImages(product);
+    imageUrl = productGallery[0] || "";
+  }
+
+  imageUrl = imageUrl || productGallery[0] || DEFAULT_PRODUCT_IMAGE;
+  return {
+    imageUrl,
+    gallery: Array.from(new Set([imageUrl, ...productGallery]))
+  };
+}
+
+function getLocalProductImages(product) {
+  const name = String(product.name || "");
+  const matchedFallback = LEGACY_IMAGE_FALLBACKS.find((fallback) =>
+    fallback.pattern.test(name)
+  );
+
+  if (matchedFallback) {
+    return matchedFallback.images;
+  }
+
+  return SUBCATEGORY_IMAGE_FALLBACKS[product.subcategory] || [];
 }
 
 function toIso(value) {
@@ -127,11 +323,9 @@ function normalizeProduct(product) {
   normalized.specifications = Array.isArray(normalized.specifications)
     ? normalized.specifications
     : [];
-  normalized.gallery = Array.isArray(normalized.gallery)
-    ? normalized.gallery
-    : normalized.imageUrl
-    ? [normalized.imageUrl]
-    : [];
+  const localImages = normalizeProductImages(normalized);
+  normalized.imageUrl = localImages.imageUrl;
+  normalized.gallery = localImages.gallery;
   normalized.updatedAt = normalized.updatedAt || normalized.updated_at || normalized.createdAt || nowIso();
   normalized.createdAt = normalized.createdAt || normalized.created_at || normalized.updatedAt;
   return normalized;
@@ -140,16 +334,72 @@ function normalizeProduct(product) {
 function migrateCatalogProducts(db) {
   db.products = db.products.map(normalizeProduct);
 
-  const existingSubcategories = new Set(
-    db.products.map((product) => `${product.category}::${product.subcategory}`)
-  );
+  const legacyNameMap = {
+    "shared hosting starter": "starter shared hosting",
+    "domain registration .co.ls": "domain & dns essentials",
+    "business website build": "website builder hosting",
+    "pro vps hosting": "managed vps server",
+    "ssl and malware protection": "ssl shield & malware protection",
+    "business cloud hosting": "cloud plus hosting",
+    "git deployment support": "developer deployment hosting",
+    "online store hosting": "online store hosting pro"
+  };
+
   const timestamp = nowIso();
-  buildDemoProducts(timestamp, uuid).forEach((product) => {
-    const key = `${product.category}::${product.subcategory}`;
-    if (!existingSubcategories.has(key)) {
-      db.products.push(product);
-      existingSubcategories.add(key);
+  const seededProducts = buildDemoProducts(timestamp, uuid).map(normalizeProduct);
+  const seededProductKeys = new Map(
+    db.products.map((product, index) => [
+      `${String(product.category).toLowerCase()}::${String(product.name).toLowerCase().trim()}`,
+      index
+    ])
+  );
+
+  seededProducts.forEach((seededProduct) => {
+    const key = `${String(seededProduct.category).toLowerCase()}::${String(
+      seededProduct.name
+    )
+      .toLowerCase()
+      .trim()}`;
+    const existingIndex = seededProductKeys.get(key);
+
+    if (existingIndex === undefined) {
+      db.products.push(seededProduct);
+      seededProductKeys.set(key, db.products.length - 1);
+      return;
     }
+
+    const existingProduct = db.products[existingIndex];
+    db.products[existingIndex] = normalizeProduct({
+      ...existingProduct,
+      description: seededProduct.description,
+      category: seededProduct.category,
+      subcategory: seededProduct.subcategory,
+      type: seededProduct.type,
+      price: seededProduct.price,
+      imageUrl: seededProduct.imageUrl,
+      gallery: seededProduct.gallery,
+      rating: existingProduct.rating || seededProduct.rating,
+      reviewsCount: existingProduct.reviewsCount || seededProduct.reviewsCount,
+      popularity: existingProduct.popularity || seededProduct.popularity,
+      discountPercent: seededProduct.discountPercent,
+      isFeatured: seededProduct.isFeatured,
+      badges: seededProduct.badges,
+      specifications: seededProduct.specifications,
+      updatedAt: timestamp
+    });
+  });
+
+  const activeNames = new Set(
+    db.products.map((product) => String(product.name || "").trim().toLowerCase())
+  );
+
+  db.products = db.products.filter((product) => {
+    const nameKey = String(product.name || "").trim().toLowerCase();
+    const replacementName = legacyNameMap[nameKey];
+    if (!replacementName) {
+      return true;
+    }
+    return !activeNames.has(replacementName);
   });
 
   db.catalogVersion = CATALOG_VERSION;

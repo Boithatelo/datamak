@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "customer@datamak.local",
+      "password": "WrongPassword"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 401', () => pm.response.to.have.status(401));
+      pm.test('Error message returned', () => pm.expect(pm.response.json().message).to.be.a('string'));
+    language: text/javascript
+order: 1000

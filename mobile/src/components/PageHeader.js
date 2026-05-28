@@ -1,7 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { colors, radii, shadows } from "../theme";
 
-export default function PageHeader({ title, subtitle, eyebrow, fallback = "Products", children }) {
+export default function PageHeader({
+  title,
+  subtitle,
+  eyebrow,
+  fallback = "Products",
+  showBack = true,
+  children
+}) {
   const navigation = useNavigation();
 
   const goBack = () => {
@@ -15,9 +23,11 @@ export default function PageHeader({ title, subtitle, eyebrow, fallback = "Produ
   return (
     <>
       <View style={styles.navLine}>
-        <Pressable style={styles.backButton} onPress={goBack} accessibilityLabel="Go back">
-          <Text style={styles.backText}>{"<"}</Text>
-        </Pressable>
+        {showBack ? (
+          <Pressable style={styles.backButton} onPress={goBack} accessibilityLabel="Go back">
+            <Text style={styles.backText}>{"<"}</Text>
+          </Pressable>
+        ) : null}
         <Text style={styles.crumb}>{fallback === "Products" ? "Home / " : ""}{title}</Text>
       </View>
       <View style={styles.hero}>
@@ -46,16 +56,17 @@ const styles = StyleSheet.create({
     borderColor: "rgba(14, 122, 120, 0.24)",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff"
+    backgroundColor: colors.surface,
+    ...shadows.soft
   },
   backText: {
-    color: "#0e7a78",
+    color: colors.primary,
     fontSize: 22,
     fontWeight: "900"
   },
   crumb: {
     flex: 1,
-    color: "#12384b",
+    color: colors.navy,
     fontWeight: "800"
   },
   hero: {
@@ -63,15 +74,16 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderWidth: 1,
     borderColor: "rgba(14, 122, 120, 0.22)",
-    borderRadius: 18,
-    backgroundColor: "#117f94",
+    borderRadius: radii.panel,
+    backgroundColor: "#0b376b",
     padding: 16,
-    marginBottom: 12
+    marginBottom: 12,
+    ...shadows.strong
   },
   heroCircle: {
     position: "absolute",
-    right: -70,
-    top: -86,
+    right: -56,
+    top: -74,
     width: 190,
     height: 190,
     borderRadius: 95,
@@ -93,6 +105,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontSize: 25,
+    lineHeight: 31,
     fontWeight: "900"
   },
   subtitle: {

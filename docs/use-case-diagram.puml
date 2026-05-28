@@ -1,0 +1,102 @@
+@startuml
+title Datamak E-Commerce System - Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Guest Visitor" as Guest
+actor "Registered Customer" as Customer
+actor "Administrator" as Admin
+actor "Simulated Payment\nService" as PaymentService
+
+Customer --|> Guest
+Admin --|> Guest
+
+rectangle "Datamak E-Commerce System\n(Web App, Mobile App, REST API)" {
+  usecase "Browse information\npages" as UC_PublicPages
+  usecase "Register account" as UC_Register
+  usecase "Login" as UC_Login
+  usecase "Request password\nreset" as UC_ForgotPassword
+  usecase "Reset password" as UC_ResetPassword
+  usecase "Browse product\ncatalog" as UC_BrowseCatalog
+  usecase "Search, filter,\nand sort products" as UC_SearchFilter
+  usecase "View product\ndetails" as UC_ProductDetails
+  usecase "View hosting\nplans" as UC_HostingPlans
+
+  usecase "Manage profile" as UC_Profile
+  usecase "Manage wishlist" as UC_Wishlist
+  usecase "Manage shopping\ncart" as UC_Cart
+  usecase "Add item to cart" as UC_AddCart
+  usecase "Update or remove\ncart item" as UC_UpdateCart
+  usecase "Checkout" as UC_Checkout
+  usecase "Apply coupon" as UC_Coupon
+  usecase "Simulate payment" as UC_Payment
+  usecase "Place order" as UC_PlaceOrder
+  usecase "View order history" as UC_OrderHistory
+  usecase "Track order status" as UC_TrackOrder
+  usecase "View recently\nviewed products" as UC_RecentViews
+
+  usecase "View admin dashboard\nsummary" as UC_AdminSummary
+  usecase "Manage products" as UC_ManageProducts
+  usecase "Create product" as UC_CreateProduct
+  usecase "Update product" as UC_UpdateProduct
+  usecase "Delete product" as UC_DeleteProduct
+  usecase "Upload product images" as UC_UploadImages
+  usecase "Manage orders" as UC_ManageOrders
+  usecase "Update order status" as UC_UpdateStatus
+  usecase "Manage users" as UC_ManageUsers
+  usecase "Change user role" as UC_ChangeRole
+}
+
+Guest --> UC_PublicPages
+Guest --> UC_Register
+Guest --> UC_Login
+Guest --> UC_ForgotPassword
+Guest --> UC_ResetPassword
+Guest --> UC_BrowseCatalog
+Guest --> UC_SearchFilter
+Guest --> UC_ProductDetails
+Guest --> UC_HostingPlans
+
+Customer --> UC_Profile
+Customer --> UC_Wishlist
+Customer --> UC_Cart
+Customer --> UC_Checkout
+Customer --> UC_OrderHistory
+Customer --> UC_TrackOrder
+Customer --> UC_RecentViews
+
+Admin --> UC_AdminSummary
+Admin --> UC_ManageProducts
+Admin --> UC_ManageOrders
+Admin --> UC_ManageUsers
+
+UC_BrowseCatalog .> UC_SearchFilter : <<include>>
+UC_ProductDetails .> UC_BrowseCatalog : <<extend>>
+UC_HostingPlans .> UC_BrowseCatalog : <<extend>>
+
+UC_Cart .> UC_AddCart : <<include>>
+UC_Cart .> UC_UpdateCart : <<include>>
+
+UC_Checkout .> UC_Cart : <<include>>
+UC_Checkout .> UC_Coupon : <<extend>>
+UC_Checkout .> UC_Payment : <<include>>
+UC_Checkout .> UC_PlaceOrder : <<include>>
+PaymentService --> UC_Payment
+
+UC_OrderHistory .> UC_TrackOrder : <<include>>
+
+UC_ManageProducts .> UC_CreateProduct : <<include>>
+UC_ManageProducts .> UC_UpdateProduct : <<include>>
+UC_ManageProducts .> UC_DeleteProduct : <<include>>
+UC_ManageProducts .> UC_UploadImages : <<extend>>
+
+UC_ManageOrders .> UC_UpdateStatus : <<include>>
+UC_ManageUsers .> UC_ChangeRole : <<include>>
+
+note right of UC_Payment
+Payment is simulated by the backend
+during checkout for this assignment.
+end note
+
+@enduml

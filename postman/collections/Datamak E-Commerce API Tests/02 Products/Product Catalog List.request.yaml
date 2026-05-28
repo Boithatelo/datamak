@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/products?pageSize=60"
+method: GET
+queryParams:
+  pageSize: "60"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      const products = data.products || [];
+      pm.test('Products returned', () => pm.expect(products.length).to.be.above(0));
+      pm.test('No remote product images', () => {
+        const remote = products.filter((product) => /^https?:\/\//.test(product.imageUrl || '') || (product.gallery || []).some((image) => /^https?:\/\//.test(image || '')));
+        pm.expect(remote.length).to.eql(0);
+      });
+      const physical = products.find((product) => product.type !== 'service' && Number(product.stock || 0) > 0) || products[0];
+      const service = products.find((product) => product.type === 'service') || products[0];
+      pm.environment.set('productId', physical.id);
+      pm.environment.set('checkoutProductId', service.id);
+    language: text/javascript
+order: 2000

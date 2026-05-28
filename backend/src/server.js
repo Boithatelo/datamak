@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
-const { PORT } = require("./config");
+const { PORT, getDatabaseSetupHint } = require("./config");
 const authRoutes = require("./routes/auth");
 const productsRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
@@ -22,6 +22,7 @@ app.use(
 );
 app.use(express.json({ limit: "50mb" }));
 app.use(morgan("dev"));
+app.use("/images", express.static(path.join(__dirname, "../../web/public/images")));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.get("/api/health", (req, res) => {
@@ -53,6 +54,8 @@ async function start() {
 }
 
 start().catch((error) => {
-  console.error("Failed to start backend server:", error.message);
+  const hint = getDatabaseSetupHint();
+  const details = hint ? `${error.message} ${hint}` : error.message;
+  console.error("Failed to start backend server:", details);
   process.exit(1);
 });

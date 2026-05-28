@@ -1,0 +1,450 @@
+{
+  "id": "7d8bb0b4-6af8-4b52-8f14-datamakwebui",
+  "version": "2.0",
+  "name": "Datamak Web UI Selenium Tests",
+  "url": "http://localhost:5173",
+  "tests": [
+    {
+      "id": "f7dff5de-d1e9-4bb9-8579-loggedoutcart",
+      "name": "Logged-out add to cart shows login dialog",
+      "commands": [
+        {
+          "id": "c1",
+          "comment": "Start from logged-out state.",
+          "command": "open",
+          "target": "/catalog?category=Computers",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c2",
+          "comment": "",
+          "command": "executeScript",
+          "target": "window.localStorage.clear(); window.sessionStorage.clear();",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c3",
+          "comment": "",
+          "command": "open",
+          "target": "/catalog?category=Computers",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c4",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1366x768",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c5",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=(//button[contains(normalize-space(.),'Add to Cart')])[1]",
+          "targets": [],
+          "value": "15000"
+        },
+        {
+          "id": "c6",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=(//button[contains(normalize-space(.),'Add to Cart')])[1]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c7",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=.message-dialog",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c8",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=.message-dialog h2",
+          "targets": [],
+          "value": "Login Required"
+        },
+        {
+          "id": "c9",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=.message-dialog p",
+          "targets": [],
+          "value": "Please login or register to add products to cart."
+        },
+        {
+          "id": "c10",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[normalize-space()='OK']",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "c2153cf7-1d4d-4748-8e8a-customerlogin",
+      "name": "Customer login works",
+      "commands": [
+        {
+          "id": "c11",
+          "comment": "",
+          "command": "open",
+          "target": "/auth",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c12",
+          "comment": "",
+          "command": "executeScript",
+          "target": "window.localStorage.clear(); window.sessionStorage.clear();",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c13",
+          "comment": "",
+          "command": "open",
+          "target": "/auth",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c14",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=input[name='email']",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c15",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[name='email']",
+          "targets": [],
+          "value": "customer@datamak.local"
+        },
+        {
+          "id": "c16",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[name='password']",
+          "targets": [],
+          "value": "Customer@123"
+        },
+        {
+          "id": "c17",
+          "comment": "",
+          "command": "click",
+          "target": "css=.auth-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c18",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//a[normalize-space()='Hi, Sample Customer']",
+          "targets": [],
+          "value": "15000"
+        },
+        {
+          "id": "c19",
+          "comment": "",
+          "command": "assertText",
+          "target": "xpath=//a[normalize-space()='Hi, Sample Customer']",
+          "targets": [],
+          "value": "Hi, Sample Customer"
+        }
+      ]
+    },
+    {
+      "id": "de33f567-835e-4b46-8b2f-catalogsort",
+      "name": "Catalog sort menu works",
+      "commands": [
+        {
+          "id": "c20",
+          "comment": "",
+          "command": "open",
+          "target": "/catalog?category=Computers",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c21",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=.catalog-sort-trigger",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c22",
+          "comment": "",
+          "command": "click",
+          "target": "css=.catalog-sort-trigger",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c23",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//button[normalize-space()='Best Discount']",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c24",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[normalize-space()='Best Discount']",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c25",
+          "comment": "",
+          "command": "waitForText",
+          "target": "css=.catalog-sort-trigger small",
+          "targets": [],
+          "value": "Best Discount"
+        },
+        {
+          "id": "c26",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=.product-card",
+          "targets": [],
+          "value": "15000"
+        }
+      ]
+    },
+    {
+      "id": "d3679ff9-54a5-412f-810f-customercheckout",
+      "name": "Customer adds hosting plan and checks out",
+      "commands": [
+        {
+          "id": "c27",
+          "comment": "",
+          "command": "open",
+          "target": "/hosting",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c28",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=(//button[normalize-space()='Buy Plan'])[1]",
+          "targets": [],
+          "value": "15000"
+        },
+        {
+          "id": "c29",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=(//button[normalize-space()='Buy Plan'])[1]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c30",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=.message-dialog",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c31",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=.message-dialog p",
+          "targets": [],
+          "value": "Product added to cart."
+        },
+        {
+          "id": "c32",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[normalize-space()='OK']",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c33",
+          "comment": "",
+          "command": "click",
+          "target": "css=a[href='/cart']",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c34",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "linkText=Proceed to Checkout",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c35",
+          "comment": "",
+          "command": "click",
+          "target": "linkText=Proceed to Checkout",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c36",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//button[normalize-space()='Continue']",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c37",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[normalize-space()='Continue']",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c38",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//button[normalize-space()='Place Order']",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c39",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[normalize-space()='Place Order']",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c40",
+          "comment": "",
+          "command": "waitForText",
+          "target": "css=.page-hero-copy h1",
+          "targets": [],
+          "value": "Payment Successful"
+        }
+      ]
+    },
+    {
+      "id": "f9374bad-d284-48ab-a6df-adminlogin",
+      "name": "Admin login opens dashboard",
+      "commands": [
+        {
+          "id": "c41",
+          "comment": "",
+          "command": "open",
+          "target": "/auth",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c42",
+          "comment": "",
+          "command": "executeScript",
+          "target": "window.localStorage.clear(); window.sessionStorage.clear();",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c43",
+          "comment": "",
+          "command": "open",
+          "target": "/auth",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c44",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=input[name='email']",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "c45",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[name='email']",
+          "targets": [],
+          "value": "admin@datamak.local"
+        },
+        {
+          "id": "c46",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[name='password']",
+          "targets": [],
+          "value": "Admin@123"
+        },
+        {
+          "id": "c47",
+          "comment": "",
+          "command": "click",
+          "target": "css=.auth-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c48",
+          "comment": "",
+          "command": "waitForText",
+          "target": "css=.page-hero-copy h1",
+          "targets": [],
+          "value": "Admin Control Center"
+        },
+        {
+          "id": "c49",
+          "comment": "",
+          "command": "waitForText",
+          "target": "css=.admin-stats-card span",
+          "targets": [],
+          "value": "Admin Dashboard"
+        }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "849f418d-01bf-43bd-a4a9-defaultsuite",
+      "name": "Datamak Web UI Regression Suite",
+      "persistSession": true,
+      "parallel": false,
+      "timeout": 300,
+      "tests": [
+        "f7dff5de-d1e9-4bb9-8579-loggedoutcart",
+        "c2153cf7-1d4d-4748-8e8a-customerlogin",
+        "de33f567-835e-4b46-8b2f-catalogsort",
+        "d3679ff9-54a5-412f-810f-customercheckout",
+        "f9374bad-d284-48ab-a6df-adminlogin"
+      ]
+    }
+  ],
+  "urls": [
+    "http://localhost:5173/"
+  ],
+  "plugins": []
+}

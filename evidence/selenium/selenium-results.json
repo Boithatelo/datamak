@@ -1,0 +1,37 @@
+{
+  "tool": "Selenium WebDriver",
+  "browser": "Chrome",
+  "baseUrl": "http://localhost:5173",
+  "apiBaseUrl": "http://localhost:4000/api",
+  "ranAt": "2026-05-11T07:39:27.617Z",
+  "total": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Logged-out add to cart shows login dialog",
+      "status": "PASS",
+      "durationMs": 3599
+    },
+    {
+      "name": "Customer login works",
+      "status": "PASS",
+      "durationMs": 4079
+    },
+    {
+      "name": "Catalog sort menu works",
+      "status": "PASS",
+      "durationMs": 2809
+    },
+    {
+      "name": "Customer adds hosting plan and checks out",
+      "status": "PASS",
+      "durationMs": 4112
+    },
+    {
+      "name": "Admin login opens dashboard",
+      "status": "PASS",
+      "durationMs": 3380
+    }
+  ]
+}

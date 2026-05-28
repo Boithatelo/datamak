@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{baseUrl}}/products?pageSize=60&sort=price_asc"
+method: GET
+queryParams:
+  pageSize: "60"
+  sort: price_asc
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const products = pm.response.json().products || [];
+      pm.test('Prices sorted ascending', () => {
+        for (let index = 1; index < products.length; index += 1) {
+          pm.expect(Number(products[index - 1].price)).to.be.at.most(Number(products[index].price));
+        }
+      });
+    language: text/javascript
+order: 4000

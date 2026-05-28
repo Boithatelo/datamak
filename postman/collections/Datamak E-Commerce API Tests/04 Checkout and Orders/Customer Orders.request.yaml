@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/orders"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{customerToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status is 200', () => pm.response.to.have.status(200));
+      const orders = pm.response.json().orders || [];
+      pm.test('Order list returned', () => pm.expect(orders.length).to.be.above(0));
+    language: text/javascript
+order: 3000

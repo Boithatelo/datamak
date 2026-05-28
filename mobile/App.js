@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ActivityIndicator, Text, View } from "react-native";
 import AuthScreen from "./src/screens/AuthScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 import ProductsScreen from "./src/screens/ProductsScreen";
 import CartScreen from "./src/screens/CartScreen";
 import OrdersScreen from "./src/screens/OrdersScreen";
@@ -18,10 +19,13 @@ import AdminScreen from "./src/screens/AdminScreen";
 import { AuthProvider, useAuth } from "./src/context/AuthContext";
 import { CartProvider, useCart } from "./src/context/CartContext";
 import { ShopProvider, useShop } from "./src/context/ShopContext";
+import BrandLogo from "./src/components/BrandLogo";
+import { colors } from "./src/theme";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const ICONS = {
+  Home: "D",
   Products: "P",
   Hosting: "H",
   Wishlist: "W",
@@ -55,28 +59,37 @@ function AppTabs() {
 
   return (
     <Tab.Navigator
+      initialRouteName={user?.role === "admin" ? "Admin" : "Home"}
       screenOptions={({ route }) => ({
         headerStyle: {
-          backgroundColor: "#0c3e58"
+          backgroundColor: "#ffffff"
         },
+        headerShadowVisible: true,
+        headerTitle: () => <BrandLogo compact />,
         headerTitleStyle: {
-          fontWeight: "700"
+          fontWeight: "900",
+          color: colors.navy
         },
-        headerTintColor: "#f6fbff",
-        sceneStyle: { backgroundColor: "#f4f8f7" },
-        tabBarActiveTintColor: "#0e7a78",
-        tabBarInactiveTintColor: "#6b7f89",
+        headerTintColor: colors.navy,
+        sceneStyle: { backgroundColor: colors.bg },
+        tabBarActiveTintColor: colors.webBlue,
+        tabBarInactiveTintColor: "#53647c",
         tabBarStyle: {
           backgroundColor: "#ffffff",
-          borderTopColor: "#d5e2de",
+          borderTopColor: "#e8edf5",
           borderTopWidth: 1,
-          height: 66,
+          height: 68,
           paddingBottom: 8,
-          paddingTop: 8
+          paddingTop: 8,
+          shadowColor: "#0f172a",
+          shadowOpacity: 0.08,
+          shadowRadius: 18,
+          shadowOffset: { width: 0, height: -6 },
+          elevation: 8
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: "700"
+          fontWeight: "900"
         },
         tabBarIcon: ({ color, focused }) => (
           <Text style={{ fontSize: focused ? 16 : 14, color, fontWeight: "800" }}>
@@ -85,6 +98,7 @@ function AppTabs() {
         )
       })}
     >
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Products" component={ProductsScreen} />
       <Tab.Screen name="Hosting" component={HostingPlansScreen} />
       <Tab.Screen
@@ -109,6 +123,8 @@ function AppTabs() {
 }
 
 function AppStack() {
+  const { user } = useAuth();
+
   return (
     <CartProvider>
       <ShopProvider>

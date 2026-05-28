@@ -1,0 +1,57 @@
+{
+  "orders": [
+    {
+      "id": "ord-001",
+      "orderNumber": "DTMK-20260511-1001",
+      "userId": "usr-customer-001",
+      "customer": {
+        "email": "customer@datamak.test",
+        "name": "Sample Customer"
+      },
+      "items": [
+        {
+          "productId": "prd-comp-001",
+          "name": "Dell Latitude 5440 Intel Core i5",
+          "quantity": 1,
+          "price": 12500,
+          "subtotal": 12500
+        },
+        {
+          "productId": "prd-host-001",
+          "name": "Starter Shared Hosting Linux",
+          "quantity": 1,
+          "price": 299,
+          "subtotal": 299
+        }
+      ],
+      "totals": {
+        "subtotal": 12799,
+        "tax": 1919.85,
+        "deliveryFee": 120,
+        "discountAmount": 0,
+        "grandTotal": 14838.85
+      },
+      "total": 14838.85,
+      "payment": {
+        "method": "Card",
+        "transactionRef": "TX-20260511-ABCD"
+      },
+      "shippingAddress": "Not required",
+      "billingAddress": "Not required",
+      "status": "Paid",
+      "createdAt": "2026-05-10T09:30:00.000Z",
+      "statusHistory": [
+        {
+          "timestamp": "2026-05-10T09:30:00.000Z",
+          "status": "Pending",
+          "note": "Order placed by customer."
+        },
+        {
+          "timestamp": "2026-05-10T09:31:30.000Z",
+          "status": "Paid",
+          "note": "Payment approved."
+        }
+      ]
+    }
+  ]
+}
