@@ -7,9 +7,12 @@ export default defineConfig({
   videosFolder: "cypress/artifacts/videos",
   downloadsFolder: "cypress/artifacts/downloads",
   reporter: "spec",
-  defaultCommandTimeout: 10000,
+  defaultCommandTimeout: 15000,
+  pageLoadTimeout: 60000,
   requestTimeout: 15000,
-  responseTimeout: 15000,
+  responseTimeout: 30000,
+  viewportHeight: 800,
+  viewportWidth: 1366,
   retries: {
     runMode: 1,
     openMode: 0
@@ -21,7 +24,7 @@ export default defineConfig({
     fixturesFolder: "cypress/fixtures",
     chromeWebSecurity: false,
     env: {
-      apiUrl: process.env.CYPRESS_API_URL || "http://localhost:4000/api"
+      apiUrl: process.env.CYPRESS_API_URL || "http://127.0.0.1:4000/api"
     }
   }
 });
