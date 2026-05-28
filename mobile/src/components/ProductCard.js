@@ -21,7 +21,11 @@ export default function ProductCard({
     <View style={styles.card}>
       <View style={styles.imageFrame}>
         <ProductImage uri={product.imageUrl} style={styles.image} />
-        <Pressable style={styles.wishlist} onPress={() => onWishlist?.(product.id)}>
+        <Pressable
+          accessibilityLabel="Toggle wishlist"
+          style={styles.wishlist}
+          onPress={() => onWishlist?.(product.id)}
+        >
           <Text style={[styles.wishlistText, wishlisted && styles.wishlistActive]}>♥</Text>
         </Pressable>
       </View>

@@ -22,7 +22,8 @@
     "test:e2e:demo:edge": "set PLAYWRIGHT_SLOWMO=900&& set PLAYWRIGHT_DEMO=1&& playwright test --project=edge --headed --workers=1",
     "test:e2e:demo:firefox": "set PLAYWRIGHT_SLOWMO=900&& set PLAYWRIGHT_DEMO=1&& playwright test --project=firefox --headed --workers=1",
     "test:e2e:report": "playwright show-report",
-    "test:e2e:install": "playwright install"
+    "test:e2e:install": "playwright install",
+    "test": "vitest --run --reporter verbose"
   },
   "dependencies": {
     "axios": "^1.7.2",
@@ -32,8 +33,13 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^4.3.2",
     "cypress": "^13.15.2",
-    "vite": "^5.4.10"
+    "jsdom": "^29.1.1",
+    "vite": "^5.4.10",
+    "vitest": "^4.1.7"
   }
 }
