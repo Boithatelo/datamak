@@ -1358,26 +1358,236 @@ td select {
 }
 
 .message-dialog {
-  width: min(390px, calc(100vw - 2rem));
-  padding: 1.4rem;
+  width: min(326px, calc(100vw - 2rem));
+  min-height: 314px;
+  border: 1px solid rgba(224, 236, 242, 0.92);
+  border-radius: 18px;
+  padding: 1.05rem 1.45rem 1.35rem;
   display: grid;
-  gap: 0.8rem;
+  justify-items: center;
+  gap: 0.64rem;
+  overflow: hidden;
   text-align: center;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(33, 184, 154, 0.08), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+  box-shadow:
+    0 24px 60px rgba(6, 29, 53, 0.22),
+    0 10px 26px rgba(15, 114, 109, 0.12);
+}
+
+.message-dialog-close {
+  position: absolute;
+  top: 0.48rem;
+  right: 0.48rem;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #08273b;
+  background: #d9eef0;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(10, 55, 78, 0.12);
+}
+
+.message-dialog-close:hover,
+.message-dialog-close:focus-visible {
+  background: #c7e7eb;
+}
+
+.message-dialog-close svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+.message-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.message-confetti span {
+  position: absolute;
+  width: 8px;
+  height: 4px;
+  border-radius: 2px;
+  background: #17af9b;
+}
+
+.message-confetti span:nth-child(1) {
+  top: 2.15rem;
+  left: 3.4rem;
+  transform: rotate(28deg);
+}
+
+.message-confetti span:nth-child(2) {
+  top: 4rem;
+  left: 1.35rem;
+  background: #15b6a4;
+  transform: rotate(212deg);
+}
+
+.message-confetti span:nth-child(3) {
+  top: 1.4rem;
+  right: 3rem;
+  background: #f6c20f;
+  transform: rotate(112deg);
+}
+
+.message-confetti span:nth-child(4) {
+  top: 5rem;
+  right: 1.55rem;
+  background: #20b79e;
+  transform: rotate(22deg);
+}
+
+.message-confetti span:nth-child(5) {
+  top: 7.15rem;
+  left: 2rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 0;
+  background: transparent;
+}
+
+.message-confetti span:nth-child(5)::before,
+.message-confetti span:nth-child(5)::after,
+.message-confetti span:nth-child(6)::before,
+.message-confetti span:nth-child(6)::after {
+  content: "";
+  position: absolute;
+  background: #46bfb4;
+}
+
+.message-confetti span:nth-child(5)::before,
+.message-confetti span:nth-child(6)::before {
+  width: 9px;
+  height: 2px;
+  top: 3.5px;
+  left: 0;
+}
+
+.message-confetti span:nth-child(5)::after,
+.message-confetti span:nth-child(6)::after {
+  width: 2px;
+  height: 9px;
+  top: 0;
+  left: 3.5px;
+}
+
+.message-confetti span:nth-child(6) {
+  top: 7.45rem;
+  right: 2.5rem;
+  width: 9px;
+  height: 9px;
+  background: transparent;
+}
+
+.message-confetti span:nth-child(7) {
+  top: 9rem;
+  left: 3.8rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c8cfab;
+}
+
+.message-confetti span:nth-child(8) {
+  top: 9rem;
+  right: 3.5rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 0;
+  background: #f6c20f;
+  transform: rotate(45deg);
+}
+
+.message-dialog-icon {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin-top: 0.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 34% 22%, rgba(255, 255, 255, 0.22), transparent 32%),
+    linear-gradient(145deg, #1bcbb0 0%, #007a6f 100%);
+  box-shadow:
+    0 22px 34px rgba(1, 124, 111, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.message-dialog-icon svg {
+  width: 62px;
+  height: 62px;
+  fill: currentColor;
+}
+
+.message-dialog-icon circle {
+  fill: #d8fff6;
+}
+
+.message-dialog-icon .message-dialog-check {
+  fill: none;
+  stroke: #0a8e7f;
+  stroke-width: 4.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .message-dialog h2 {
+  margin: 0.15rem 0 0;
   color: #07142a;
-  font-size: 1.25rem;
+  font-size: 1.42rem;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.message-dialog h2 span {
+  color: #0a8f7c;
 }
 
 .message-dialog p {
-  color: var(--muted);
+  margin: 0 0 0.6rem;
+  color: #7b8b9c;
   font-weight: 700;
+  line-height: 1.35;
 }
 
 .message-dialog .btn {
-  justify-self: center;
-  min-width: 110px;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  border: 0;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.54rem;
+  background: linear-gradient(180deg, #10a690 0%, #067967 100%);
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 0;
+  box-shadow: 0 12px 24px rgba(3, 119, 101, 0.28);
+}
+
+.message-dialog .btn:hover,
+.message-dialog .btn:focus-visible {
+  background: linear-gradient(180deg, #13b59c 0%, #07816f 100%);
+  transform: translateY(-1px);
+}
+
+.message-dialog .btn svg {
+  width: 19px;
+  height: 19px;
+  fill: currentColor;
 }
 
 .cart-navline {
