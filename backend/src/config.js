@@ -90,8 +90,16 @@ function hasPlaceholderDatabaseUrl(databaseUrl) {
 const PORT = Number(process.env.PORT) || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
 const TOKEN_EXPIRY = "7d";
-const DATABASE_URL =
+const RAW_DATABASE_URL =
   process.env.DATABASE_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.POSTGRES_PRISMA_URL ||
+  process.env.DATABASE_URL_UNPOOLED ||
+  process.env.POSTGRES_URL_NON_POOLING ||
+  process.env.POSTGRES_URL_NO_SSL ||
+  "";
+const DATABASE_URL =
+  RAW_DATABASE_URL ||
   DEFAULT_DATABASE_URL;
 const PG_SSL =
   process.env.PG_SSL === undefined
@@ -132,12 +140,12 @@ function getPgClientConfig(connectionString = DATABASE_URL) {
 function getDatabaseSetupHint() {
   const hints = [];
 
-  if (!process.env.DATABASE_URL) {
+  if (!RAW_DATABASE_URL) {
     if (!envFileLoaded) {
       hints.push("Create backend/.env by copying backend/.env.example.");
     }
     hints.push(
-      "Set DATABASE_URL with your real PostgreSQL password, for example: postgres://postgres:<your_password>@localhost:5432/datamak_ecommerce"
+      "Set DATABASE_URL or POSTGRES_URL with your real PostgreSQL connection string."
     );
   }
 
@@ -154,6 +162,14 @@ function getDatabaseSetupHint() {
 
 function getRuntimeConfigErrors() {
   const errors = [];
+
+  if (process.env.NODE_ENV === "production" && !RAW_DATABASE_URL) {
+    errors.push("Set DATABASE_URL or POSTGRES_URL before deploying to production.");
+  }
+
+  if (process.env.NODE_ENV === "production" && isLocalDatabaseUrl(DATABASE_URL)) {
+    errors.push("Production DATABASE_URL cannot point to localhost.");
+  }
 
   if (hasPlaceholderDatabaseUrl(DATABASE_URL)) {
     errors.push("DATABASE_URL still contains placeholder values.");
