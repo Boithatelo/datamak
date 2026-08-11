@@ -6280,6 +6280,932 @@ tr:last-child td {
   }
 }
 
+/* Final success page viewport fit */
+.checkout-app-shell .success-redesign {
+  min-height: calc(100vh - 72px);
+  padding: 1rem 1rem 1.15rem;
+}
+
+.checkout-app-shell .success-shell {
+  width: min(1180px, calc(100vw - 2rem));
+  gap: 0.65rem;
+}
+
+.checkout-app-shell .success-navline {
+  min-height: 38px;
+}
+
+.checkout-app-shell .success-back {
+  width: 38px;
+  height: 38px;
+}
+
+.checkout-app-shell .success-hero {
+  min-height: 210px;
+  grid-template-columns: 170px minmax(0, 1fr) 280px;
+  gap: 1rem;
+  padding: 1.2rem 1.55rem 0.9rem;
+}
+
+.checkout-app-shell .success-check-orbit {
+  width: 150px;
+  height: 150px;
+}
+
+.checkout-app-shell .success-check-ring {
+  width: 76px;
+  height: 76px;
+}
+
+.checkout-app-shell .success-check-ring svg {
+  width: 3.1rem;
+  height: 3.1rem;
+}
+
+.checkout-app-shell .success-hero-copy h1 {
+  margin: 0.18rem 0;
+  font-size: clamp(1.9rem, 3.3vw, 2.55rem);
+}
+
+.checkout-app-shell .success-hero-copy p {
+  font-size: 0.92rem;
+}
+
+.checkout-app-shell .success-hero-cards {
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+}
+
+.checkout-app-shell .success-hero-cards article {
+  min-height: 54px;
+  padding: 0.55rem 0.65rem;
+  gap: 0.55rem;
+}
+
+.checkout-app-shell .success-hero-cards svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.checkout-app-shell .success-hero-cards span {
+  font-size: 0.76rem;
+}
+
+.checkout-app-shell .success-bag-scene {
+  min-height: 170px;
+}
+
+.checkout-app-shell .success-bag {
+  right: 78px;
+  bottom: 8px;
+  width: 104px;
+  height: 118px;
+}
+
+.checkout-app-shell .success-bag::before {
+  top: -24px;
+  width: 52px;
+  height: 46px;
+  border-width: 5px;
+}
+
+.checkout-app-shell .success-bag span {
+  font-size: 2.75rem;
+}
+
+.checkout-app-shell .success-box {
+  right: 30px;
+  bottom: 32px;
+  width: 108px;
+  height: 76px;
+}
+
+.checkout-app-shell .success-shield {
+  width: 56px;
+  height: 56px;
+  border-width: 2px;
+}
+
+.checkout-app-shell .success-confirmation-card {
+  padding: 1.15rem 1.35rem;
+  gap: 0.85rem;
+}
+
+.checkout-app-shell .success-confirmation-grid {
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.85fr);
+  gap: 0.8rem;
+}
+
+.checkout-app-shell .success-redesign .success-summary-card {
+  padding: 0.75rem 0.95rem;
+}
+
+.checkout-app-shell .success-redesign .success-meta-row {
+  grid-template-columns: minmax(150px, 0.52fr) minmax(0, 1fr);
+  padding: 0.55rem 0;
+}
+
+.checkout-app-shell .success-next-card {
+  padding: 0.85rem 1rem;
+}
+
+.checkout-app-shell .success-actions {
+  gap: 0.7rem;
+}
+
+.checkout-app-shell .success-primary-action,
+.checkout-app-shell .success-light-action {
+  min-width: 210px;
+  min-height: 42px;
+}
+
+@media (max-height: 820px) and (min-width: 900px) {
+  .checkout-app-shell .success-redesign {
+    min-height: auto;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .checkout-app-shell .success-shell {
+    gap: 0.5rem;
+  }
+
+  .checkout-app-shell .success-navline {
+    min-height: 32px;
+  }
+
+  .checkout-app-shell .success-back {
+    width: 34px;
+    height: 34px;
+  }
+
+  .checkout-app-shell .success-breadcrumbs {
+    font-size: 0.9rem;
+  }
+
+  .checkout-app-shell .success-hero {
+    min-height: 148px;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .checkout-app-shell .success-check-orbit {
+    width: 88px;
+    height: 88px;
+  }
+
+  .checkout-app-shell .success-check-orbit::before {
+    inset: 10px;
+  }
+
+  .checkout-app-shell .success-check-orbit::after {
+    inset: 22px;
+  }
+
+  .checkout-app-shell .success-check-ring {
+    width: 48px;
+    height: 48px;
+  }
+
+  .checkout-app-shell .success-check-ring svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .checkout-app-shell .success-check-orbit i {
+    width: 6px;
+    height: 6px;
+  }
+
+  .checkout-app-shell .success-kicker {
+    font-size: 0.68rem;
+  }
+
+  .checkout-app-shell .success-hero-copy h1 {
+    margin: 0.08rem 0;
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    line-height: 1.02;
+  }
+
+  .checkout-app-shell .success-hero-copy p {
+    font-size: 0.72rem;
+  }
+
+  .checkout-app-shell .success-hero-cards {
+    gap: 0.45rem;
+    margin-top: 0.35rem;
+  }
+
+  .checkout-app-shell .success-hero-cards article {
+    min-height: 38px;
+    padding: 0.32rem 0.45rem;
+    gap: 0.38rem;
+  }
+
+  .checkout-app-shell .success-hero-cards svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .checkout-app-shell .success-hero-cards span {
+    gap: 0.04rem;
+    font-size: 0.6rem;
+  }
+
+  .checkout-app-shell .success-bag-scene {
+    display: none;
+  }
+
+  .checkout-app-shell .success-confirmation-card {
+    padding: 0.62rem 0.85rem;
+    gap: 0.48rem;
+  }
+
+  .checkout-app-shell .success-confirmation-head,
+  .checkout-app-shell .success-confirmation-title {
+    gap: 0.5rem;
+  }
+
+  .checkout-app-shell .success-confirmation-title > span {
+    width: 32px;
+    height: 32px;
+  }
+
+  .checkout-app-shell .success-confirmation-title svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .checkout-app-shell .success-confirmation-title h2 {
+    font-size: 0.95rem;
+  }
+
+  .checkout-app-shell .success-confirmation-title p,
+  .checkout-app-shell .success-verified {
+    font-size: 0.7rem;
+  }
+
+  .checkout-app-shell .success-verified {
+    padding: 0.34rem 0.52rem;
+  }
+
+  .checkout-app-shell .success-confirmation-grid {
+    gap: 0.55rem;
+  }
+
+  .checkout-app-shell .success-redesign .success-summary-card,
+  .checkout-app-shell .success-next-card {
+    padding: 0.48rem 0.6rem;
+  }
+
+  .checkout-app-shell .success-redesign .success-meta-row {
+    grid-template-columns: minmax(132px, 0.45fr) minmax(0, 1fr);
+    padding: 0.25rem 0;
+  }
+
+  .checkout-app-shell .success-redesign .success-meta-label,
+  .checkout-app-shell .success-redesign .success-meta-value {
+    font-size: 0.68rem;
+  }
+
+  .checkout-app-shell .success-redesign .success-meta-label span {
+    width: 20px;
+    height: 20px;
+  }
+
+  .checkout-app-shell .success-redesign .success-meta-value:not(.is-code) {
+    font-size: 0.78rem;
+  }
+
+  .checkout-app-shell .success-mail-icon {
+    display: none;
+  }
+
+  .checkout-app-shell .success-next-card h2 {
+    margin-bottom: 0.22rem;
+    font-size: 0.88rem;
+  }
+
+  .checkout-app-shell .success-next-card ul {
+    gap: 0.14rem;
+  }
+
+  .checkout-app-shell .success-next-card li {
+    padding-left: 1rem;
+    font-size: 0.64rem;
+    line-height: 1.24;
+  }
+
+  .checkout-app-shell .success-next-card li::before {
+    top: 0.08rem;
+    width: 9px;
+    height: 9px;
+    border-width: 1px;
+  }
+
+  .checkout-app-shell .success-next-card li::after {
+    left: 3px;
+    top: 0.22rem;
+    width: 3px;
+    height: 5px;
+    border-width: 1px;
+  }
+
+  .checkout-app-shell .success-primary-action,
+  .checkout-app-shell .success-light-action {
+    min-width: 180px;
+    min-height: 34px;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 1120px) {
+  .checkout-app-shell .success-hero,
+  .checkout-app-shell .success-confirmation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-app-shell .success-bag-scene {
+    display: none;
+  }
+
+  .checkout-app-shell .success-hero-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .checkout-app-shell .success-redesign {
+    padding: 1rem 0.75rem 1.4rem;
+  }
+
+  .checkout-app-shell .success-shell {
+    width: 100%;
+  }
+
+  .checkout-app-shell .success-hero,
+  .checkout-app-shell .success-confirmation-card {
+    padding: 1.2rem;
+  }
+
+  .checkout-app-shell .success-check-orbit {
+    width: 150px;
+    height: 150px;
+  }
+
+  .checkout-app-shell .success-confirmation-head,
+  .checkout-app-shell .success-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .checkout-app-shell .success-redesign .success-meta-row {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-app-shell .success-redesign .success-meta-value {
+    text-align: left;
+    word-break: break-word;
+  }
+
+  .checkout-app-shell .success-primary-action,
+  .checkout-app-shell .success-light-action {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* Checkout success compact fit pass */
+.success-redesign {
+  min-height: calc(100vh - 72px);
+  padding: 1rem 1rem 1.15rem;
+}
+
+.success-shell {
+  width: min(1180px, calc(100vw - 2rem));
+  gap: 0.65rem;
+}
+
+.success-navline {
+  min-height: 38px;
+}
+
+.success-back {
+  width: 38px;
+  height: 38px;
+}
+
+.success-hero {
+  min-height: 210px;
+  border-radius: 14px 14px 0 0;
+  grid-template-columns: 170px minmax(0, 1fr) 280px;
+  gap: 1rem;
+  padding: 1.2rem 1.55rem 0.9rem;
+}
+
+.success-hero::after {
+  right: -8rem;
+  top: 2.2rem;
+  width: 440px;
+  height: 150px;
+}
+
+.success-check-orbit {
+  width: 150px;
+  height: 150px;
+}
+
+.success-check-orbit::before {
+  inset: 18px;
+}
+
+.success-check-orbit::after {
+  inset: 34px;
+}
+
+.success-check-ring {
+  width: 76px;
+  height: 76px;
+}
+
+.success-check-ring svg {
+  width: 3.1rem;
+  height: 3.1rem;
+}
+
+.success-check-orbit i {
+  width: 7px;
+  height: 7px;
+}
+
+.success-hero-copy {
+  gap: 0.28rem;
+}
+
+.success-kicker {
+  font-size: 0.86rem;
+}
+
+.success-hero-copy h1 {
+  margin: 0.18rem 0 0.18rem;
+  font-size: clamp(1.9rem, 3.3vw, 2.55rem);
+}
+
+.success-hero-copy p {
+  font-size: 0.92rem;
+}
+
+.success-hero-cards {
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+}
+
+.success-hero-cards article {
+  min-height: 54px;
+  padding: 0.55rem 0.65rem;
+  gap: 0.55rem;
+}
+
+.success-hero-cards svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.success-hero-cards span {
+  font-size: 0.76rem;
+}
+
+.success-bag-scene {
+  min-height: 170px;
+}
+
+.success-bag {
+  right: 78px;
+  bottom: 8px;
+  width: 104px;
+  height: 118px;
+}
+
+.success-bag::before {
+  top: -24px;
+  width: 52px;
+  height: 46px;
+  border-width: 5px;
+}
+
+.success-bag span {
+  font-size: 2.75rem;
+}
+
+.success-box {
+  right: 30px;
+  bottom: 32px;
+  width: 108px;
+  height: 76px;
+}
+
+.success-shield {
+  width: 56px;
+  height: 56px;
+  border-width: 2px;
+  border-radius: 18px 18px 22px 22px;
+}
+
+.success-confirmation-card {
+  padding: 1.15rem 1.35rem;
+  gap: 0.85rem;
+}
+
+.success-confirmation-head,
+.success-confirmation-title {
+  gap: 0.75rem;
+}
+
+.success-confirmation-title > span {
+  width: 46px;
+  height: 46px;
+}
+
+.success-confirmation-title svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.success-confirmation-title h2 {
+  font-size: 1.18rem;
+}
+
+.success-confirmation-title p {
+  margin-top: 0.12rem;
+  font-size: 0.9rem;
+}
+
+.success-verified {
+  padding: 0.48rem 0.68rem;
+  font-size: 0.86rem;
+}
+
+.success-confirmation-grid {
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.85fr);
+  gap: 0.8rem;
+}
+
+.success-redesign .success-summary-card {
+  padding: 0.75rem 0.95rem;
+}
+
+.success-redesign .success-meta-row {
+  grid-template-columns: minmax(150px, 0.52fr) minmax(0, 1fr);
+  padding: 0.55rem 0;
+}
+
+.success-redesign .success-meta-label {
+  gap: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.success-redesign .success-meta-label span {
+  width: 28px;
+  height: 28px;
+}
+
+.success-redesign .success-meta-value {
+  font-size: 0.88rem;
+}
+
+.success-redesign .success-meta-value:not(.is-code) {
+  font-size: 0.98rem;
+}
+
+.success-next-card {
+  padding: 0.85rem 1rem;
+}
+
+.success-mail-icon {
+  width: 58px;
+  height: 44px;
+  margin-bottom: 0.35rem;
+}
+
+.success-mail-icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0.36rem;
+}
+
+.success-next-card h2 {
+  margin-bottom: 0.45rem;
+  font-size: 1.1rem;
+}
+
+.success-next-card ul {
+  gap: 0.34rem;
+}
+
+.success-next-card li {
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.success-next-card li::before {
+  top: 0.18rem;
+  width: 12px;
+  height: 12px;
+}
+
+.success-next-card li::after {
+  left: 4px;
+  top: 0.38rem;
+  width: 4px;
+  height: 7px;
+}
+
+.success-actions {
+  gap: 0.7rem;
+}
+
+.success-primary-action,
+.success-light-action {
+  min-width: 210px;
+  min-height: 42px;
+}
+
+@media (max-height: 820px) and (min-width: 900px) {
+  .success-redesign {
+    min-height: auto;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .success-shell {
+    gap: 0.5rem;
+  }
+
+  .success-navline {
+    min-height: 32px;
+  }
+
+  .success-back {
+    width: 34px;
+    height: 34px;
+  }
+
+  .success-breadcrumbs {
+    font-size: 0.9rem;
+  }
+
+  .success-hero {
+    min-height: 148px;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .success-check-orbit {
+    width: 88px;
+    height: 88px;
+  }
+
+  .success-check-orbit::before {
+    inset: 10px;
+  }
+
+  .success-check-orbit::after {
+    inset: 22px;
+  }
+
+  .success-check-ring {
+    width: 48px;
+    height: 48px;
+  }
+
+  .success-check-ring svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .success-check-orbit i {
+    width: 6px;
+    height: 6px;
+  }
+
+  .success-check-orbit i:nth-of-type(1),
+  .success-check-orbit i:nth-of-type(5) {
+    left: 4px;
+  }
+
+  .success-check-orbit i:nth-of-type(2) {
+    right: 8px;
+    top: 24px;
+  }
+
+  .success-check-orbit i:nth-of-type(3) {
+    top: 76px;
+  }
+
+  .success-check-orbit i:nth-of-type(4) {
+    left: 24px;
+  }
+
+  .success-kicker {
+    font-size: 0.68rem;
+  }
+
+  .success-hero-copy h1 {
+    margin: 0.08rem 0;
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    line-height: 1.02;
+  }
+
+  .success-hero-copy p {
+    font-size: 0.72rem;
+  }
+
+  .success-hero-cards {
+    gap: 0.45rem;
+    margin-top: 0.35rem;
+  }
+
+  .success-hero-cards article {
+    min-height: 38px;
+    padding: 0.32rem 0.45rem;
+    gap: 0.38rem;
+  }
+
+  .success-hero-cards svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .success-hero-cards span {
+    gap: 0.04rem;
+    font-size: 0.6rem;
+  }
+
+  .success-bag-scene {
+    display: none;
+  }
+
+  .success-confirmation-card {
+    padding: 0.62rem 0.85rem;
+    gap: 0.48rem;
+  }
+
+  .success-confirmation-head,
+  .success-confirmation-title {
+    gap: 0.5rem;
+  }
+
+  .success-confirmation-title > span {
+    width: 32px;
+    height: 32px;
+  }
+
+  .success-confirmation-title svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .success-confirmation-title h2 {
+    font-size: 0.95rem;
+  }
+
+  .success-confirmation-title p,
+  .success-verified {
+    font-size: 0.7rem;
+  }
+
+  .success-verified {
+    padding: 0.34rem 0.52rem;
+  }
+
+  .success-confirmation-grid {
+    gap: 0.55rem;
+  }
+
+  .success-redesign .success-summary-card,
+  .success-next-card {
+    padding: 0.48rem 0.6rem;
+  }
+
+  .success-redesign .success-meta-row {
+    grid-template-columns: minmax(132px, 0.45fr) minmax(0, 1fr);
+    padding: 0.25rem 0;
+  }
+
+  .success-redesign .success-meta-label,
+  .success-redesign .success-meta-value {
+    font-size: 0.68rem;
+  }
+
+  .success-redesign .success-meta-label span {
+    width: 20px;
+    height: 20px;
+  }
+
+  .success-redesign .success-meta-value:not(.is-code) {
+    font-size: 0.78rem;
+  }
+
+  .success-mail-icon {
+    display: none;
+  }
+
+  .success-next-card h2 {
+    margin-bottom: 0.22rem;
+    font-size: 0.88rem;
+  }
+
+  .success-next-card ul {
+    gap: 0.14rem;
+  }
+
+  .success-next-card li {
+    padding-left: 1rem;
+    font-size: 0.64rem;
+    line-height: 1.24;
+  }
+
+  .success-next-card li::before {
+    top: 0.08rem;
+    width: 9px;
+    height: 9px;
+    border-width: 1px;
+  }
+
+  .success-next-card li::after {
+    left: 3px;
+    top: 0.22rem;
+    width: 3px;
+    height: 5px;
+    border-width: 1px;
+  }
+
+  .success-primary-action,
+  .success-light-action {
+    min-width: 180px;
+    min-height: 34px;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 1120px) {
+  .success-hero,
+  .success-confirmation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .success-bag-scene {
+    display: none;
+  }
+
+  .success-hero-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .success-redesign {
+    padding: 1rem 0.75rem 1.4rem;
+  }
+
+  .success-shell {
+    width: 100%;
+  }
+
+  .success-hero,
+  .success-confirmation-card {
+    padding: 1.2rem;
+  }
+
+  .success-check-orbit {
+    width: 150px;
+    height: 150px;
+  }
+
+  .success-confirmation-head,
+  .success-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .success-redesign .success-meta-row {
+    grid-template-columns: 1fr;
+  }
+
+  .success-redesign .success-meta-value {
+    text-align: left;
+    word-break: break-word;
+  }
+
+  .success-primary-action,
+  .success-light-action {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 /* Catalog marketplace refresh */
 .catalog-app-shell {
   background:
