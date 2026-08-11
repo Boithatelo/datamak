@@ -3,6 +3,15 @@ const path = require("path");
 
 const ENV_PATH = path.join(__dirname, "../.env");
 const DEFAULT_DATABASE_URL = "postgres://postgres:postgres@localhost:5432/datamak_ecommerce";
+const DEFAULT_JWT_SECRET = "change_this_in_production";
+const LOCAL_DATABASE_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+const DATABASE_URL_PLACEHOLDERS = [
+  "YOUR_PASSWORD",
+  "USER:PASSWORD",
+  "HOST-pooler",
+  "REGION",
+  "/DB?"
+];
 
 function loadEnvFile() {
   if (!fs.existsSync(ENV_PATH)) {
@@ -34,13 +43,91 @@ function loadEnvFile() {
 
 const envFileLoaded = loadEnvFile();
 
+function parseBoolean(value, fallback = false) {
+  if (value === undefined || value === null || value === "") {
+    return fallback;
+  }
+
+  return ["1", "true", "yes", "on"].includes(String(value).toLowerCase());
+}
+
+function parseDatabaseUrl(databaseUrl) {
+  try {
+    return new URL(databaseUrl);
+  } catch (error) {
+    return null;
+  }
+}
+
+function shouldUseDatabaseSsl(databaseUrl) {
+  const parsedUrl = parseDatabaseUrl(databaseUrl);
+  if (!parsedUrl) {
+    return false;
+  }
+
+  const sslMode = String(parsedUrl.searchParams.get("sslmode") || "").toLowerCase();
+  if (["require", "verify-ca", "verify-full"].includes(sslMode)) {
+    return true;
+  }
+
+  return parsedUrl.hostname.endsWith(".neon.tech");
+}
+
+function isLocalDatabaseUrl(databaseUrl) {
+  const parsedUrl = parseDatabaseUrl(databaseUrl);
+  return Boolean(parsedUrl && LOCAL_DATABASE_HOSTS.has(parsedUrl.hostname));
+}
+
+function parsePositiveInteger(value, fallback) {
+  const parsed = Math.trunc(Number(value));
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function hasPlaceholderDatabaseUrl(databaseUrl) {
+  return DATABASE_URL_PLACEHOLDERS.some((placeholder) => databaseUrl.includes(placeholder));
+}
+
 const PORT = Number(process.env.PORT) || 4000;
-const JWT_SECRET = process.env.JWT_SECRET || "change_this_in_production";
+const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
 const TOKEN_EXPIRY = "7d";
 const DATABASE_URL =
   process.env.DATABASE_URL ||
   DEFAULT_DATABASE_URL;
-const PG_SSL = process.env.PG_SSL === "true";
+const PG_SSL =
+  process.env.PG_SSL === undefined
+    ? shouldUseDatabaseSsl(DATABASE_URL)
+    : parseBoolean(process.env.PG_SSL);
+const PG_POOL_MAX = parsePositiveInteger(
+  process.env.PG_POOL_MAX,
+  process.env.VERCEL ? 1 : 10
+);
+const DB_CREATE_DATABASE =
+  process.env.DB_CREATE_DATABASE === undefined
+    ? isLocalDatabaseUrl(DATABASE_URL)
+    : parseBoolean(process.env.DB_CREATE_DATABASE);
+const LOCAL_UPLOADS_ENABLED = parseBoolean(process.env.ENABLE_LOCAL_UPLOADS, !process.env.VERCEL);
+
+function getPgSslConfig() {
+  return PG_SSL ? { rejectUnauthorized: false } : false;
+}
+
+function getPgPoolConfig() {
+  return {
+    connectionString: DATABASE_URL,
+    ssl: getPgSslConfig(),
+    max: PG_POOL_MAX,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000
+  };
+}
+
+function getPgClientConfig(connectionString = DATABASE_URL) {
+  return {
+    connectionString,
+    ssl: getPgSslConfig(),
+    connectionTimeoutMillis: 10000
+  };
+}
 
 function getDatabaseSetupHint() {
   const hints = [];
@@ -54,11 +141,40 @@ function getDatabaseSetupHint() {
     );
   }
 
-  if (DATABASE_URL.includes("YOUR_PASSWORD")) {
-    hints.push("Replace the literal YOUR_PASSWORD value in DATABASE_URL.");
+  if (hasPlaceholderDatabaseUrl(DATABASE_URL)) {
+    hints.push("Replace all placeholder values in DATABASE_URL.");
+  }
+
+  if (parseDatabaseUrl(DATABASE_URL) === null) {
+    hints.push("Check that DATABASE_URL is a valid PostgreSQL connection string.");
   }
 
   return hints.join(" ");
+}
+
+function getRuntimeConfigErrors() {
+  const errors = [];
+
+  if (hasPlaceholderDatabaseUrl(DATABASE_URL)) {
+    errors.push("DATABASE_URL still contains placeholder values.");
+  }
+
+  if (process.env.NODE_ENV === "production" && JWT_SECRET === DEFAULT_JWT_SECRET) {
+    errors.push("Set JWT_SECRET to a long random value before deploying to production.");
+  }
+
+  if (parseDatabaseUrl(DATABASE_URL) === null) {
+    errors.push("DATABASE_URL is not a valid PostgreSQL connection string.");
+  }
+
+  return errors;
+}
+
+function assertRuntimeConfig() {
+  const errors = getRuntimeConfigErrors();
+  if (errors.length) {
+    throw new Error(errors.join(" "));
+  }
 }
 
 module.exports = {
@@ -67,5 +183,12 @@ module.exports = {
   TOKEN_EXPIRY,
   DATABASE_URL,
   PG_SSL,
-  getDatabaseSetupHint
+  PG_POOL_MAX,
+  DB_CREATE_DATABASE,
+  LOCAL_UPLOADS_ENABLED,
+  getPgPoolConfig,
+  getPgClientConfig,
+  getDatabaseSetupHint,
+  getRuntimeConfigErrors,
+  assertRuntimeConfig
 };

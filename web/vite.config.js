@@ -12,6 +12,6 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: "./src/test/setup.js",
-    exclude: ["tests/e2e/**", "node_modules/**", "dist/**"]
+    exclude: ["tests/e2e/**", "node_modules/**", ".cypress-cache/**", "dist/**"]
   }
 });

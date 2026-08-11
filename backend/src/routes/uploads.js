@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { v4: uuid } = require("uuid");
 const { adminOnly } = require("../middleware/auth");
+const { LOCAL_UPLOADS_ENABLED } = require("../config");
 
 const router = express.Router();
 
@@ -35,6 +36,13 @@ function parseDataUrl(dataUrl) {
 }
 
 router.post("/images", adminOnly, (req, res) => {
+  if (!LOCAL_UPLOADS_ENABLED) {
+    return res.status(501).json({
+      message:
+        "Image uploads need persistent file storage in production. Use an externally hosted image URL, or configure a storage service such as Vercel Blob."
+    });
+  }
+
   const images = Array.isArray(req.body?.images) ? req.body.images : [];
 
   if (!images.length) {

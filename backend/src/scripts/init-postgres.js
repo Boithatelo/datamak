@@ -1,5 +1,10 @@
 const { Client } = require("pg");
-const { DATABASE_URL, PG_SSL, getDatabaseSetupHint } = require("../config");
+const {
+  DATABASE_URL,
+  DB_CREATE_DATABASE,
+  getPgClientConfig,
+  getDatabaseSetupHint
+} = require("../config");
 const { readDb } = require("../data/store");
 
 function quoteIdentifier(value) {
@@ -7,6 +12,11 @@ function quoteIdentifier(value) {
 }
 
 async function ensureDatabaseExists() {
+  if (!DB_CREATE_DATABASE) {
+    console.log("Skipping database creation because DATABASE_URL points to a managed database.");
+    return;
+  }
+
   const targetUrl = new URL(DATABASE_URL);
   const databaseName = targetUrl.pathname.replace(/^\//, "");
 
@@ -17,10 +27,7 @@ async function ensureDatabaseExists() {
   const maintenanceUrl = new URL(DATABASE_URL);
   maintenanceUrl.pathname = "/postgres";
 
-  const client = new Client({
-    connectionString: maintenanceUrl.toString(),
-    ssl: PG_SSL ? { rejectUnauthorized: false } : false
-  });
+  const client = new Client(getPgClientConfig(maintenanceUrl.toString()));
   await client.connect();
 
   try {

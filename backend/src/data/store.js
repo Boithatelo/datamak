@@ -3,7 +3,7 @@ const path = require("path");
 const bcrypt = require("bcryptjs");
 const { Pool } = require("pg");
 const { v4: uuid } = require("uuid");
-const { DATABASE_URL, PG_SSL } = require("../config");
+const { getPgPoolConfig } = require("../config");
 const {
   CATALOG_VERSION,
   buildDemoProducts,
@@ -172,13 +172,12 @@ const REQUIRED_KEYS = [
 
 let pool;
 let initialized = false;
+let initializingPromise = null;
+const SCHEMA_INIT_LOCK_ID = 2026051001;
 
 function getPool() {
   if (!pool) {
-    pool = new Pool({
-      connectionString: DATABASE_URL,
-      ssl: PG_SSL ? { rejectUnauthorized: false } : false
-    });
+    pool = new Pool(getPgPoolConfig());
   }
   return pool;
 }
@@ -754,13 +753,21 @@ async function replaceDb(client, sourceDb) {
   }
 }
 
-async function ensureDb() {
+async function initializeDb() {
   if (initialized) {
     return;
   }
 
   const client = await getPool().connect();
+  let lockAcquired = false;
   try {
+    await client.query("SELECT pg_advisory_lock($1)", [SCHEMA_INIT_LOCK_ID]);
+    lockAcquired = true;
+
+    if (initialized) {
+      return;
+    }
+
     await createSchema(client);
     const { rows } = await client.query("SELECT COUNT(*)::int AS count FROM users");
     if (rows[0].count === 0) {
@@ -768,8 +775,29 @@ async function ensureDb() {
     }
     initialized = true;
   } finally {
+    if (lockAcquired) {
+      try {
+        await client.query("SELECT pg_advisory_unlock($1)", [SCHEMA_INIT_LOCK_ID]);
+      } catch (error) {
+        console.error("Failed to release schema initialization lock:", error.message);
+      }
+    }
     client.release();
   }
+}
+
+async function ensureDb() {
+  if (initialized) {
+    return;
+  }
+
+  if (!initializingPromise) {
+    initializingPromise = initializeDb().finally(() => {
+      initializingPromise = null;
+    });
+  }
+
+  await initializingPromise;
 }
 
 async function readPostgresDb() {

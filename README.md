@@ -113,5 +113,7 @@ For iOS simulator, `http://localhost:4000/api` usually works.
 ## Notes
 
 - Data is persisted in PostgreSQL after first initialization.
+- For Vercel deployment, use Neon Postgres and follow
+  `docs/vercel-neon-deployment.md`.
 - The payment flow is simulated by design for the assignment.
 - Admin dashboard is implemented in the web app, while mobile focuses on customer shopping flows.

@@ -552,6 +552,18 @@ export default function AdminPage() {
                   />
                 </label>
                 <label>
+                  Image URL
+                  <input
+                    type="url"
+                    value={newProduct.imageUrl}
+                    onChange={(event) =>
+                      setNewProduct((current) => ({ ...current, imageUrl: event.target.value }))
+                    }
+                    placeholder="https://example.com/product.jpg"
+                    data-testid="admin-product-image-url-input"
+                  />
+                </label>
+                <label>
                   Product Pictures
                   <input
                     type="file"
@@ -562,7 +574,7 @@ export default function AdminPage() {
                   />
                   <span className="muted">
                     Upload up to 8 images from this device. The first image becomes the main catalog
-                    picture; all selected images appear in the product gallery.
+                    picture; use Image URL for deployed stores without persistent upload storage.
                   </span>
                 </label>
                 {imagePreviews.length > 0 && (

@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
-const { PORT, getDatabaseSetupHint } = require("./config");
+const { PORT, assertRuntimeConfig, getDatabaseSetupHint } = require("./config");
 const authRoutes = require("./routes/auth");
 const productsRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
@@ -12,6 +12,8 @@ const wishlistRoutes = require("./routes/wishlist");
 const uploadsRoutes = require("./routes/uploads");
 const { authRequired } = require("./middleware/auth");
 const { readDb } = require("./data/store");
+
+assertRuntimeConfig();
 
 const app = express();
 
@@ -53,9 +55,13 @@ async function start() {
   });
 }
 
-start().catch((error) => {
-  const hint = getDatabaseSetupHint();
-  const details = hint ? `${error.message} ${hint}` : error.message;
-  console.error("Failed to start backend server:", details);
-  process.exit(1);
-});
+if (require.main === module) {
+  start().catch((error) => {
+    const hint = getDatabaseSetupHint();
+    const details = hint ? `${error.message} ${hint}` : error.message;
+    console.error("Failed to start backend server:", details);
+    process.exit(1);
+  });
+}
+
+module.exports = app;
