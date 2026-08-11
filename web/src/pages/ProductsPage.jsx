@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api/client";
 import MessageDialog from "../components/MessageDialog";
 import PageHeader from "../components/PageHeader";
@@ -293,6 +293,7 @@ function toTestId(value) {
 
 export default function ProductsPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { addToCart, getErrorMessage } = useCart();
   const { wishlistIds, toggleWishlist } = useShop();
@@ -342,6 +343,7 @@ export default function ProductsPage() {
     hostingBandwidth: false,
     hostingBilling: false
   });
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   const initializedRef = useRef(false);
   const hostingInitializedRef = useRef(false);
@@ -838,6 +840,13 @@ export default function ProductsPage() {
     setPriceRange([priceBounds[0], priceBounds[1]]);
   };
 
+  const onSearchSubmit = (event) => {
+    event.preventDefault();
+    const query = String(searchInput || "").trim();
+    setSearchTerm(query.toLowerCase());
+    navigate(query ? `/catalog?search=${encodeURIComponent(query)}` : "/catalog", { replace: true });
+  };
+
   const onAddToCart = async (productId) => {
     if (!user) {
       setStatus("Please login or register to add products to cart.");
@@ -1000,18 +1009,82 @@ export default function ProductsPage() {
     ) +
     Number(priceRange[0] !== priceBounds[0] || priceRange[1] !== priceBounds[1]);
 
+  const activeFilterChips = [
+    categoryValue && {
+      key: "category",
+      label: `Category: ${CATEGORY_OPTIONS.find((option) => option.value === categoryValue)?.label || categoryValue}`,
+      onRemove: () => onMainCategorySelect("")
+    },
+    ...brandValues.map((brand) => ({
+      key: `brand-${brand}`,
+      label: `Brand: ${brand}`,
+      onRemove: () => setBrandValues((current) => current.filter((entry) => entry !== brand))
+    })),
+    ...processorValues.map((processor) => ({
+      key: `processor-${processor}`,
+      label: `Processor: ${processor}`,
+      onRemove: () =>
+        setProcessorValues((current) => current.filter((entry) => entry !== processor))
+    })),
+    ...ramValues.map((ram) => ({
+      key: `ram-${ram}`,
+      label: `RAM: ${ram}`,
+      onRemove: () => setRamValues((current) => current.filter((entry) => entry !== ram))
+    })),
+    (priceRange[0] !== priceBounds[0] || priceRange[1] !== priceBounds[1]) && {
+      key: "price",
+      label: `Price: M ${priceRange[0]} - M ${priceRange[1]}`,
+      onRemove: () => setPriceRange([priceBounds[0], priceBounds[1]])
+    }
+  ].filter(Boolean);
+
+  const pricePresetValue =
+    priceRange[0] === priceBounds[0] && priceRange[1] === priceBounds[1]
+      ? ""
+      : priceRange[1] <= 5000
+        ? "below-5000"
+        : priceRange[0] >= 10000
+          ? "above-10000"
+          : "5000-10000";
+
+  const onPricePresetChange = (value) => {
+    if (!value) {
+      setPriceRange([priceBounds[0], priceBounds[1]]);
+      return;
+    }
+
+    if (value === "below-5000") {
+      setPriceRange([priceBounds[0], Math.min(5000, priceBounds[1])]);
+      return;
+    }
+
+    if (value === "above-10000") {
+      setPriceRange([Math.max(10000, priceBounds[0]), priceBounds[1]]);
+      return;
+    }
+
+    setPriceRange([Math.max(5000, priceBounds[0]), Math.min(10000, priceBounds[1])]);
+  };
+
   return (
-    <>
+    <section className="catalog-redesign">
       <PageHeader
         breadcrumbs={[{ label: "Home", to: "/" }, { label: "Catalog" }]}
         eyebrow="Datamak Marketplace"
         title="Product Catalog"
         subtitle="Find computers, ICT gear, networking devices, software licenses, and cloud hosting packages from one curated catalog."
         fallback="/"
+        className="catalog-hero-panel"
       />
 
       <section className="catalog-filter-layout" data-testid="catalog-filter-layout">
-        <aside className="tech-filter-sidebar" data-testid="filter-sidebar">
+        <aside
+          className={`tech-filter-sidebar catalog-advanced-filter-panel ${
+            showAdvancedFilters ? "is-open" : ""
+          }`}
+          data-testid="filter-sidebar"
+          hidden={!showAdvancedFilters}
+        >
           <div className="tech-filter-header">
             <div className="tech-filter-title-wrap">
               <span className="tech-filter-icon" aria-hidden="true">
@@ -1677,7 +1750,11 @@ export default function ProductsPage() {
 
         <div className="catalog-filter-results" data-testid="catalog-results">
           <section className="panel catalog-search-panel" data-testid="catalog-search-panel">
-            <div className="catalog-search-row" data-testid="catalog-search-row">
+            <form
+              className="catalog-search-row"
+              data-testid="catalog-search-row"
+              onSubmit={onSearchSubmit}
+            >
               <label className="catalog-search-input-wrap" htmlFor="catalog-product-search">
                 <span className="sr-only">Search products</span>
                 <input
@@ -1688,8 +1765,19 @@ export default function ProductsPage() {
                   placeholder="Search products, brands, processors, hosting plans..."
                   onChange={(event) => setSearchInput(event.target.value)}
                   data-testid="catalog-search-input"
+                  data-cy="catalog-search-input"
                 />
               </label>
+              <button
+                type="submit"
+                className="catalog-search-submit-btn"
+                aria-label="Search catalog"
+                data-cy="catalog-search-submit"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M10.8 18.1a7.3 7.3 0 1 1 5.2-2.2l4.1 4.1-1.5 1.5-4.1-4.1a7.2 7.2 0 0 1-3.7.7Zm0-2.1a5.2 5.2 0 1 0 0-10.4 5.2 5.2 0 0 0 0 10.4Z" />
+                </svg>
+              </button>
               {searchInput && (
                 <button
                   type="button"
@@ -1703,7 +1791,7 @@ export default function ProductsPage() {
                   Clear
                 </button>
               )}
-            </div>
+            </form>
             <p className="catalog-search-meta" data-testid="catalog-search-meta">
               {searchTerm
                 ? `Search active: "${searchInput.trim()}"`
@@ -1714,6 +1802,122 @@ export default function ProductsPage() {
                 <option key={suggestion} value={suggestion} />
               ))}
             </datalist>
+          </section>
+
+          <section className="panel catalog-toolbar-panel" data-testid="catalog-count-panel">
+            <div className="catalog-toolbar-main">
+              <p>
+                Showing <strong data-testid="catalog-results-count">{filteredProducts.length}</strong> products
+              </p>
+
+              <label className="catalog-toolbar-select">
+                <span>Category</span>
+                <select
+                  value={categoryValue}
+                  onChange={(event) => onMainCategorySelect(event.target.value)}
+                >
+                  {CATEGORY_OPTIONS.map((option) => (
+                    <option key={option.value || "all"} value={option.value}>
+                      {option.label.replace("All Categories", "All")}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="catalog-toolbar-select">
+                <span>Brand</span>
+                <select
+                  value={brandValues[0] || ""}
+                  onChange={(event) => setBrandValues(event.target.value ? [event.target.value] : [])}
+                >
+                  <option value="">All Brands</option>
+                  {filteredBrandOptions.map((brand) => (
+                    <option key={brand} value={brand}>
+                      {brand}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="catalog-toolbar-select">
+                <span>Processor</span>
+                <select
+                  value={processorValues[0] || ""}
+                  onChange={(event) =>
+                    setProcessorValues(event.target.value ? [event.target.value] : [])
+                  }
+                  disabled={isIctMode || isHostingMode}
+                >
+                  <option value="">All Processors</option>
+                  {PROCESSOR_OPTIONS.map((processor) => (
+                    <option key={processor} value={processor}>
+                      {processor}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="catalog-toolbar-select">
+                <span>RAM</span>
+                <select
+                  value={ramValues[0] || ""}
+                  onChange={(event) => setRamValues(event.target.value ? [event.target.value] : [])}
+                  disabled={isIctMode || isHostingMode}
+                >
+                  <option value="">All RAM</option>
+                  {RAM_OPTIONS.map((ram) => (
+                    <option key={ram} value={ram}>
+                      {ram}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="catalog-toolbar-select">
+                <span>Price</span>
+                <select
+                  value={pricePresetValue}
+                  onChange={(event) => onPricePresetChange(event.target.value)}
+                >
+                  <option value="">All Prices</option>
+                  <option value="below-5000">Below M 5,000</option>
+                  <option value="5000-10000">M 5,000 - M 10,000</option>
+                  <option value="above-10000">Above M 10,000</option>
+                </select>
+              </label>
+
+              <button
+                type="button"
+                className="catalog-all-filters-btn"
+                onClick={() => setShowAdvancedFilters((current) => !current)}
+              >
+                All Filters
+              </button>
+
+              <label className="catalog-toolbar-select catalog-sort-select" data-cy="catalog-sort-trigger">
+                <span>Sort</span>
+                <select defaultValue="featured">
+                  <option value="featured">Featured</option>
+                  <option value="newest">Newest</option>
+                  <option value="price-low">Price Low</option>
+                  <option value="price-high">Price High</option>
+                </select>
+              </label>
+            </div>
+
+            <div className="catalog-active-chips">
+              {activeFilterChips.map((chip) => (
+                <button key={chip.key} type="button" onClick={chip.onRemove}>
+                  {chip.label}
+                  <span aria-hidden="true">x</span>
+                </button>
+              ))}
+              {activeFilterChips.length > 0 && (
+                <button type="button" className="catalog-clear-all-chip" onClick={onClearAllFilters}>
+                  Clear all
+                </button>
+              )}
+            </div>
           </section>
 
           {(status || error) && (
@@ -1742,11 +1946,6 @@ export default function ProductsPage() {
             </section>
           ) : (
             <>
-              <section className="panel catalog-count-panel" data-testid="catalog-count-panel">
-                <p>
-                  Showing <strong data-testid="catalog-results-count">{filteredProducts.length}</strong> products
-                </p>
-              </section>
               <section className="product-grid" data-testid="catalog-product-grid">
                 {filteredProducts.map((product) => (
                   <ProductCard
@@ -1772,6 +1971,6 @@ export default function ProductsPage() {
         busy={busyId === quickView?.id}
       />
       <MessageDialog message={dialogMessage} onClose={() => setDialogMessage("")} />
-    </>
+    </section>
   );
 }
