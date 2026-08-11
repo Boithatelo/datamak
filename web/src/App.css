@@ -6280,6 +6280,268 @@ tr:last-child td {
   }
 }
 
+/* Home page smart motion */
+@keyframes home-page-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes home-soft-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes home-hero-drift {
+  0% {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.055) translate3d(-10px, -4px, 0);
+  }
+  100% {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes home-scan-line {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+    opacity: 0;
+  }
+  18%,
+  62% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateX(120%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+@keyframes home-icon-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes home-cta-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes home-count-pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.12);
+  }
+}
+
+.home-start-card {
+  animation: home-page-reveal 520ms ease-out both;
+}
+
+.home-start-header {
+  animation: home-soft-rise 520ms ease-out 80ms both;
+}
+
+.home-start-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 0%, rgba(73, 189, 255, 0.16) 48%, transparent 62%);
+  mix-blend-mode: screen;
+  animation: home-scan-line 9s ease-in-out 1.4s infinite;
+}
+
+.home-start-hero-image {
+  transform-origin: center right;
+  animation: home-hero-drift 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.home-start-copy,
+.home-hero-trust-row,
+.home-start-trust-strip {
+  position: relative;
+  z-index: 2;
+}
+
+.home-trusted-pill,
+.home-start-copy h1,
+.home-start-copy p,
+.home-cta-row,
+.home-hero-trust-row article,
+.home-trust-card {
+  animation: home-soft-rise 600ms ease-out both;
+}
+
+.home-trusted-pill {
+  animation-delay: 160ms;
+}
+
+.home-start-copy h1 {
+  animation-delay: 230ms;
+}
+
+.home-start-copy p {
+  animation-delay: 300ms;
+}
+
+.home-cta-row {
+  animation-delay: 370ms;
+}
+
+.home-hero-trust-row article:nth-child(1),
+.home-trust-card:nth-child(1) {
+  animation-delay: 440ms;
+}
+
+.home-hero-trust-row article:nth-child(2),
+.home-trust-card:nth-child(2) {
+  animation-delay: 510ms;
+}
+
+.home-hero-trust-row article:nth-child(3),
+.home-trust-card:nth-child(3) {
+  animation-delay: 580ms;
+}
+
+.home-hero-trust-row article:nth-child(4),
+.home-trust-card:nth-child(4) {
+  animation-delay: 650ms;
+}
+
+.home-start-brand .logo-mark,
+.home-trusted-pill svg,
+.home-hero-trust-row svg,
+.home-trust-card span,
+.home-secondary-cta span {
+  animation: home-icon-float 4.8s ease-in-out infinite;
+}
+
+.home-hero-trust-row article:nth-child(2) svg,
+.home-trust-card:nth-child(2) span {
+  animation-delay: 0.6s;
+}
+
+.home-hero-trust-row article:nth-child(3) svg,
+.home-trust-card:nth-child(3) span {
+  animation-delay: 1.2s;
+}
+
+.home-hero-trust-row article:nth-child(4) svg,
+.home-trust-card:nth-child(4) span {
+  animation-delay: 1.8s;
+}
+
+.home-header-cart em {
+  animation: home-count-pop 2.8s ease-in-out infinite;
+}
+
+.home-primary-cta {
+  background-size: 180% 180%;
+  animation: home-cta-shine 6s ease-in-out infinite;
+}
+
+.home-primary-cta,
+.home-secondary-cta,
+.home-user-pill,
+.home-logout-btn,
+.home-header-cart,
+.home-trust-card {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    filter 180ms ease;
+}
+
+.home-primary-cta:hover,
+.home-secondary-cta:hover,
+.home-user-pill:hover,
+.home-logout-btn:hover,
+.home-header-cart:hover,
+.home-trust-card:hover {
+  transform: translateY(-2px);
+}
+
+.home-primary-cta:hover,
+.home-logout-btn:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 18px 34px rgba(0, 90, 255, 0.34);
+}
+
+.home-secondary-cta:hover span,
+.home-trust-card:hover span {
+  box-shadow:
+    inset 0 0 0 6px rgba(255, 255, 255, 0.72),
+    0 14px 28px rgba(18, 108, 255, 0.16);
+}
+
+.home-trust-card:hover {
+  z-index: 2;
+  border-color: rgba(18, 108, 255, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-start-card,
+  .home-start-header,
+  .home-start-hero::after,
+  .home-start-hero-image,
+  .home-trusted-pill,
+  .home-start-copy h1,
+  .home-start-copy p,
+  .home-cta-row,
+  .home-hero-trust-row article,
+  .home-trust-card,
+  .home-start-brand .logo-mark,
+  .home-trusted-pill svg,
+  .home-hero-trust-row svg,
+  .home-trust-card span,
+  .home-secondary-cta span,
+  .home-header-cart em,
+  .home-primary-cta {
+    animation: none;
+  }
+
+  .home-primary-cta,
+  .home-secondary-cta,
+  .home-user-pill,
+  .home-logout-btn,
+  .home-header-cart,
+  .home-trust-card {
+    transition: none;
+  }
+}
+
 /* Home page viewport fit */
 .home-page {
   width: min(100% - 1.5rem, 1260px);
