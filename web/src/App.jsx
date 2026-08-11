@@ -39,10 +39,15 @@ export default function App() {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const isAuth = location.pathname === "/auth";
+  const isCheckout = location.pathname.startsWith("/checkout");
   const showNavBar = !isHome;
 
   return (
-    <div className={`app-shell ${isHome ? "home-app-shell" : ""} ${isAuth ? "auth-app-shell" : ""}`}>
+    <div
+      className={`app-shell ${isHome ? "home-app-shell" : ""} ${isAuth ? "auth-app-shell" : ""} ${
+        isCheckout ? "checkout-app-shell" : ""
+      }`}
+    >
       {showNavBar && <NavBar />}
       <main className={`container page ${isHome ? "home-page" : ""} ${isAuth ? "auth-page" : ""}`}>
         <Routes>

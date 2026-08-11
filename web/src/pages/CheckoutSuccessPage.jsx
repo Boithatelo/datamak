@@ -25,7 +25,7 @@ export default function CheckoutSuccessPage() {
         subtitle="Your order has been placed successfully. Tracking updates are now available in your orders dashboard."
         fallback="/orders"
       />
-      <section className="panel success-panel" data-testid="checkout-success-panel">
+      <section className="panel success-panel" data-testid="checkout-success-panel" data-cy="checkout-success-page">
         <div className="success-summary-card" data-testid="checkout-success-summary">
           <h2 className="success-summary-title">Payment Confirmation</h2>
           <dl className="success-meta-list">
@@ -42,6 +42,7 @@ export default function CheckoutSuccessPage() {
             className="btn btn-primary"
             to={`/orders/${order?.id || orderId}`}
             data-testid="checkout-success-view-order"
+            data-cy="view-order-details-button"
           >
             View Order Details
           </Link>

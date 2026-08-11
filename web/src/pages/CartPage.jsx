@@ -250,7 +250,12 @@ export default function CartPage() {
                 <CartIcon name="shield" />
                 <span>You are saving time and getting the best tech for less.</span>
               </div>
-              <Link className="btn btn-primary cart-checkout-btn" to="/checkout" data-testid="cart-proceed-checkout">
+              <Link
+                className="btn btn-primary cart-checkout-btn"
+                to="/checkout"
+                data-testid="cart-proceed-checkout"
+                data-cy="proceed-to-checkout-button"
+              >
                 <CartIcon name="lock" />
                 Proceed to Checkout
                 <CartIcon name="arrowRight" />
