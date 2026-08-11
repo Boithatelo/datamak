@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import api from "../api/client";
 import MessageDialog from "../components/MessageDialog";
 import PageHeader from "../components/PageHeader";
@@ -291,6 +292,7 @@ function toTestId(value) {
 }
 
 export default function ProductsPage() {
+  const location = useLocation();
   const { user } = useAuth();
   const { addToCart, getErrorMessage } = useCart();
   const { wishlistIds, toggleWishlist } = useShop();
@@ -343,6 +345,18 @@ export default function ProductsPage() {
 
   const initializedRef = useRef(false);
   const hostingInitializedRef = useRef(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const query = params.get("search") || "";
+    if (!query) {
+      return;
+    }
+
+    setCategoryValue("");
+    setSearchInput(query);
+    setSearchTerm(query);
+  }, [location.search]);
 
   const catalogProducts = useMemo(
     () =>
