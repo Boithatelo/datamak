@@ -5775,27 +5775,67 @@ tr:last-child td {
 
 .checkout-card-form-head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 1rem;
+  gap: 0.9rem;
   margin-bottom: 1.15rem;
   color: #bac9df;
 }
 
-.checkout-card-form-head strong {
-  color: #ffffff;
-  font-size: 1rem;
+.checkout-payment-logos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
-.checkout-card-form-head .checkout-card-dot {
-  border-radius: 999px;
-  padding: 0.14rem 0.4rem;
-  color: #041534;
-  background: linear-gradient(90deg, #ff4c21, #ffca2e);
+.checkout-payment-logo {
+  height: 24px;
+  min-width: 42px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  font-size: 0.76rem;
+  font-weight: 900;
+  line-height: 1;
 }
 
-.checkout-card-form-head .checkout-eft {
-  color: #62f3bf;
+.checkout-logo-visa {
+  color: #1547b7;
+  font-style: italic;
+}
+
+.checkout-logo-master {
+  position: relative;
+  min-width: 42px;
+}
+
+.checkout-logo-master i {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: block;
+}
+
+.checkout-logo-master i:first-child {
+  margin-right: -5px;
+  background: #eb001b;
+}
+
+.checkout-logo-master i:last-child {
+  background: #f79e1b;
+  mix-blend-mode: multiply;
+}
+
+.checkout-logo-eft {
+  min-width: 0;
+  padding: 0 0.08rem;
+  background: transparent;
+  color: #52ffd4;
+  box-shadow: none;
+  font-size: 0.9rem;
 }
 
 .checkout-redesign .checkout-form label {

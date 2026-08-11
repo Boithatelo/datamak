@@ -221,9 +221,14 @@ export default function CheckoutPage() {
                     <div className="checkout-card-form">
                       <div className="checkout-card-form-head">
                         <span>Accepted Cards</span>
-                        <strong>VISA</strong>
-                        <strong className="checkout-card-dot">MC</strong>
-                        <strong className="checkout-eft">EFT</strong>
+                        <span className="checkout-payment-logos" aria-label="Accepted cards: Visa, Mastercard, EFT">
+                          <span className="checkout-payment-logo checkout-logo-visa">VISA</span>
+                          <span className="checkout-payment-logo checkout-logo-master" role="img" aria-label="Mastercard">
+                            <i />
+                            <i />
+                          </span>
+                          <span className="checkout-payment-logo checkout-logo-eft">EFT</span>
+                        </span>
                       </div>
                       <label>
                         <span>Card Number</span>
